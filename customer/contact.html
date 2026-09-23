@@ -291,8 +291,8 @@
                                 <i class="fas fa-heart"></i>
                                 <span>Favorites</span>
                             </a>
-                            <a href="contact.html" class="profile-menu-item">
-                                <i class="fas fa-calendar-check"></i>
+                            <a href="about.html" class="profile-menu-item">
+                                <i class="fas fa-info-circle"></i>
                                 <span>About Us</span>
                             </a>
                             <hr>
@@ -366,7 +366,7 @@
                             <div class="contact-icon"><i class="fas fa-phone"></i></div>
                             <div class="contact-text">
                                 <h4>24/7 Support</h4>
-                                <p>+1 (555) 123-4567</p>
+                                <p>+63 900 000 0000</p>
                                 <p>Toll-free: 1-800-TOURGO</p>
                             </div>
                         </li>
@@ -444,22 +444,22 @@
             
             <div class="office-card fade-in" style="max-width: 800px; margin: 40px auto;">
                 <div class="office-image">
-                    <img src="/api/placeholder/800/400" alt="TourGo Headquarters">
+                    <img src="../public/assets/images/tourgo-map.png" alt="TourGo Headquarters location map">
                 </div>
                 <div class="office-details">
                     <h3>TourGo Headquarters</h3>
                     <p class="office-address">123 Travel Street, Adventure City, AC 12345</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
                         <div>
-                            <p class="office-contact"><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                            <p class="office-contact"><i class="fas fa-envelope"></i> corporate@tourgo.com</p>
+                            <p class="office-contact"><i class="fas fa-phone"></i> +63 900 000 0000</p>
+                            <p class="office-contact"><i class="fas fa-envelope"></i> contact@tourgo.demo</p>
                         </div>
                         <div>
                             <p class="office-contact"><i class="fas fa-clock"></i> Mon-Fri: 8am - 8pm</p>
                             <p class="office-contact"><i class="fas fa-clock"></i> Sat-Sun: 9am - 6pm</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" id="getDirectionsBtn" style="margin-top: 20px;">
+                    <button class="btn btn-primary" id="getDirectionsBtn" type="button" style="margin-top: 20px;">
                         <i class="fas fa-map-marker-alt"></i> Get Directions
                     </button>
                 </div>
@@ -656,7 +656,7 @@
 
         // Get Directions Button
         document.getElementById('getDirectionsBtn').addEventListener('click', function() {
-            showNotification('Opening directions in Google Maps...', 'info');
+            showNotification('Directions are available in the live TourGo environment.', 'info');
             setTimeout(() => {
                 // window.open('https://maps.google.com?q=123+Travel+Street+Adventure+City+AC+12345');
             }, 1000);
