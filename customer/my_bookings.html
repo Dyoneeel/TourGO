@@ -1,14 +1,14 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TourGo - My Bookings</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="../public/assets/css/styles.css" rel="stylesheet">
-    <link href="../public/assets/css/style.css" rel="stylesheet"> <link href="../public/assets/css/my-booking.css" rel="stylesheet"> <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TourGo - My Bookings</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link href="../public/assets/css/styles.css" rel="stylesheet">
+<link href="../public/assets/css/style.css" rel="stylesheet">
+<link href="../public/assets/css/my-booking.css" rel="stylesheet">
+<style>
         /* General Page Styles (Keep existing relevant styles) */
         .disabled {
             pointer-events: none;
@@ -305,6 +305,41 @@
         .filter-tab.active .filter-tab-count {
              background-color: rgba(255,255,255,0.25); /* Brighter count on active tab */
              color: white;
+        }
+
+        .error-message, .alert-danger { 
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px 18px; /* More padding */
+            border: 1px solid #f5c6cb;
+            border-radius: 6px; /* Consistent radius */
+            margin-bottom: 20px;
+            display: flex; /* For icon alignment */
+            align-items: center;
+            gap: 10px;
+        }
+        .error-message::before, .alert-danger::before { /* Optional: Add an icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f071"; /* Exclamation triangle */
+        }
+
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px 18px;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+         .success-message::before { /* Optional: Add an icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f058"; /* Check circle */
         }
 
          .no-bookings {
@@ -745,119 +780,294 @@
         [data-theme="dark"] .close-modal:hover {
             color: var(--text-dark-primary, #e0e0e0);
         }
-        [data-theme="dark"] .modal-body p,
-        [data-theme="dark"] .modal-body {
+        [data-theme="dark"] .modal-body p, 
+        [data-theme="dark"] .modal-body { 
             color: var(--text-dark-secondary, #b0b0b0);
         }
-    </style>
 
-    <script>
-        // Cancel Modal Functions
-        const cancelModal = document.getElementById('cancelModal');
-        const modalBookingIdInput = document.getElementById('modal_booking_id');
-        const firstFocusableElementInModal = cancelModal ? cancelModal.querySelector('.btn-outline, .btn-danger, .close-modal') : null;
-        let previouslyFocusedElement = null;
-
-
-        function openCancelModal(bookingId) {
-            if (modalBookingIdInput) {
-                 modalBookingIdInput.value = bookingId;
-            }
-            if (cancelModal) {
-                previouslyFocusedElement = document.activeElement; // Save current focus
-                cancelModal.style.display = 'block';
-                cancelModal.setAttribute('aria-hidden', 'false');
-                if(firstFocusableElementInModal) firstFocusableElementInModal.focus();
-            }
+        [data-theme="dark"] .error-message,
+        [data-theme="dark"] .alert-danger {
+            background-color: rgba(248, 215, 218, 0.1); /* More subtle background */
+            color: #f8d7da;
+            border: 1px solid rgba(245, 198, 203, 0.3);
         }
+        [data-theme="dark"] .error-message::before, 
+        [data-theme="dark"] .alert-danger::before { color: #f8d7da; }
 
-        function closeCancelModal() {
-             if (cancelModal) {
-                cancelModal.style.display = 'none';
-                cancelModal.setAttribute('aria-hidden', 'true');
-                if (previouslyFocusedElement) previouslyFocusedElement.focus(); // Restore focus
-            }
+
+        [data-theme="dark"] .success-message {
+            background-color: rgba(212, 237, 218, 0.1);
+            color: #d4edda;
+            border: 1px solid rgba(195, 230, 203, 0.3);
         }
+        [data-theme="dark"] .success-message::before { color: #d4edda; }
 
-        window.addEventListener('click', function(event) {
-            if (event.target == cancelModal) {
-                closeCancelModal();
-            }
+
+    
+
+        /* Static GitHub demo helpers */
+        .demo-hidden { display: none !important; }
+        .empty-state-note { margin-top: 8px; }
+        .booking-detail-link { text-decoration: none; }
+        .newsletter-form { display:flex; gap:8px; }
+        .newsletter-form input { flex:1; }
+        .toast-demo { position:fixed; right:20px; bottom:20px; z-index:2000; padding:12px 16px; border-radius:8px; background:#1f2937; color:#fff; box-shadow:0 8px 24px rgba(0,0,0,.2); display:none; }
+        @media (max-width:768px){ .newsletter-form{display:flex;} }
+</style>
+</head>
+<body>
+<header id="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="customer_dashboard.html">
+                    <i class="fas fa-car-side"></i>
+                    <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="mainNavMenu">
+                <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="my_bookings.html" class="nav-link active">My Bookings</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode" id="themeToggleBtn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+                        <img src="../public/assets/images/guest-avatar.svg" alt="Guest Profile">
+                        <span>Guest</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="profile.html" class="profile-menu-item"><i class="fas fa-user"></i><span>My Profile</span></a>
+                        <a href="my_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-check"></i><span>My Bookings</span></a>
+                        <a href="favorite_cars.html" class="profile-menu-item"><i class="fas fa-heart"></i><span>Favorites</span></a>
+                        <hr>
+                        <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                    </div>
+                </div>
+                <button class="menu-toggle" aria-label="Toggle Menu" id="menuToggleBtn" aria-expanded="false" aria-controls="mainNavMenu"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+    <div class="section-header">
+        <h1 class="section-title">My Bookings</h1>
+        <p class="section-description">View and manage your rental reservations</p>
+    </div>
+
+    <div class="filter-tabs" id="filterTabs" aria-label="Booking filters">
+        <button type="button" class="filter-tab active" data-filter="all"><i class="fas fa-th-list"></i> All <span class="filter-tab-count" id="count-all">0</span></button>
+        <button type="button" class="filter-tab" data-filter="upcoming"><i class="fas fa-calendar-alt"></i> Upcoming <span class="filter-tab-count" id="count-upcoming">0</span></button>
+        <button type="button" class="filter-tab" data-filter="active"><i class="fas fa-car"></i> Active <span class="filter-tab-count" id="count-active">0</span></button>
+        <button type="button" class="filter-tab" data-filter="completed"><i class="fas fa-check-circle"></i> Completed <span class="filter-tab-count" id="count-completed">0</span></button>
+        <button type="button" class="filter-tab" data-filter="cancelled"><i class="fas fa-times-circle"></i> Cancelled <span class="filter-tab-count" id="count-cancelled">0</span></button>
+    </div>
+
+    <div class="sort-controls">
+        <label for="sort">Sort by:</label>
+        <select id="sort">
+            <option value="recent">Most Recent</option>
+            <option value="oldest">Oldest</option>
+            <option value="pickup_asc">Pickup Date (Earliest)</option>
+            <option value="pickup_desc">Pickup Date (Latest)</option>
+            <option value="amount_desc">Amount (Highest)</option>
+            <option value="amount_asc">Amount (Lowest)</option>
+        </select>
+    </div>
+
+    <div id="bookingsContainer"></div>
+
+    <div id="noBookings" class="no-bookings">
+        <i class="fas fa-calendar-times"></i>
+        <h3 id="noBookingsTitle">No bookings found</h3>
+        <p id="noBookingsText">You haven't made any reservations yet. Start your journey now!</p>
+        <a href="cars.html" class="btn btn-primary"><i class="fas fa-search"></i> Browse Vehicles</a>
+    </div>
+
+    <div class="pagination demo-hidden" id="pagination"></div>
+</main>
+
+<div id="cancelModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle" aria-hidden="true">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" id="cancelModalTitle">Cancel Booking</h4>
+            <button type="button" class="close-modal" id="closeCancelModal" aria-label="Close cancellation dialog">&times;</button>
+        </div>
+        <div class="modal-body"><p>Are you sure you want to cancel this booking? This action cannot be undone.</p></div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline" id="keepBooking"><i class="fas fa-ban"></i> No, Keep Booking</button>
+            <button type="button" class="btn btn-danger" id="confirmCancel"><i class="fas fa-check"></i> Yes, Cancel Booking</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-demo" id="demoToast" role="status" aria-live="polite"></div>
+
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo"><i class="fas fa-car-side"></i><span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span></div>
+                <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-menu">
+                    <li><a href="customer_dashboard.html">Home</a></li>
+                    <li><a href="cars.html">Our Fleet</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="#" data-demo-link="faq">FAQs</a></li>
+                    <li><a href="#" data-demo-link="terms">Terms &amp; Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h4 class="footer-title">Stay Updated</h4>
+                <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <label for="newsletterEmail" class="sr-only">Email for newsletter</label>
+                    <input type="email" id="newsletterEmail" class="newsletter-input" placeholder="Enter your email" aria-label="Email for newsletter" required>
+                    <button type="submit" class="newsletter-btn" aria-label="Subscribe to newsletter"><i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom"><p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p></div>
+    </div>
+</footer>
+
+<script src="../public/assets/js/demo-session.js"></script>
+<script>
+(function(){
+    'use strict';
+    const STORAGE_KEY = 'tourgo_demo_bookings';
+    let currentFilter = 'all';
+    let currentSort = 'recent';
+    let pendingCancelId = null;
+
+    function getBookings(){
+        try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : []; }
+        catch(e){ return []; }
+    }
+    function saveBookings(bookings){ localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings)); }
+    function showToast(message){
+        const el=document.getElementById('demoToast'); if(!el) return; el.textContent=message; el.style.display='block';
+        clearTimeout(window.__tourgoToastTimer); window.__tourgoToastTimer=setTimeout(()=>el.style.display='none',2500);
+    }
+    function displayStatus(b){
+        const now=new Date(); const pickup=new Date(b.pickupDate); const ret=new Date(b.returnDate);
+        const raw=(b.status||'confirmed').toLowerCase();
+        if(raw==='cancelled' || raw==='completed' || raw==='pending') return raw;
+        if(now < pickup) return 'upcoming';
+        if(now >= pickup && now <= ret) return 'active';
+        return 'completed';
+    }
+    function statusIcon(status){ return ({pending:'hourglass-half',confirmed:'check-circle',upcoming:'calendar-check',active:'car-alt',completed:'flag-checkered',cancelled:'ban'})[status] || 'info-circle'; }
+    function money(n){ return '₱'+Number(n||0).toLocaleString('en-PH',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function fmt(d){ const date=new Date(d); return Number.isNaN(date.getTime())?'—':date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+    function duration(a,b){ const x=new Date(a), y=new Date(b); return Math.max(1, Math.round((y-x)/86400000)+1); }
+    function normalize(b,index){
+        const days=duration(b.pickupDate,b.returnDate); const status=displayStatus(b);
+        return Object.assign({},b,{_status:status,_days:days,_index:index,bookingId:b.bookingId||('DEMO-'+String(index+1).padStart(4,'0')),
+          vehicleName:b.vehicleName||[b.make,b.model].filter(Boolean).join(' ')||'Rental Vehicle', vehicleType:b.vehicleType||'Vehicle', year:b.year||'2026',
+          licensePlate:b.licensePlate||'DEMO-000', dailyRate:Number(b.dailyRate||0), totalAmount:Number(b.totalAmount||Number(b.dailyRate||0)*days),
+          createdAt:b.createdAt||b.bookingDate||new Date().toISOString(), imagePath:b.imagePath||'../public/assets/images/car.png'});
+    }
+    function sortBookings(list){
+        return list.slice().sort((a,b)=>{
+            if(currentSort==='oldest') return new Date(a.createdAt)-new Date(b.createdAt);
+            if(currentSort==='pickup_asc') return new Date(a.pickupDate)-new Date(b.pickupDate);
+            if(currentSort==='pickup_desc') return new Date(b.pickupDate)-new Date(a.pickupDate);
+            if(currentSort==='amount_desc') return b.totalAmount-a.totalAmount;
+            if(currentSort==='amount_asc') return a.totalAmount-b.totalAmount;
+            return new Date(b.createdAt)-new Date(a.createdAt);
         });
-        window.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && cancelModal && cancelModal.style.display === 'block') {
-                closeCancelModal();
-            }
-        });
-
-
-        const menuToggleBtn = document.getElementById('menuToggleBtn');
-        const navMenu = document.getElementById('mainNavMenu');
-        if (menuToggleBtn && navMenu) {
-            menuToggleBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); 
-                const isExpanded = navMenu.classList.toggle('active');
-                menuToggleBtn.classList.toggle('active');
-                menuToggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-            });
-            document.addEventListener('click', function(e) {
-                if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
-                    navMenu.classList.remove('active');
-                    menuToggleBtn.classList.remove('active');
-                    menuToggleBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
-        }
-
-        const themeToggleButton = document.getElementById('themeToggleBtn');
-        if (themeToggleButton) {
-            const themeToggleIcon = themeToggleButton.querySelector('i');
-            function setTheme(theme) {
-                document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('theme', theme); 
-                if (theme === 'dark') {
-                    themeToggleIcon.classList.remove('fa-moon');
-                    themeToggleIcon.classList.add('fa-sun');
-                    themeToggleButton.setAttribute('aria-label', 'Toggle Light Mode');
-                } else {
-                    themeToggleIcon.classList.remove('fa-sun');
-                    themeToggleIcon.classList.add('fa-moon');
-                    themeToggleButton.setAttribute('aria-label', 'Toggle Dark Mode');
-                }
-            }
-
-            let currentTheme = localStorage.getItem('theme');
-            if (!currentTheme) {
-                currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-            setTheme(currentTheme); 
-
-            themeToggleButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-                setTheme(newTheme);
-            });
-        }
-
-
-        const profileToggleBtn = document.getElementById('profileToggleBtn');
-        const profileMenu = document.getElementById('profileMenu');
-        if (profileToggleBtn && profileMenu) {
-            profileToggleBtn.addEventListener('click', function(e) {
-                e.stopPropagation(); 
-                const isExpanded = profileMenu.classList.toggle('active');
-                profileToggleBtn.classList.toggle('active'); 
-                profileToggleBtn.setAttribute('aria-expanded', isExpanded.toString());
-            });
-            document.addEventListener('click', function(e) {
-                 if (profileMenu.classList.contains('active') && !profileMenu.contains(e.target) && !profileToggleBtn.contains(e.target)) {
-                    profileMenu.classList.remove('active');
-                    profileToggleBtn.classList.remove('active');
-                    profileToggleBtn.setAttribute('aria-expanded', 'false');
-                }
-            });
-        }
-    </script>
-    <script src="../public/assets/js/demo-session.js"></script>
+    }
+    function card(b){
+        const canCancel=b._status==='upcoming'||b._status==='pending';
+        const canModify=canCancel; const canReview=b._status==='completed';
+        return `<div class="booking-card" id="booking-${b.bookingId}">
+          <div class="booking-header"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span class="status-badge status-${b._status}"><i class="fas fa-${statusIcon(b._status)}"></i> ${b._status.charAt(0).toUpperCase()+b._status.slice(1)}</span>
+            <span class="license-plate"><i class="fas fa-id-badge"></i> ${escapeHtml(b.licensePlate)}</span>
+          </div><small class="text-muted">Ref: #TG-${String(b.bookingId).slice(-5).padStart(5,'0')}</small></div>
+          <div class="booking-timeline">
+             <div><i class="fas fa-calendar-plus"></i>&nbsp;<small>Booked: ${fmt(b.createdAt)}</small></div>
+             <div><i class="fas fa-arrow-right"></i></div>
+             <div><i class="fas fa-arrow-circle-up"></i>&nbsp;<small>Pickup: ${fmt(b.pickupDate)}</small></div>
+             <div><i class="fas fa-arrow-right"></i></div>
+             <div><i class="fas fa-arrow-circle-down"></i>&nbsp;<small>Return: ${fmt(b.returnDate)}</small></div>
+          </div>
+          <div class="booking-body"><div class="booking-image-container"><img src="${escapeAttr(b.imagePath)}" alt="${escapeAttr(b.vehicleName)}" class="booking-image" onerror="this.src='../public/assets/images/car.png'"></div>
+            <div class="booking-details"><h3 class="vehicle-name">${escapeHtml(b.vehicleName)} <span class="vehicle-year">(${escapeHtml(b.year)})</span> <span class="vehicle-type">${escapeHtml(b.vehicleType)}</span></h3>
+              <div class="booking-meta">
+                <div class="meta-item"><span class="meta-label"><i class="fas fa-tag"></i> Daily Rate</span><span class="meta-value">${money(b.dailyRate)}</span></div>
+                <div class="meta-item"><span class="meta-label"><i class="fas fa-calendar-day"></i> Total Days</span><span class="meta-value">${b._days} day${b._days!==1?'s':''}</span></div>
+                <div class="meta-item"><span class="meta-label"><i class="fas fa-coins"></i> Total Cost</span><span class="meta-value">${money(b.totalAmount)}</span></div>
+              </div>
+            </div></div>
+          <div class="booking-footer"><div class="price-tag"><i class="fas fa-money-bill-wave"></i> ${money(b.totalAmount)} <span class="daily-rate">(${money(b.totalAmount/b._days)}/day)</span></div>
+            <div class="booking-actions"><a href="booking_details.html?booking_id=${encodeURIComponent(b.bookingId)}" class="btn btn-outline booking-detail-link"><i class="fas fa-info-circle"></i> Details</a>
+            ${canCancel?`<button type="button" class="btn btn-danger cancel-booking" data-id="${escapeAttr(b.bookingId)}"><i class="fas fa-times"></i> Cancel</button>`:''}
+            ${canModify?`<a href="modify_booking.html?booking_id=${encodeURIComponent(b.bookingId)}" class="btn btn-primary"><i class="fas fa-edit"></i> Modify</a>`:''}
+            ${canReview?`<a href="review.html?booking_id=${encodeURIComponent(b.bookingId)}" class="btn btn-primary"><i class="fas fa-star"></i> Leave Review</a>`:''}</div>
+          </div></div>`;
+    }
+    function escapeHtml(v){ return String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+    function escapeAttr(v){ return escapeHtml(v); }
+    function render(){
+        const all=getBookings().map(normalize);
+        const counts={all:all.length,upcoming:0,active:0,completed:0,cancelled:0}; all.forEach(b=>counts[b._status]=(counts[b._status]||0)+1);
+        Object.entries(counts).forEach(([k,v])=>{const el=document.getElementById('count-'+k); if(el) el.textContent=v;});
+        document.querySelectorAll('.filter-tab').forEach(btn=>btn.classList.toggle('active',btn.dataset.filter===currentFilter));
+        const filtered=currentFilter==='all'?all:all.filter(b=>b._status===currentFilter); const list=sortBookings(filtered);
+        const container=document.getElementById('bookingsContainer'), empty=document.getElementById('noBookings');
+        if(!list.length){ container.innerHTML=''; empty.style.display='block';
+            const title=document.getElementById('noBookingsTitle'), text=document.getElementById('noBookingsText');
+            title.textContent=currentFilter==='all'?'No bookings found':`No ${currentFilter} bookings found`;
+            text.textContent=currentFilter==='all'?"You haven't made any reservations yet. Start your journey now!":`You don't have any ${currentFilter} bookings right now.`;
+        } else { empty.style.display='none'; container.innerHTML='<div class="bookings-list">'+list.map(card).join('')+'</div>'; }
+    }
+    function initTheme(){
+        const btn=document.getElementById('themeToggleBtn'), icon=btn&&btn.querySelector('i'); if(!btn||!icon)return;
+        const saved=localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+        function apply(t){ document.documentElement.setAttribute('data-theme',t); localStorage.setItem('theme',t); icon.classList.toggle('fa-sun',t==='dark'); icon.classList.toggle('fa-moon',t!=='dark'); btn.setAttribute('aria-label',t==='dark'?'Toggle Light Mode':'Toggle Dark Mode'); }
+        apply(saved); btn.addEventListener('click',()=>apply(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
+    }
+    function initMenus(){
+        const menu=document.getElementById('mainNavMenu'), toggle=document.getElementById('menuToggleBtn'); if(menu&&toggle){toggle.addEventListener('click',e=>{e.stopPropagation(); const a=menu.classList.toggle('active'); toggle.classList.toggle('active'); toggle.setAttribute('aria-expanded',String(a));}); document.addEventListener('click',e=>{if(!menu.contains(e.target)&&!toggle.contains(e.target)){menu.classList.remove('active');toggle.classList.remove('active');toggle.setAttribute('aria-expanded','false');}});}
+        const pm=document.getElementById('profileMenu'), pt=document.getElementById('profileToggleBtn'); if(pm&&pt){pt.addEventListener('click',e=>{e.stopPropagation();const a=pm.classList.toggle('active');pt.classList.toggle('active');pt.setAttribute('aria-expanded',String(a));}); document.addEventListener('click',e=>{if(!pm.contains(e.target)&&!pt.contains(e.target)){pm.classList.remove('active');pt.classList.remove('active');pt.setAttribute('aria-expanded','false');}});}
+    }
+    function initModal(){
+        const modal=document.getElementById('cancelModal');
+        function close(){ if(modal){modal.style.display='none';modal.setAttribute('aria-hidden','true');pendingCancelId=null;} }
+        document.getElementById('closeCancelModal')?.addEventListener('click',close); document.getElementById('keepBooking')?.addEventListener('click',close);
+        document.getElementById('confirmCancel')?.addEventListener('click',()=>{ if(!pendingCancelId)return; const all=getBookings().map(b=>b.bookingId===pendingCancelId?Object.assign({},b,{status:'cancelled'}):b); saveBookings(all); close(); showToast('Booking cancelled.'); render(); });
+        document.addEventListener('click',e=>{const btn=e.target.closest('.cancel-booking'); if(btn){pendingCancelId=btn.dataset.id;modal.style.display='block';modal.setAttribute('aria-hidden','false');}});
+        window.addEventListener('click',e=>{if(e.target===modal)close();}); window.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
+    }
+    function initFilters(){
+        document.getElementById('filterTabs')?.addEventListener('click',e=>{const btn=e.target.closest('.filter-tab');if(!btn)return;currentFilter=btn.dataset.filter;render();});
+        document.getElementById('sort')?.addEventListener('change',e=>{currentSort=e.target.value;render();});
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+        document.getElementById('currentYear').textContent=new Date().getFullYear();
+        initTheme(); initMenus(); initModal(); initFilters(); render();
+        document.getElementById('newsletterForm')?.addEventListener('submit',e=>{e.preventDefault(); showToast('Thanks for subscribing!'); e.target.reset();});
+        document.querySelectorAll('[data-demo-link]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showToast('This informational page is available in the full TourGo application.');}));
+    });
+})();
+</script>
 </body>
 </html>
