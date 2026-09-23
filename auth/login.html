@@ -608,7 +608,7 @@
             // No real account or password is sent anywhere.
             const demoAccounts = {
                 'admin@tourgo.demo': { password: 'TourGOAdmin@2026!', role: 'admin', name: 'TourGO Administrator' },
-                'agency@tourgo.demo': { password: 'Demo1234!', role: 'agency', name: 'DriveHub Rentals' },
+                'agency@tourgo.demo': { password: localStorage.getItem('tourgo_agency_password') || 'Demo1234!', role: 'agency', name: 'DriveHub Rentals' },
                 'customer@tourgo.demo': { password: 'Demo1234!', role: 'customer', name: 'Guest' }
             };
 

@@ -1,7 +1,3 @@
-
-
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -391,345 +387,47 @@
     --primary-rgb: 0, 123, 255; /* Replace with your primary color RGB values */
 }
     </style>
-</head>
-<body>
-    <header id="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="agency_dashboard.html">
-                        <i class="fas fa-car-side"></i>
-                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
-                    </a>
-                </div>
-                <ul class="nav-menu" id="mainNavMenu">
-                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
-                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
-                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
-                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
-                </ul>
-                <div class="header-actions">
-                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <div class="profile-dropdown">
-                        <button class="profile-toggle" id="profileToggleBtn" type="button">
-                            <img src="" alt="Profile">
-                            <span></span>
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="profile-menu" id="profileMenu">
-                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
-                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
-                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
-                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
-                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
-                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
-                        </div>
-                    </div>
-                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                </div>
-            </div>
+    <link rel="stylesheet" href="../public/assets/css/agency-demo.css">
+</head><body class="agency-page-bg">
+<header id="header">
+  <div class="container"><div class="header-content">
+    <div class="logo"><a href="agency_dashboard.html"><i class="fas fa-car-side"></i><span><span style="color:var(--text-dark);">Tour</span><span style="color:var(--text-light);">Go</span></span></a></div>
+    <ul class="nav-menu" id="mainNavMenu"><li><a href="agency_dashboard.html" class="nav-link">{label}</a></li><li><a href="my_cars.html" class="nav-link">{label}</a></li><li><a href="view_bookings.html" class="nav-link">{label}</a></li><li><a href="contact_support.html" class="nav-link active">{label}</a></li></ul>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+      <div class="profile-dropdown">
+        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+          <img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo">
+          <span class="profile-name">DriveHub Rentals</span><i class="fas fa-chevron-down"></i>
+        </button>
+        <div class="profile-menu" id="profileMenu">
+          <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+          <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+          <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+          <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
+          <a href="../auth/agency_change_password.html" class="profile-menu-item"><i class="fas fa-key"></i><span>Change Password</span></a>
+          <hr>
+          <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
         </div>
-    </header>
-
-    <section class="contact-hero">
-        <div class="container">
-            <div class="section-header animate__animated animate__fadeInUp">
-                <span class="section-subtitle">Agency Support Center</span>
-                <h2 class="section-title">Dedicated Partner Support</h2>
-                <p class="section-description">Our specialized team is here to help you manage your fleet and grow your business.</p>
-</div>
-        </div>
-    </section>
-
-    <section class="contact-section">
-        <div class="container">
-            <div class="contact-grid">
-                <!-- Agency Contact Form -->
-                <div class="agency-contact-card fade-in" style="animation-delay: 0.2s;">
-                    <h3 class="section-title" style="margin-bottom: 30px;">Agency Support Request</h3>
-                    <form id="agencyContactForm" class="contact-form" method="post" action="contact_support.html">
-                        <div class="form-group">
-                            <input type="text" name="name" class="form-control" value="" placeholder="Agency Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" name="email" class="form-control" value="" placeholder="Contact Email" required>
-                        </div>
-                        <div class="form-group">
-                            <select name="subject" class="form-control" required>
-                                <option value="" disabled selected>Select Support Type</option>
-                                <option value="Fleet Management">Fleet Management</option>
-                                <option value="Payment Issues">Payment Issues</option>
-                                <option value="Verification Help">Verification Help</option>
-                                <option value="Technical Support">Technical Support</option>
-                                <option value="Other Inquiry">Other Inquiry</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <textarea name="message" class="form-control" rows="5" placeholder="Describe your issue in detail" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Request</button>
-                    </form>
-                    
-                </div>
-
-                <!-- Agency Contact Info -->
-                <div class="agency-contact-card priority-support fade-in" style="animation-delay: 0.3s;">
-                    <h3 class="section-title" style="margin-bottom: 30px;">Priority Support Channels</h3>
-                    <ul class="contact-details">
-                        <li class="contact-item">
-                            <div class="contact-icon"><i class="fas fa-phone"></i></div>
-                            <div class="contact-text">
-                                <h4>Agency Hotline</h4>
-                                <p>+1 (555) 123-4567</p>
-                                <p>Available 24/7 for urgent matters</p>
-                            </div>
-                        </li>
-                        <li class="contact-item">
-                            <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                            <div class="contact-text">
-                                <h4>Dedicated Email</h4>
-                                <p>agencies@tourgo.com</p>
-                                <p>Typically responds within 2 business hours</p>
-                            </div>
-                        </li>
-                        <li class="contact-item">
-                            <div class="contact-icon"><i class="fas fa-comment-dots"></i></div>
-                            <div class="contact-text">
-                                <h4>Live Chat</h4>
-                                <p>Available in your dashboard</p>
-                                <p>Mon-Fri: 8am - 8pm EST</p>
-                            </div>
-                        </li>
-                    </ul>
-
-                    <div class="business-hours">
-                        <h4><i class="fas fa-clock"></i> Business Hours</h4>
-                        <p>Monday - Friday: 8:00 AM - 8:00 PM EST</p>
-                        <p>Saturday: 9:00 AM - 6:00 PM EST</p>
-                        <p>Sunday: Closed</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="documentation-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-subtitle">Resources</span>
-                <h2 class="section-title">Agency Documentation</h2>
-                <p class="section-description">Access our comprehensive guides and resources for agency partners.</p>
-            </div>
-            
-            <div class="steps" style="margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                <div class="document-card fade-in" style="animation-delay: 0.2s;">
-                    <div class="document-icon"><i class="fas fa-book"></i></div>
-                    <h3 class="step-title">Agency Handbook</h3>
-                    <p class="step-description">Complete guide to managing your fleet and bookings on TourGo.</p>
-                    <button class="btn btn-outline" style="margin-top: 15px;">Download PDF</button>
-                </div>
-                
-                <div class="document-card fade-in" style="animation-delay: 0.3s;">
-                    <div class="document-icon"><i class="fas fa-file-invoice-dollar"></i></div>
-                    <h3 class="step-title">Pricing & Commission</h3>
-                    <p class="step-description">Detailed breakdown of our pricing structure and your earnings.</p>
-                    <button class="btn btn-outline" style="margin-top: 15px;">View Details</button>
-                </div>
-                
-                <div class="document-card fade-in" style="animation-delay: 0.4s;">
-                    <div class="document-icon"><i class="fas fa-chart-line"></i></div>
-                    <h3 class="step-title">Performance Reports</h3>
-                    <p class="step-description">Learn how to interpret and improve your performance metrics.</p>
-                    <button class="btn btn-outline" style="margin-top: 15px;">Access Guide</button>
-                </div>
-                
-                <div class="document-card fade-in" style="animation-delay: 0.5s;">
-                    <div class="document-icon"><i class="fas fa-tools"></i></div>
-                    <h3 class="step-title">Technical Documentation</h3>
-                    <p class="step-description">API documentation and technical integration guides.</p>
-                    <button class="btn btn-outline" style="margin-top: 15px;">View Docs</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="faq-section" style="padding: 80px 0;">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-subtitle">Agency Help Center</span>
-                <h2 class="section-title">Frequently Asked Questions</h2>
-                <p class="section-description">Find answers to common questions about our agency partnership.</p>
-            </div>
-            
-            <div class="faq-container" style="max-width: 800px; margin: 0 auto;">
-                <div class="faq-item fade-in" style="animation-delay: 0.2s;">
-                    <div class="faq-question">
-                        How do payments work for agencies?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Payments are processed weekly every Tuesday. You'll receive payment for all completed rentals from the previous week (Monday-Sunday). Minimum payout amount is $100. Payments are made via direct deposit or PayPal.
-                    </div>
-                </div>
-                
-                <div class="faq-item fade-in" style="animation-delay: 0.3s;">
-                    <div class="faq-question">
-                        What are the vehicle requirements?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Vehicles must be no older than 7 years, have valid registration and insurance, pass our safety inspection, and meet our cleanliness standards. Luxury and specialty vehicles may have additional requirements.
-                    </div>
-                </div>
-                
-                <div class="faq-item fade-in" style="animation-delay: 0.4s;">
-                    <div class="faq-question">
-                        How do I handle vehicle maintenance?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Regular maintenance is your responsibility. For rentals affected by maintenance, mark the vehicle as unavailable in your dashboard. We recommend using our partner network for discounted maintenance services.
-                    </div>
-                </div>
-                
-                <div class="faq-item fade-in" style="animation-delay: 0.5s;">
-                    <div class="faq-question">
-                        Can I set my own pricing?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Yes, you have full control over your daily, weekly, and monthly rates. We provide market rate suggestions, but you set the final prices. Minimum rates may apply in some categories.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <i class="fas fa-car-side"></i>TourGo
-                    </div>
-                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <ul class="footer-menu">
-                        <li><a href="agency_dashboard.html">Home</a></li>
-                        <li><a href="my_cars.html">Fleet</a></li>
-                        <li><a href="view_bookings.html">Bookings</a></li>
-                        <li><a href="contact_support.html">Support</a></li>
-                        <li><a href="../privacy.html">Privacy Policy</a></li>
-                        <li><a href="../terms.html">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div class="footer-newsletter">
-                    <h4 class="footer-title">Newsletter</h4>
-                    <p class="footer-text">Subscribe to get special offers and updates</p>
-                    <form class="newsletter-form" action="#" method="post">
-                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
-                        <button type="submit" class="newsletter-btn">Subscribe</button>
-                    </form>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
-            </div>
-        </div>
-    </footer>
-    <script>
-  // Theme Toggle (from your latest file)
-    const themeToggle = document.querySelector('.theme-toggle');
-    if (themeToggle) {
-        const themeIcon = themeToggle.querySelector('i');
-        function setTheme(theme) {
-            document.documentElement.setAttribute('data-theme', theme);
-            if (themeIcon) themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-            localStorage.setItem('theme', theme);
-        }
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
-        });
-        setTheme(localStorage.getItem('theme') || 'light');
-    }
-
-    // Profile Dropdown & Mobile Menu (from your latest file)
-    function setupToggle(toggleBtnId, menuId) {
-        const toggleBtn = document.getElementById(toggleBtnId);
-        const menu = document.getElementById(menuId);
-        if (toggleBtn && menu) {
-            toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('active'); });
-            menu.addEventListener('click', e => e.stopPropagation());
-        }
-        return menu;
-    }
-    const profileMenu = setupToggle('profileToggleBtn', 'profileMenu');
-    const navMenu = setupToggle('menuToggleBtn', 'mainNavMenu');
-    document.addEventListener('click', () => {
-        if (profileMenu) profileMenu.classList.remove('active');
-        if (navMenu) navMenu.classList.remove('active');
-    });
-
-        // FAQ Accordion
-        document.querySelectorAll('.faq-question').forEach(item => {
-            item.addEventListener('click', () => {
-                const parent = item.parentElement;
-                parent.classList.toggle('active');
-                
-                // Close other FAQs when opening one
-                if (parent.classList.contains('active')) {
-                    document.querySelectorAll('.faq-item').forEach(otherItem => {
-                        if (otherItem !== parent) {
-                            otherItem.classList.remove('active');
-                        }
-                    });
-                }
-            });
-        });
-
-        
-
-        // Scroll animations
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.fade-in');
-            
-            elements.forEach(element => {
-                const elementPosition = element.getBoundingClientRect().top;
-                const screenPosition = window.innerHeight / 1.2;
-                
-                if (elementPosition < screenPosition) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        }
-
-        // Initialize elements for animation
-        document.querySelectorAll('.fade-in').forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            element.style.transition = 'all 0.6s ease-out';
-        });
-
-        // Add scroll event listener
-        window.addEventListener('scroll', animateOnScroll);
-        
-        // Trigger once on load in case elements are already in view
-        window.addEventListener('load', animateOnScroll);
-        animateOnScroll();
-    </script>
-</body>
-</html>
+      </div>
+      <button class="menu-toggle" id="menuToggleBtn" type="button" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+    </div>
+  </div></div>
+</header>
+<main class="dashboard"><div class="container"><div class="dashboard-header"><div><h1 class="dashboard-title">Agency Support</h1><p class="agency-muted">Get help with your TourGo agency account.</p></div></div><div class="agency-grid"><div class="agency-card" style="padding:30px"><div id="supportMessage" class="agency-message"></div><form id="agencyContactForm"><div class="agency-form-grid"><div class="agency-field full"><label for="supportName">Agency Name</label><input id="supportName" value="DriveHub Rentals" required></div><div class="agency-field"><label for="supportEmail">Contact Email</label><input id="supportEmail" type="email" value="agency@tourgo.demo" required></div><div class="agency-field"><label for="supportSubject">Subject</label><select id="supportSubject"><option>Account</option><option>Vehicle Management</option><option>Booking</option><option>Technical Issue</option><option>Other</option></select></div><div class="agency-field full"><label for="supportText">Message</label><textarea id="supportText" required placeholder="Describe your issue in detail"></textarea></div></div><button type="submit" class="btn btn-primary">Send Message</button></form></div><div class="agency-card" style="padding:30px"><h2 style="color:var(--text-dark);margin-bottom:16px">Frequently Asked Questions</h2><p><strong>When are payouts processed?</strong><br><span class="agency-muted">In this demo, payout information is illustrative only.</span></p><hr style="margin:18px 0"><p><strong>How do I add a vehicle?</strong><br><span class="agency-muted">Use My Fleet → Add New Vehicle. The GitHub demo saves changes in your browser.</span></p><hr style="margin:18px 0"><p><strong>Is payment real?</strong><br><span class="agency-muted">No. This frontend version is a static demo.</span></p></div></div></div></main>
+<footer>
+  <div class="container"><div class="footer-content">
+    <div class="footer-about"><div class="footer-logo"><i class="fas fa-car-side"></i><span><span style="color:#fff;">Tour</span><span style="color:#aaa;">Go</span></span></div>
+      <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+      <div class="social-links"><a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></div>
+    </div>
+    <div class="footer-links"><h4 class="footer-title">Quick Links</h4><ul class="footer-menu">
+      <li><a href="agency_dashboard.html">Home</a></li><li><a href="my_cars.html">Fleet</a></li><li><a href="view_bookings.html">Bookings</a></li><li><a href="contact_support.html">Support</a></li><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../terms.html">Terms of Service</a></li>
+    </ul></div>
+    <div class="footer-newsletter"><h4 class="footer-title">Newsletter</h4><p class="footer-text">Subscribe to get special offers and updates</p>
+      <form class="newsletter-form"><input type="email" class="newsletter-input" placeholder="Enter your email" required><button type="submit" class="newsletter-btn">Subscribe</button></form>
+    </div>
+  </div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p></div></div>
+</footer>
+<script src="../public/assets/js/agency-demo.js"></script><script>document.addEventListener('DOMContentLoaded',function(){document.getElementById('agencyContactForm').addEventListener('submit',function(e){e.preventDefault();if(!this.checkValidity()){this.reportValidity();return;}const m=document.getElementById('supportMessage');m.className='agency-message success show';m.innerHTML='<i class="fas fa-check-circle"></i>Your support request has been submitted in demo mode.';this.reset();document.getElementById('supportName').value=TourGoAgencyDemo.getProfile().companyName;document.getElementById('supportEmail').value=TourGoAgencyDemo.getProfile().email;});});</script>
+</body></html>
