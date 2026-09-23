@@ -115,41 +115,7 @@
                 <h2 class="section-title">Featured Vehicles</h2>
                 <p class="section-description">Explore our curated selection of premium vehicles for every travel need.</p>
             </div>
-            <div class="cars-grid">
-                
-                    
-                        <div class="car-card">
-                            <div class="car-image">
-                                <span class="car-type"></span>
-                                
-                                    <img src="uploads/vehicles/" 
-                                         alt=" ">
-                               
-                                    <img src="/api/placeholder/350/220" alt="Car Image">
-                                
-                            </div>
-                            <div class="car-details">
-                                <h3 class="car-title"> </h3>
-                                <div class="car-features">
-                                    <span class="car-feature"><i class="fas fa-cog"></i>  </span>
-                                    <span class="car-feature"><i class="fas fa-gas-pump"></i> </span>
-                                    <span class="car-feature"><i class="fas fa-users"></i>  Seats</span>
-                                </div>
-                                <div class="car-price-row">
-                                    <span class="car-price">₱<span>/day</span></span>
-                                    <a href="auth/login.html?redirect=car_details.html?id=" class="btn btn-primary">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    
-                
-                    <div class="no-results">
-                        <i class="fas fa-car fa-2x"></i>
-                        <p>No vehicles available at the moment</p>
-                    </div>
-                
-            </div>
-
+            <div class="cars-grid" id="homeFeaturedCars"></div>
             <div class="container text-center" style="margin-top: 50px;">
                 <a href="cars.html" class="btn btn-primary btn-large">
                     <i class="fas fa-car" style="margin-right: 10px;"></i>
@@ -264,5 +230,19 @@
     </footer>
 
     <script src="public/assets/js/script.js"></script>
+    <script src="public/assets/js/demo-fleet.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const grid = document.getElementById('homeFeaturedCars');
+        if (window.TourGoDemoFleetUI && grid) {
+            window.TourGoDemoFleetUI.renderCards(grid, {
+                vehicles: window.TourGoDemoFleet,
+                imagePrefix: 'public/assets/images/',
+                detailsPrefix: 'cars.html',
+                showWishlist: false
+            });
+        }
+    });
+    </script>
 </body>
 </html>

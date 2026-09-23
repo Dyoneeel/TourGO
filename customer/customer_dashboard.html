@@ -319,12 +319,89 @@
                 <h2 class="section-title">Featured Vehicles</h2>
                 <p class="section-description">Explore our curated selection of premium vehicles for every travel need.</p>
             </div>
-            <div class="cars-grid">
-                <div class="no-results">
-                    <i class="fas fa-car fa-2x"></i>
-                    <p>No vehicles available at the moment</p>
+            <div class="cars-grid" id="dashboardFeaturedCars">
+                <div class="car-card" data-vehicle-id="1">
+                    <div class="car-image">
+                        <span class="car-type">Sedan</span>
+                        <button class="car-wishlist" type="button" title="Add to Favorites" aria-label="Add Toyota Vios to favorites"><i class="far fa-heart"></i></button>
+                        <img src="../public/assets/images/car.png" alt="Toyota Vios" loading="lazy">
+                    </div>
+                    <div class="car-details">
+                        <h3 class="car-title">Toyota Vios</h3>
+                        <div class="car-features">
+                            <span class="car-feature"><i class="fas fa-cog"></i> Automatic</span>
+                            <span class="car-feature"><i class="fas fa-gas-pump"></i> Gasoline</span>
+                            <span class="car-feature"><i class="fas fa-users"></i> 5 Seats</span>
+                        </div>
+                        <div class="car-price-row">
+                            <span class="car-price">₱2,500<span>/day</span></span>
+                            <a href="car_details.html?id=1" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
                 </div>
-            </div class="text-center" style="margin-top: 40px;">
+
+                <div class="car-card" data-vehicle-id="2">
+                    <div class="car-image">
+                        <span class="car-type">Sedan</span>
+                        <button class="car-wishlist" type="button" title="Add to Favorites" aria-label="Add Honda City to favorites"><i class="far fa-heart"></i></button>
+                        <img src="../public/assets/images/car.png" alt="Honda City" loading="lazy">
+                    </div>
+                    <div class="car-details">
+                        <h3 class="car-title">Honda City</h3>
+                        <div class="car-features">
+                            <span class="car-feature"><i class="fas fa-cog"></i> CVT</span>
+                            <span class="car-feature"><i class="fas fa-gas-pump"></i> Gasoline</span>
+                            <span class="car-feature"><i class="fas fa-users"></i> 5 Seats</span>
+                        </div>
+                        <div class="car-price-row">
+                            <span class="car-price">₱3,000<span>/day</span></span>
+                            <a href="car_details.html?id=2" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="car-card" data-vehicle-id="3">
+                    <div class="car-image">
+                        <span class="car-type">MPV</span>
+                        <button class="car-wishlist" type="button" title="Add to Favorites" aria-label="Add Mitsubishi Xpander to favorites"><i class="far fa-heart"></i></button>
+                        <img src="../public/assets/images/car.png" alt="Mitsubishi Xpander" loading="lazy">
+                    </div>
+                    <div class="car-details">
+                        <h3 class="car-title">Mitsubishi Xpander</h3>
+                        <div class="car-features">
+                            <span class="car-feature"><i class="fas fa-cog"></i> Automatic</span>
+                            <span class="car-feature"><i class="fas fa-gas-pump"></i> Gasoline</span>
+                            <span class="car-feature"><i class="fas fa-users"></i> 7 Seats</span>
+                        </div>
+                        <div class="car-price-row">
+                            <span class="car-price">₱4,500<span>/day</span></span>
+                            <a href="car_details.html?id=3" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="car-card" data-vehicle-id="4">
+                    <div class="car-image">
+                        <span class="car-type">SUV</span>
+                        <button class="car-wishlist" type="button" title="Add to Favorites" aria-label="Add Toyota Fortuner to favorites"><i class="far fa-heart"></i></button>
+                        <img src="../public/assets/images/car.png" alt="Toyota Fortuner" loading="lazy">
+                    </div>
+                    <div class="car-details">
+                        <h3 class="car-title">Toyota Fortuner</h3>
+                        <div class="car-features">
+                            <span class="car-feature"><i class="fas fa-cog"></i> Automatic</span>
+                            <span class="car-feature"><i class="fas fa-gas-pump"></i> Diesel</span>
+                            <span class="car-feature"><i class="fas fa-users"></i> 7 Seats</span>
+                        </div>
+                        <div class="car-price-row">
+                            <span class="car-price">₱5,500<span>/day</span></span>
+                            <a href="car_details.html?id=4" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container text-center" style="margin-top: 40px;">
                 <a href="cars.html" class="btn btn-primary btn-large">
                     <i class="fas fa-car" style="margin-right: 10px;"></i>
                     View All Vehicles
@@ -494,6 +571,32 @@
         if (yearSpan) {
             yearSpan.textContent = new Date().getFullYear();
         }
+    </script>
+    <script src="../public/assets/js/demo-fleet.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const favorites = JSON.parse(localStorage.getItem('tourgo_favorites') || '[]');
+        document.querySelectorAll('#dashboardFeaturedCars .car-wishlist').forEach(function (button) {
+            const card = button.closest('.car-card');
+            const id = Number(card.dataset.vehicleId);
+            const icon = button.querySelector('i');
+            const active = favorites.includes(id);
+            button.classList.toggle('active', active);
+            if (icon) icon.className = active ? 'fas fa-heart' : 'far fa-heart';
+            button.title = active ? 'Remove from Favorites' : 'Add to Favorites';
+            button.addEventListener('click', function (event) {
+                event.preventDefault();
+                let list = JSON.parse(localStorage.getItem('tourgo_favorites') || '[]');
+                const index = list.indexOf(id);
+                if (index === -1) list.push(id); else list.splice(index, 1);
+                localStorage.setItem('tourgo_favorites', JSON.stringify(list));
+                const nowActive = index === -1;
+                button.classList.toggle('active', nowActive);
+                if (icon) icon.className = nowActive ? 'fas fa-heart' : 'far fa-heart';
+                button.title = nowActive ? 'Remove from Favorites' : 'Add to Favorites';
+            });
+        });
+    });
     </script>
     <script src="../public/assets/js/demo-session.js"></script>
 </body>
