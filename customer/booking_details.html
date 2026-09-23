@@ -1,0 +1,886 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+    <style>
+        .section-header {
+            text-align: center;
+            padding-top: 2rem;
+        }
+        .booking-details-container {
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--card-shadow);
+            margin: 2rem 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .status-completed { background: #cce5ff; color: #004085; }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .vehicle-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .vehicle-image {
+            width: 100%;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .vehicle-info {
+            display: grid;
+       
+        }
+
+        .info-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .agency-info {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+        }
+
+        .agency-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .agency-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .status-timeline {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-left: 2px solid var(--primary);
+            margin-left: 1rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            left: -7px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .feature-tag {
+            background: var(--bg-light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .booking-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .info-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Add to your existing <style> section */
+.car-gallery {
+    margin-bottom: 1.5rem;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gallery-main {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-main img:hover {
+    transform: scale(1.05);
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.gallery-thumbnail {
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.gallery-thumbnail.active {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.gallery-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vehicle-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--bg-light);
+    border-radius: 12px;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease;
+}
+
+.spec-item:hover {
+    transform: translateY(-2px);
+}
+
+.spec-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
+
+.car-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+
+    .car-description-box {
+        margin: 12px 0 16px 0;
+        padding: 15px;
+        background: linear-gradient(120deg, #f8fafc 80%, #e9f3ff 100%);
+        border-radius: 12px;
+        border: 1px solid #e3eaf3;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        color: var(--text-dark);
+    }
+
+    .car-description-box h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 1.15em;
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .car-description-box p {
+        margin: 0;
+        font-size: 1em;
+        line-height: 1.6;
+        color: #444;
+    }
+
+    @media (max-width: 600px) {
+        .car-title {
+            font-size: 1.5rem;
+        }
+        
+        .car-description-box {
+            padding: 12px 10px;
+            font-size: 0.97em;
+        }
+    }
+
+    .gallery-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .gallery-nav:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .gallery-prev {
+        left: 10px;
+    }
+
+    .gallery-next {
+        right: 10px;
+    }
+
+    .image-counter {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.9em;
+    }
+
+[data-theme="dark"] .booking-details-container {
+    background: var(--white);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .car-description-box {
+    background: linear-gradient(120deg, var(--accent-light) 80%, var(--bg-light) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .vehicle-specs {
+    background: var(--accent-light);
+}
+
+[data-theme="dark"] .spec-item {
+    background: var(--white);
+}
+
+[data-theme="dark"] .feature-tag {
+    background: var(--accent-light);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .status-timeline {
+    background: var(--accent-light);
+}
+
+[data-theme="dark"] .agency-info {
+    background: var(--accent-light);
+}
+
+[data-theme="dark"] .btn-outline {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .timeline-item::before {
+    background: var(--primary);
+}
+    </style>
+</head>
+<body>
+        <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="customer_dashboard.html"> <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                    <li><a href="my_bookings.html" class="nav-link active">My Bookings</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="profile.html" class="profile-menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="favorite_cars.html" class="profile-menu-item">
+                                <i class="fas fa-heart"></i>
+                                <span>Favorites</span>
+                            </a>
+                            <a href="contact.html" class="profile-menu-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>About Us</span>
+                            </a>
+                            <hr>
+                            
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <h1 class="section-title">Booking Details</h1>
+            <p class="section-description">View the complete information about your booking</p>
+        </div>
+
+        
+            
+        
+
+        <div class="booking-details-container">
+            <div class="booking-header">
+                <div>
+                    <h2>Booking #</h2>
+                    <p class="text-muted">Booked on </p>
+                </div>
+                <div class="status-badge status-">
+                    <i class="fas fa-"></i>
+                    
+                </div>
+            </div>
+
+            <div class="vehicle-details">
+<div class="car-gallery">
+    <div class="gallery-main">
+        
+            <img id="mainImage" src="../uploads/vehicles/" 
+                 alt="">
+        
+            <img id="mainImage" src="../public/assets/images/default-car.jpg" 
+                 alt="Default vehicle image">
+        
+        
+        <!-- Add navigation controls -->
+        <div class="gallery-nav gallery-prev" onclick="changeGalleryImage(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="gallery-nav gallery-next" onclick="changeGalleryImage(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <!-- Add image counter -->
+        <div class="image-counter">
+            <span id="currentImageIndex">1</span> / <span id="totalImages"></span>
+        </div>
+    </div>
+    
+    
+        <div class="gallery-thumbnails">
+            
+                <div class="gallery-thumbnail " 
+                     onclick="changeImage('', this)"
+                     data-index="">
+                    <img src="../uploads/vehicles/" 
+                         alt="Vehicle view ">
+                </div>
+            
+        </div>
+    
+</div>
+
+                <div class="vehicle-info">
+                    <!-- Add this section for the title -->
+                    <h2 class="car-title">
+                        
+                    </h2>
+                    
+                    <!-- Add this section for the description -->
+                    <div class="car-description-box">
+                        <h3>About this vehicle</h3>
+                        <p></p>
+                    </div>
+
+                    <div class="vehicle-specs">
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-door-closed"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> Doors</div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-cog"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-gas-pump"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> Seats</div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> km</div>
+        </div>
+    </div>
+
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-car"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+</div>
+
+                    
+                    <div class="features-list">
+                        
+                            <span class="feature-tag">
+                                <i class="fas fa-check"></i>
+                                
+                            </span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="rental-details">
+                <h3>Rental Information</h3>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="info-label">Pickup Date</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Return Date</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value"> days</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Amount</span>
+                        <span class="info-value">₱</span>
+                    </div>
+                </div>
+
+                
+                <div class="info-group" style="margin-top: 1.5rem;">
+                    <div class="info-item" style="grid-column: 1 / -1;">
+                        <span class="info-label"><i class="fas fa-plus-circle"></i> Additional Services</span>
+                        <ul style="margin: 0.5em 0 0 0; padding-left: 1.2em;">
+                            
+                                <li>
+                                    
+                                    
+                                        <span style="color:#2a6edb;">(₱)</span>
+                                    
+                                </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="agency-info">
+                <div class="agency-header">
+                    
+                        <img src="../uploads/" 
+                             alt="" 
+                             class="agency-logo">
+                    
+                        <div class="agency-logo-placeholder">
+                            <i class="fas fa-building"></i>
+                        </div>
+                    
+                    <div>
+                        <h3></h3>
+                        <p></p>
+                    </div>
+                </div>
+                <p><i class="fas fa-map-marker-alt"></i> </p>
+            </div>
+
+            
+            <div class="status-timeline">
+                <h3>Booking Timeline</h3>
+                
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">
+                                
+                            </div>
+                            <h4></h4>
+                            
+                                <p></p>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+            
+
+            <div class="booking-actions" style="margin-top: 2rem;">
+                
+                    <a href="review.html?booking_id=" class="btn btn-primary">
+                        <i class="fas fa-star"></i>
+                        Leave a Review
+                    </a>
+                
+                <a href="my_bookings.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left" style="margin-right: 10px;"></i>
+                    Back to Bookings
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">FAQs</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        
+   // Hamburger menu for nav
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const navMenu = document.getElementById('mainNavMenu');
+    if (menuToggleBtn && navMenu) {
+        menuToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            menuToggleBtn.classList.toggle('active');
+        });
+        // Close nav menu when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                navMenu.classList.remove('active');
+                menuToggleBtn.classList.remove('active');
+            }
+        });
+    }
+          // Toggle Theme (Dark/Light)
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', themeMode);
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (themeMode === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            localStorage.setItem('theme', themeMode);
+        });
+
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (savedTheme === 'dark') {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        }
+
+        // Toggle Profile Menu
+        document.querySelector('.profile-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelector('.profile-menu').classList.toggle('active');
+
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelector('.profile-menu').classList.remove('active');
+        });
+
+        // Prevent closing when clicking inside menus
+        document.querySelectorAll('.notification-menu, .profile-menu').forEach(menu => {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+        
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update year dynamically
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+
+let currentImageIndex = 0;
+let vehicleImages = ;
+
+// Function to change gallery image
+function changeGalleryImage(direction) {
+    if (vehicleImages.length === 0) return;
+    
+    currentImageIndex += direction;
+    
+    if (currentImageIndex < 0) {
+        currentImageIndex = vehicleImages.length - 1;
+    } else if (currentImageIndex >= vehicleImages.length) {
+        currentImageIndex = 0;
+    }
+    
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = '../uploads/vehicles/' + vehicleImages[currentImageIndex].image_path;
+    
+    // Update thumbnail active state
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    const activeThumbnail = document.querySelector(`.gallery-thumbnail[data-index="${currentImageIndex}"]`);
+    if (activeThumbnail) {
+        activeThumbnail.classList.add('active');
+    }
+    
+    updateImageCounter();
+}
+
+// Function to update image counter
+function updateImageCounter() {
+    const currentCounter = document.getElementById('currentImageIndex');
+    const totalCounter = document.getElementById('totalImages');
+    
+    if (currentCounter && totalCounter) {
+        currentCounter.textContent = currentImageIndex + 1;
+        totalCounter.textContent = vehicleImages.length || 1;
+    }
+}
+
+// Function to change main image when clicking thumbnails
+function changeMainImage(imagePath, thumbnailElement) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = '../uploads/vehicles/' + imagePath;
+    
+    // Update active thumbnail
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    thumbnailElement.classList.add('active');
+    
+    // Update current index
+    currentImageIndex = parseInt(thumbnailElement.dataset.index) || 0;
+    updateImageCounter();
+}
+
+// Initialize gallery on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize image counter
+    updateImageCounter();
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            changeGalleryImage(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeGalleryImage(1);
+        }
+    });
+});
+    </script>
+</body>
+</html>
+

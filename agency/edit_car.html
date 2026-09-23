@@ -1,0 +1,651 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Vehicle -  - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css" rel="stylesheet">
+    <style>
+        body { background-color: var(--bg-light); color: var(--text-dark); font-family: 'Segoe UI', 'SF Pro Display', Tahoma, Geneva, Verdana, sans-serif; }
+        .edit-vehicle-container { max-width: 1100px; margin: 2rem auto; padding: 2rem; background-color: var(--white); border-radius: var(--border-radius); box-shadow: var(--box-shadow); }
+        .page-title-edit { font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--primary-dark); }
+        .form-section { margin-bottom: 2.5rem; padding: 1.5rem; border: 1px solid rgba(0,0,0,0.1); border-radius: var(--border-radius); background-color: var(--accent-light); }
+        .form-section-title { font-size: 1.5rem; font-weight: 600; color: var(--text-dark); margin-bottom: 1rem; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--text-light); }
+        .form-group input[type="text"], .form-group input[type="number"], .form-group input[type="date"], .form-group input[type="url"], .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: var(--border-radius); box-sizing: border-box; font-size: 1rem; background-color: var(--white); color: var(--text-dark); transition: var(--transition); }
+        /* Removed .form-group input[type="color"] from above to allow Spectrum to style its replacer */
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb, 77, 148, 255), 0.25); outline: none; }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        
+        .current-images-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+        .current-image-item { position: relative; border: 1px solid #ddd; border-radius: var(--border-radius); overflow: hidden; background-color: #f9f9f9; }
+        .current-image-item img { width: 100%; height: 100px; object-fit: cover; display: block; transition: opacity 0.3s ease; }
+        .current-image-item .image-options { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.6); padding: 5px; font-size: 0.8rem; display: flex; justify-content: center; align-items:center; color: white; }
+        .current-image-item .image-options label { cursor: pointer; display:inline-flex; align-items:center; gap: 3px; }
+        .current-image-item .delete-existing-image-btn { position: absolute; top: 5px; right: 5px; background: rgba(255, 0, 0, 0.7); color: white; border: none; border-radius: 50%; width: 24px; height: 24px; font-size: 16px; line-height: 24px; text-align: center; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2); transition: background-color 0.3s ease; }
+        .current-image-item .delete-existing-image-btn:hover { background: rgba(220, 0, 0, 0.9); }
+        .current-image-item.marked-for-deletion img { opacity: 0.4; }
+        .current-image-item.marked-for-deletion .image-options { background: rgba(100,100,100,0.6); }
+        .current-image-item.marked-for-deletion .delete-existing-image-btn { background: rgba(150, 0, 0, 0.8); font-weight: bold; }
+
+        .features-list .feature-item { display: flex; gap: 10px; align-items: center; margin-bottom: 0.75rem; padding: 0.5rem; background-color: var(--white); border-radius: var(--border-radius); }
+        .features-list .feature-item input[type="text"] { flex-grow: 1; margin-right: 5px; }
+        .features-list .feature-item .delete-feature-btn { background: var(--danger); color: var(--white); border:none; padding: 5px 8px; border-radius: 4px; cursor: pointer; }
+        .btn-add-feature { background-color: var(--success) !important; color: var(--white) !important; }
+        .btn-submit { background-color: var(--primary) !important; color: var(--white) !important; padding: 0.75rem 1.5rem; font-size: 1.1rem; font-weight: 500; }
+        .btn-submit:hover { background-color: var(--primary-dark) !important; }
+        .btn-cancel { background-color: var(--secondary) !important; color: var(--white) !important; }
+        .messages .error, .messages .success-msg { padding: 1rem; margin-bottom: 1rem; border-radius: var(--border-radius); list-style-type: none; border: 1px solid; }
+        .messages .error li { margin-bottom: 0.5em; }
+        .messages .error, #image-upload-error.error { background-color: rgba(220, 53, 69, 0.1); color: var(--danger); border-color: var(--danger); }
+        .messages .success-msg { background-color: rgba(40, 167, 69, 0.1); color: var(--success); border-color: var(--success); }
+        
+        [data-theme="dark"] .form-group input[type="text"], [data-theme="dark"] .form-group input[type="number"], [data-theme="dark"] .form-group input[type="date"], [data-theme="dark"] .form-group input[type="url"], [data-theme="dark"] .form-group select, [data-theme="dark"] .form-group textarea { background-color: var(--accent-light); color: var(--text-dark); border-color: rgba(255,255,255,0.2); }
+        [data-theme="dark"] .form-group input:focus, [data-theme="dark"] .form-group select:focus, [data-theme="dark"] .form-group textarea:focus { border-color: var(--primary); }
+        [data-theme="dark"] .form-section { background-color: #2c3344; border-color: rgba(255,255,255,0.1); }
+        [data-theme="dark"] .current-image-item, [data-theme="dark"] .features-list .feature-item { background-color: var(--accent-light); border-color: rgba(255,255,255,0.2); }
+        [data-theme="dark"] .current-image-item .delete-existing-image-btn { background: rgba(255, 50, 50, 0.6); color: #fff; }
+        [data-theme="dark"] .current-image-item .delete-existing-image-btn:hover { background: rgba(220, 40, 40, 0.8); }
+        [data-theme="dark"] .current-image-item.marked-for-deletion .delete-existing-image-btn { background: rgba(150, 30, 30, 0.7); }
+        .rate-calculated { background-color: #e9ecef; }
+        [data-theme="dark"] .rate-calculated { background-color: #3a3f4b; color: var(--text-light); }
+
+        /* Spectrum Color Picker Styles for edit_car.php */
+        .sp-replacer {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0 0.25rem;
+            border: 1px solid #ddd; /* Match existing input border */
+            border-radius: var(--border-radius); /* Match existing input radius */
+            background-color: var(--white); /* Match existing input background */
+            box-sizing: border-box;
+            height: calc(0.75rem * 2 + 1rem + 2px); /* (padding*2) + font-size + (border*2) */
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .sp-replacer:hover, .sp-replacer.sp-active {
+            border-color: var(--primary); /* Match focus style */
+             box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb, 77, 148, 255), 0.25); /* Match focus style */
+        }
+        .sp-preview {
+            width: calc( (0.75rem * 2 + 1rem + 2px) - 1rem); /* Make it slightly smaller than replacer height */
+            height: calc( (0.75rem * 2 + 1rem + 2px) - 1rem);
+            border: 1px solid #ccc; /* Slight border for the preview box */
+            border-radius: calc(var(--border-radius) / 2); /* Smaller radius for preview box */
+            margin-left: 0.25rem;
+            margin-right: 0.5rem;
+        }
+        .sp-preview-inner {
+             border-radius: calc(var(--border-radius) / 2 - 1px);
+        }
+        .sp-dd { /* Dropdown arrow */
+            font-size: 0.8rem;
+            color: var(--text-light);
+            padding: 0 0.25rem;
+            line-height: normal;
+        }
+        .sp-input { /* Input field inside Spectrum container */
+            border-radius: var(--border-radius) !important;
+            border: 1px solid #ddd !important;
+            background: var(--white) !important;
+            color: var(--text-dark) !important;
+            padding: 0.25rem 0.5rem !important;
+            height: auto !important; /* Override spectrum's fixed height */
+            font-size: 0.9em !important;
+        }
+
+        [data-theme="dark"] .sp-replacer {
+            background-color: var(--accent-light);
+            border-color: rgba(255,255,255,0.2);
+            color: var(--text-dark);
+        }
+        [data-theme="dark"] .sp-replacer:hover, [data-theme="dark"] .sp-replacer.sp-active {
+            border-color: var(--primary);
+        }
+        [data-theme="dark"] .sp-preview {
+            border-color: rgba(255,255,255,0.3);
+        }
+        [data-theme="dark"] .sp-dd {
+            color: var(--text-light);
+        }
+        [data-theme="dark"] .sp-input {
+            background: var(--accent-dark, #333) !important; /* Use a fallback if --accent-dark is not defined */
+            color: var(--text-dark) !important; 
+            border-color: rgba(255,255,255,0.2) !important;
+        }
+        /* Ensure Spectrum container has appropriate z-index if it appears behind other elements */
+        .sp-container {
+            z-index: 1050; /* Adjust as needed, typically higher than modals or other overlays */
+        }
+
+    </style>
+</head>
+<body>
+
+    <header id="header">
+         <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas "></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: rgba(0,0,0,0.1);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="edit-vehicle-container">
+        <h1 class="page-title-edit">Edit Vehicle Details</h1>
+
+        <div class="messages">
+            
+                <ul class="error">
+                    
+                        <li></li>
+                    
+                </ul>
+            
+            
+                <p class="success-msg"></p>
+            
+        </div>
+
+        
+        <form action="edit_car.html?id=" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="vehicle_id" value="">
+            
+            <div class="form-section">
+                <h2 class="form-section-title">Basic Information</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="title">Vehicle Title/Name</label>
+                        <input type="text" id="title" name="title" class="form-control" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="make">Make</label>
+                        <input type="text" id="make" name="make" class="form-control" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="model">Model</label>
+                        <input type="text" id="model" name="model" class="form-control" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" id="year" name="year" class="form-control" value="" min="1900" max="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="license_plate">License Plate</label>
+                        <input type="text" id="license_plate" name="license_plate" class="form-control" value="" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="color">Color</label>
+                        <input type="text" id="color" name="color" class="color-picker" value="" placeholder="Select Color">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title">Specifications</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="vehicle_type">Vehicle Type</label>
+                        <input type="text" id="vehicle_type" name="vehicle_type" class="form-control" value="" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="seats">Number of Seats</label>
+                        <input type="number" id="seats" name="seats" class="form-control" value="" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="doors">Number of Doors</label>
+                        <input type="number" id="doors" name="doors" class="form-control" value="" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="transmission">Transmission</label>
+                        <input type="text" id="transmission" name="transmission" class="form-control" list="transmission-options" value="">
+                        <datalist id="transmission-options"><option value="Automatic"><option value="Manual"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="fuel_type">Fuel Type</label>
+                        <input type="text" id="fuel_type" name="fuel_type" class="form-control" list="fuel-options" value="">
+                         <datalist id="fuel-options"><option value="Gasoline"><option value="Diesel"><option value="Electric"><option value="Hybrid"></datalist>
+                    </div>
+                    <div class="form-group">
+                        <label for="mileage">Mileage (km)</label>
+                        <input type="number" id="mileage" name="mileage" class="form-control" value="" min="0" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="engine_details">Engine Details</label>
+                        <input type="text" id="engine_details" name="engine_details" class="form-control" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title">Pricing (PHP)</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="daily_rate">Daily Rate</label>
+                        <input type="number" id="daily_rate" name="daily_rate" class="form-control" value="" min="0.01" step="0.01" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="weekly_rate">Weekly Rate (auto-calculated)</label>
+                        <input type="number" id="weekly_rate" name="weekly_rate" class="form-control rate-calculated" value="" step="0.01" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="monthly_rate">Monthly Rate (auto-calculated)</label>
+                        <input type="number" id="monthly_rate" name="monthly_rate" class="form-control rate-calculated" value="" step="0.01" readonly>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                 <h2 class="form-section-title">Availability & Location</h2>
+                 <div class="form-grid">
+                    <div class="form-group">
+                        <label for="location">Location / Pickup Address</label>
+                        <input type="text" id="location" name="location" class="form-control" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="available_from_date">Available From Date (Optional)</label>
+                        <input type="date" id="available_from_date" name="available_from_date" class="form-control" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="available_until_date">Available Until Date (Optional)</label>
+                        <input type="date" id="available_until_date" name="available_until_date" class="form-control" value="">
+                    </div>
+                    <div class="form-group">
+                        <label for="min_rental_days">Minimum Rental Days</label>
+                        <input type="number" id="min_rental_days" name="min_rental_days" class="form-control" value="" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="max_rental_days">Maximum Rental Days (Optional, 0 for no limit)</label>
+                        <input type="number" id="max_rental_days" name="max_rental_days" class="form-control" value="" min="0">
+                    </div>
+                     <div class="form-group">
+                        <label for="is_available">Availability Status</label>
+                        <select id="is_available" name="is_available" class="form-control">
+                            <option value="1" >Available</option>
+                            <option value="0" >Unavailable</option>
+                        </select>
+                    </div>
+                 </div>
+            </div>
+
+            <div class="form-section">
+                 <h2 class="form-section-title">Description</h2>
+                 <div class="form-group">
+                    <label for="description">Vehicle Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="5"></textarea>
+                </div>
+            </div>
+
+
+            <div class="form-section">
+                <h2 class="form-section-title">Manage Images (Max 5 Total)</h2>
+                <div class="form-group">
+                    <label>Current Images</label>
+                    
+                        <div id="current-images-container" class="current-images-grid">
+                            
+                                <div class="current-image-item" data-image-id="">
+                                    <img src="" alt="Vehicle Image">
+                                    <button type="button" class="delete-existing-image-btn" title="Mark for Deletion">&times;</button>
+                                    <div class="image-options">
+                                        <label title="Set as Primary">
+                                            <input type="radio" name="primary_image_id" value="" > P
+                                        </label>
+                                        <input type="checkbox" name="delete_images[]" value="" style="display:none;" class="delete-image-checkbox">
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    
+                        <p id="no-current-images-msg">No images uploaded yet.</p>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="new_vehicle_images">Add New Images (Max 5MB each, JPG, PNG, GIF, WEBP)</label>
+                    <input type="file" id="new_vehicle_images" name="new_vehicle_images[]" multiple accept="image/jpeg, image/png, image/gif, image/webp" class="form-control" style="height: auto;"> <div id="image-upload-error" class="error" style="display:none; margin-top: 10px;"></div>
+                    <div id="new-image-preview-container" class="current-images-grid" style="margin-top: 1rem;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="form-section-title">Manage Features</h2>
+                <div id="features-list" class="features-list">
+                    
+                        
+                            <div class="feature-item" id="feature-item-">
+                                <input type="hidden" name="features[][id]" value="">
+                                <input type="text" name="features[][name]" placeholder="Feature Name (e.g., GPS)" value="" class="form-control">
+                                <label style="font-size: 0.8em; display:flex; align-items:center; gap: 5px;">
+                                    <input type="checkbox" name="delete_features[]" value=""> Delete
+                                </label>
+                            </div>
+                        
+                    
+                        <p>No features added yet.</p>
+                    
+                </div>
+                <div id="new-features-container">
+                     <div class="feature-item">
+                        <input type="text" name="new_features[0][name]" placeholder="New Feature Name" class="form-control">
+                        </div>
+                </div>
+                <button type="button" id="add-more-feature-btn" class="btn btn-sm btn-add-feature" style="margin-top: 10px;"><i class="fas fa-plus"></i> Add Another Feature</button>
+            </div>
+
+
+            <div class="form-group" style="margin-top: 2rem; text-align: right;">
+                <a href="my_cars.html" class="btn btn-cancel">Cancel</a>
+                <button type="submit" class="btn btn-submit"><i class="fas fa-save"></i> Update Vehicle</button>
+            </div>
+        </form>
+        
+            <p class="error">Could not load vehicle data. Please ensure a valid vehicle ID is provided.</p>
+             <a href="my_cars.html" class="btn btn-primary">Back to My Cars</a>
+        
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="agency_dashboard.html">Home</a></li>
+                        <li><a href="my_cars.html">Fleet</a></li>
+                        <li><a href="view_bookings.html">Bookings</a></li>
+                        <li><a href="contact_support.html">Support</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
+
+    <script>
+        // Initialize Spectrum Color Picker after jQuery and Spectrum JS are loaded
+        $(document).ready(function() {
+            $('.color-picker').spectrum({
+                preferredFormat: "hex",
+                showInput: true,
+                allowEmpty: true, 
+                showInitial: true, // This will use the value attribute of the input
+                showPalette: true,
+                palette: [
+                    ["#000","#444","#666","#999","#ccc","#eee","#f3f3f3","#fff"],
+                    ["#f00","#f90","#ff0","#0f0","#0ff","#00f","#90f","#f0f"],
+                    ["#ea9999","#f9cb9c","#ffe599","#b6d7a8","#a2c4c9","#9fc5e8","#b4a7d6","#d5a6bd"],
+                    ["#e06666","#f6b26b","#ffd966","#93c47d","#76a5af","#6fa8dc","#8e7cc3","#c27ba0"],
+                    ["#c00","#e69138","#f1c232","#6aa84f","#45818e","#3d85c6","#674ea7","#a64d79"],
+                ],
+                change: function(color) {
+                    // You can add any on-change logic here if needed
+                    // For example, trigger validation if you have a system for it
+                    // $(this).trigger('input'); 
+                }
+            });
+        });
+
+       // Theme toggle script
+        const themeToggleButton = document.querySelector('.theme-toggle');
+        if (themeToggleButton) {
+            themeToggleButton.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('theme', newTheme); 
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-moon');
+                icon.classList.toggle('fa-sun');
+                document.cookie = "theme=" + newTheme + ";path=/;max-age=" + (365 * 24 * 60 * 60);
+            });
+        }
+        const savedTheme = localStorage.getItem('theme') || '';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        if (savedTheme === 'dark') {
+            const icon = document.querySelector('.theme-toggle i');
+            if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+
+        // Profile dropdown toggle
+        const profileToggleButton = document.getElementById('profileToggleBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        if (profileToggleButton && profileMenu) {
+            profileToggleButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileMenu.classList.toggle('active');
+            });
+            document.addEventListener('click', function(e) {
+                if (!profileMenu.contains(e.target) && !profileToggleButton.contains(e.target)) {
+                    profileMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // Mobile menu toggle
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const mainNavMenu = document.getElementById('mainNavMenu');
+        if (menuToggleBtn && mainNavMenu) {
+            menuToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mainNavMenu.classList.toggle('active');
+            });
+             document.addEventListener('click', function(e) {
+                if (!mainNavMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                    mainNavMenu.classList.remove('active');
+                }
+            });
+        }
+        
+        // Add more features dynamically
+        document.getElementById('add-more-feature-btn').addEventListener('click', function() {
+            const newFeaturesContainer = document.getElementById('new-features-container');
+            const featureIndex = newFeaturesContainer.children.length;
+            const newFeatureHTML = `
+                <div class="feature-item">
+                    <input type="text" name="new_features[${featureIndex}][name]" placeholder="New Feature Name" class="form-control">
+                    <button type="button" class="btn btn-sm delete-feature-btn" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+                </div>
+            `;
+            newFeaturesContainer.insertAdjacentHTML('beforeend', newFeatureHTML);
+        });
+
+        // Real-time calculation for weekly and monthly rates
+        const dailyRateInput = document.getElementById('daily_rate');
+        const weeklyRateInput = document.getElementById('weekly_rate');
+        const monthlyRateInput = document.getElementById('monthly_rate');
+
+        function calculateRates() {
+            const dailyRate = parseFloat(dailyRateInput.value);
+            if (!isNaN(dailyRate) && dailyRate > 0) {
+                weeklyRateInput.value = (dailyRate * 7).toFixed(2);
+                monthlyRateInput.value = (dailyRate * 30).toFixed(2);
+            } else {
+                weeklyRateInput.value = '';
+                monthlyRateInput.value = '';
+            }
+        }
+
+        if (dailyRateInput) {
+            dailyRateInput.addEventListener('input', calculateRates);
+            if(dailyRateInput.value) {
+                calculateRates();
+            }
+        }
+        
+        // --- IMAGE MANAGEMENT SCRIPT from previous response ---
+        const MAX_TOTAL_IMAGES = 5;
+        const newImagesInput = document.getElementById('new_vehicle_images');
+        const newPreviewContainer = document.getElementById('new-image-preview-container');
+        const imageUploadError = document.getElementById('image-upload-error');
+        const currentImagesContainer = document.getElementById('current-images-container');
+        const noCurrentImagesMsg = document.getElementById('no-current-images-msg');
+
+        function updateActiveExistingImageCountAndVisbility() {
+            let activeCount = 0;
+            if (currentImagesContainer) {
+                 currentImagesContainer.querySelectorAll('.current-image-item .delete-image-checkbox').forEach(cb => {
+                    if (!cb.checked) {
+                        activeCount++;
+                    }
+                });
+            }
+             if (noCurrentImagesMsg) {
+                if (currentImagesContainer && currentImagesContainer.children.length > 0) {
+                    noCurrentImagesMsg.style.display = 'none';
+                } else {
+                     noCurrentImagesMsg.style.display = 'block';
+                }
+            }
+            return activeCount;
+        }
+
+        function handleExistingImageDeletionInteraction() {
+            const activeExistingCount = updateActiveExistingImageCountAndVisbility();
+            if (newImagesInput && newImagesInput.files && newImagesInput.files.length > 0) {
+                if (activeExistingCount + newImagesInput.files.length > MAX_TOTAL_IMAGES) {
+                    imageUploadError.textContent = `Maximum ${MAX_TOTAL_IMAGES} images allowed. You now have ${activeExistingCount} current image(s) not marked for deletion. Your selection of ${newImagesInput.files.length} new image(s) is now invalid. Please re-select fewer new images.`;
+                    imageUploadError.style.display = 'block';
+                    newImagesInput.value = ''; 
+                    newPreviewContainer.innerHTML = ''; 
+                } else {
+                    imageUploadError.style.display = 'none';
+                    imageUploadError.textContent = '';
+                }
+            }
+            if (currentImagesContainer && currentImagesContainer.children.length > 0 && noCurrentImagesMsg) {
+                noCurrentImagesMsg.style.display = 'none';
+            }
+        }
+
+        if (currentImagesContainer) {
+            currentImagesContainer.addEventListener('click', function(event) {
+                if (event.target.classList.contains('delete-existing-image-btn')) {
+                    const item = event.target.closest('.current-image-item');
+                    const checkbox = item.querySelector('.delete-image-checkbox');
+                    checkbox.checked = !checkbox.checked; 
+                    item.classList.toggle('marked-for-deletion', checkbox.checked);
+                    handleExistingImageDeletionInteraction();
+                }
+            });
+        }
+        
+        if (newImagesInput) {
+            newImagesInput.addEventListener('change', function(event) {
+                newPreviewContainer.innerHTML = ''; 
+                imageUploadError.style.display = 'none';
+                imageUploadError.textContent = '';
+
+                const files = event.target.files;
+                if (!files || files.length === 0) {
+                    return;
+                }
+                const activeExistingCount = updateActiveExistingImageCountAndVisbility();
+
+                if (activeExistingCount + files.length > MAX_TOTAL_IMAGES) {
+                    imageUploadError.textContent = `Maximum ${MAX_TOTAL_IMAGES} images allowed. You have ${activeExistingCount} current image(s) not marked for deletion. You are trying to add ${files.length} new image(s). Please select at most ${MAX_TOTAL_IMAGES - activeExistingCount} new image(s) or delete more existing ones.`;
+                    imageUploadError.style.display = 'block';
+                    event.target.value = ''; 
+                    return;
+                }
+
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    if (!file.type.startsWith('image/')){ continue; } 
+                    const previewItem = document.createElement('div');
+                    previewItem.classList.add('current-image-item'); 
+                    const img = document.createElement('img');
+                    previewItem.appendChild(img);
+                    newPreviewContainer.appendChild(previewItem);
+                    const reader = new FileReader();
+                    reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (currentImagesContainer) {
+                currentImagesContainer.querySelectorAll('.current-image-item .delete-image-checkbox').forEach(cb => {
+                    if (cb.checked) {
+                        cb.closest('.current-image-item').classList.add('marked-for-deletion');
+                    }
+                });
+            }
+            updateActiveExistingImageCountAndVisbility();
+            if(newImagesInput) newImagesInput.value = ''; 
+        });
+    </script>
+</body>
+</html>

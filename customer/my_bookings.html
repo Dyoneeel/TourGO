@@ -1,0 +1,1252 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TourGo - My Bookings</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet"> <link href="../public/assets/css/my-booking.css" rel="stylesheet"> <style>
+        /* General Page Styles (Keep existing relevant styles) */
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .booking-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eaeaea;
+        }
+
+        .booking-body {
+            display: flex;
+            padding: 20px;
+            gap: 24px;
+        }
+
+        .booking-image-container {
+            width: 240px;
+            flex-shrink: 0;
+        }
+
+        .booking-image {
+            width: 100%;
+            height: 160px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .booking-details {
+            flex-grow: 1;
+        }
+
+        .booking-timeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .booking-timeline > div { /* Direct div children */
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Space between icon and text within a div */
+        }
+        .booking-timeline > div i.fa-arrow-right { /* Target only the arrow icon separator */
+            color: #ccc; /* Make separator less prominent */
+            font-size: 0.9em;
+        }
+
+
+        .license-plate {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace; 
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Vertically align items */
+            gap: 10px;
+            margin: 25px 0;
+        }
+        .page-info {
+            padding: 8px 12px; /* Consistent padding with buttons */
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px; 
+            font-weight: 500; /* Added for better readability */
+            text-transform: capitalize; /* Capitalize status */
+        }
+        .status-confirmed { background: #e3fcef; color: #006644; }
+        .status-active { background: #e6fcff; color: #008296; }
+        .status-completed { background: #f0f0ff; color: #0044cc; }
+        .status-cancelled { background: #ffebe6; color: #bf2600; }
+        .status-upcoming { background: #fffae6; color: #8a6d00; }
+        .status-pending { background: #fef3c7; color: #92400e; } 
+
+
+        .vehicle-name { 
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 0 0 5px 0; /* Added bottom margin */
+        }
+
+        .vehicle-year {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .vehicle-type {
+            display: inline-block;
+            padding: 3px 10px;
+            background: #f0f0f0;
+            color: #555;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-left: 8px; /* Added margin for spacing */
+        }
+
+        .booking-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Adjusted minmax */
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .meta-label {
+            font-size: 0.8em;
+            color: #6c757d;
+            margin-bottom: 3px;
+            display: flex; /* To align icon with text */
+            align-items: center; /* To align icon with text */
+            gap: 4px; /* Space between icon and label */
+        }
+
+        .meta-value {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #333; /* Darker text for value */
+        }
+
+        .price-tag {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .daily-rate {
+            font-size: 0.7em;
+            color: #6c757d;
+            font-weight: normal;
+        }
+
+        .booking-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #eaeaea;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap; /* Allow actions to wrap on smaller screens */
+        }
+
+        .btn { 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center; /* Center content for icon buttons */
+            gap: 6px;
+            padding: 8px 15px; /* Standardized padding */
+            border-radius: 6px; /* Standardized radius */
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+            border: 1px solid transparent; /* Base border for all buttons */
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+            font-size: 0.9em; /* Consistent font size */
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .btn-primary:hover {
+             background-color: var(--primary-dark);
+             border-color: var(--primary-dark);
+        }
+
+        .btn-outline {
+            border: 1px solid #ddd;
+            background-color: transparent;
+            color: #555; 
+        }
+        .btn-outline:hover {
+            background-color: #f0f0f0; 
+            border-color: #ccc;
+            color: #333;
+        }
+         .btn-outline.disabled, .btn-outline:disabled { /* Style for disabled outline */
+            border-color: #e0e0e0;
+            color: #aaa;
+            background-color: #f9f9f9;
+            cursor: not-allowed;
+        }
+
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #c82333;
+        }
+
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center; /* Center tabs */
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none; 
+            color: #333; 
+            font-size: 0.9em; /* Slightly smaller for tabs */
+        }
+
+        .filter-tab:hover {
+            background-color: #f0f0f0; /* Lighter hover */
+            border-color: #ccc;
+        }
+
+        .filter-tab.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .filter-tab.active:hover { /* Maintain active style on hover */
+             background-color: var(--primary-dark);
+             border-color: var(--primary-dark);
+        }
+
+
+        .filter-tab-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px; 
+            height: 22px;
+            padding: 0 6px; /* More padding for multi-digit numbers */
+            border-radius: 11px; /* Make it pill-shaped */
+            background-color: rgba(0,0,0,0.08);
+            font-size: 0.8em;
+            line-height: 1; 
+            font-weight: normal; /* Less emphasis for count */
+        }
+        .filter-tab.active .filter-tab-count {
+             background-color: rgba(255,255,255,0.25); /* Brighter count on active tab */
+             color: white;
+        }
+
+        .error-message, .alert-danger { 
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px 18px; /* More padding */
+            border: 1px solid #f5c6cb;
+            border-radius: 6px; /* Consistent radius */
+            margin-bottom: 20px;
+            display: flex; /* For icon alignment */
+            align-items: center;
+            gap: 10px;
+        }
+        .error-message::before, .alert-danger::before { /* Optional: Add an icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f071"; /* Exclamation triangle */
+        }
+
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px 18px;
+            border: 1px solid #c3e6cb;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+         .success-message::before { /* Optional: Add an icon */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            content: "\f058"; /* Check circle */
+        }
+
+         .no-bookings {
+            text-align: center;
+            padding: 40px 20px; /* Added horizontal padding */
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+        .no-bookings i.fas { /* Specific to icon in no-bookings */
+            font-size: 3rem;
+            color: var(--primary-light, #a0c4ff); /* Softer primary for icon */
+            margin-bottom: 15px;
+        }
+        .no-bookings h3 {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .no-bookings p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .no-bookings p a {
+            color: var(--primary);
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        .no-bookings .btn-primary { /* Button within no-bookings */
+            padding: 12px 25px;
+            font-size: 1em;
+        }
+        .no-bookings .btn-primary i.fas { /* Icon inside button */
+            font-size: 1.1em; /* Adjust icon size relative to button text */
+            color: white; /* Ensure icon color contrasts with button bg */
+            margin-bottom: 0; /* Reset margin if any */
+        }
+
+
+        .sort-controls {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+
+        .sort-controls label {
+            font-weight: 500;
+            font-size: 0.9em;
+            color: #555; 
+        }
+
+        .sort-controls select#sort {
+            padding: 8px 30px 8px 12px; /* More padding on right for arrow */
+            border-radius: 8px;
+            border: 1px solid #ccc; 
+            background-color: #fff;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); 
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            min-width: 180px; 
+        }
+
+        .sort-controls select#sort:hover {
+            border-color: #aaa; 
+        }
+
+        .sort-controls select#sort:focus {
+            outline: none;
+            border-color: var(--primary); 
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 77, 148, 255), 0.25); 
+        }
+
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .booking-body {
+                flex-direction: column;
+            }
+
+            .booking-image-container {
+                width: 100%; 
+                max-width: 300px; 
+                margin: 0 auto 15px auto; /* Add bottom margin when stacked */
+            }
+
+            .booking-meta {
+                grid-template-columns: 1fr; 
+            }
+
+            .filter-tabs {
+                 justify-content: center; /* Tabs will wrap and stay centered */
+            }
+
+            .booking-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch; 
+            }
+            .booking-footer .price-tag { /* Center price tag on mobile */
+                justify-content: center;
+            }
+
+            .booking-actions {
+                width: 100%;
+                justify-content: center; /* Center actions */
+            }
+             .booking-actions .btn { 
+                flex-grow: 1; 
+                text-align: center; 
+                min-width: 120px; /* Ensure buttons have some minimum width */
+            }
+
+
+            .booking-timeline {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+                padding: 10px; /* Reduce padding on mobile */
+            }
+            .booking-timeline div {
+                width: 100%;
+                text-align: left;
+            }
+             .booking-timeline div i.fa-arrow-right {
+                display: none; /* Hide arrows on mobile as items are stacked */
+            }
+            .booking-timeline div small { font-size: 0.85em; } /* Slightly smaller text */
+
+            .sort-controls {
+                flex-direction: column; 
+                align-items: stretch; /* Stretch to full width */
+                gap: 8px;
+            }
+            .sort-controls label { align-self: flex-start; } /* Align label to start */
+            .sort-controls select#sort {
+                width: 100%; 
+            }
+            .pagination {
+                flex-wrap: wrap; /* Allow pagination to wrap */
+                gap: 5px; /* Reduce gap */
+            }
+            .pagination .btn {
+                padding: 6px 10px; /* Smaller buttons */
+                font-size: 0.85em;
+            }
+            .pagination .page-info {
+                flex-basis: 100%; /* Page info on its own line */
+                text-align: center;
+                padding: 5px 0;
+            }
+
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 25px; 
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3); 
+            max-width: 500px;
+            width: 90%;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {transform: translateY(-30px) scale(0.95); opacity: 0;}
+            to {transform: translateY(0) scale(1); opacity: 1;}
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px; 
+            border-bottom: 1px solid #eee;
+        }
+         .modal-header .modal-title {
+            font-size: 1.35rem; 
+            font-weight: 600;
+            color: #333;
+        }
+        .close-modal {
+            font-size: 1.8rem; 
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            padding: 5px; 
+            line-height: 1;
+            background: none; /* Ensure it's button-like but visually minimal */
+            border: none;
+        }
+        .close-modal:hover {
+            color: #333;
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            margin-bottom: 25px; 
+            line-height: 1.6;
+            color: #555;
+        }
+        .modal-body p { margin-bottom: 0; } /* Remove default p margin if needed */
+
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 15px; 
+            border-top: 1px solid #eee;
+        }
+
+
+        /* --- Dark Mode Styles --- */
+        [data-theme="dark"] body {
+            background-color: var(--bg-dark, #121212); /* Standard dark bg */
+            color: var(--text-dark-primary, #e0e0e0);
+        }
+
+        [data-theme="dark"] .section-header .section-title,
+        [data-theme="dark"] .section-header .section-description {
+            color: var(--text-dark-primary, #e0e0e0);
+        }
+        [data-theme="dark"] .section-header .section-description {
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+
+
+        [data-theme="dark"] h3,
+        [data-theme="dark"] .vehicle-name {
+            color: var(--text-dark-primary, #e0e0e0);
+        }
+
+        [data-theme="dark"] small,
+        [data-theme="dark"] .meta-label,
+        [data-theme="dark"] .daily-rate,
+        [data-theme="dark"] small.text-muted,
+        [data-theme="dark"] .page-info,
+        [data-theme="dark"] .vehicle-year {
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+        [data-theme="dark"] .meta-value { color: var(--text-dark-primary, #e0e0e0); } /* Meta values darker */
+
+
+        [data-theme="dark"] .booking-card {
+            background: var(--card-bg-dark, #1e1e1e); 
+            box-shadow: var(--box-shadow-dark, 0 3px 15px rgba(0,0,0,0.5)); /* Stronger shadow for depth */
+            border: 1px solid var(--card-border-dark, #2c2c2c);
+        }
+
+        [data-theme="dark"] .booking-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            border-color: #383838; /* Slightly lighter border on hover */
+        }
+
+        [data-theme="dark"] .booking-header,
+        [data-theme="dark"] .booking-footer,
+        [data-theme="dark"] .booking-timeline {
+            background-color: var(--card-header-bg-dark, #252525);
+            border-color: var(--card-border-dark, #2c2c2c);
+        }
+        [data-theme="dark"] .booking-timeline small {
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+        [data-theme="dark"] .booking-timeline i {
+            color: var(--primary-darker, #79b6f2); 
+        }
+        [data-theme="dark"] .booking-timeline > div i.fa-arrow-right { color: #555; }
+
+
+        [data-theme="dark"] .license-plate {
+            background: #333;
+            color: #ccc;
+            border: 1px solid #444;
+        }
+
+        [data-theme="dark"] .vehicle-type {
+            background: #333;
+            color: #bbb;
+        }
+
+        [data-theme="dark"] .price-tag {
+            color: var(--primary-darker, #79b6f2);
+        }
+
+        [data-theme="dark"] .btn-outline {
+            color: var(--text-dark-secondary, #b0b0b0);
+            border-color: var(--button-outline-border-dark, #444);
+        }
+        [data-theme="dark"] .btn-outline:hover {
+            border-color: var(--primary-darker, #79b6f2);
+            color: var(--primary-darker, #79b6f2);
+            background-color: rgba(var(--primary-rgb-dark, 121, 182, 242), 0.1);
+        }
+        [data-theme="dark"] .btn-outline.disabled,
+        [data-theme="dark"] .btn-outline:disabled,
+        [data-theme="dark"] .btn-outline.disabled:hover {
+            color: #555;
+            border-color: #333;
+            background-color: transparent;
+            opacity: 0.5;
+        }
+        [data-theme="dark"] .btn-primary {
+             background-color: var(--primary-darker, #0056b3); /* Adjust if primary is too light */
+             border-color: var(--primary-darker, #0056b3);
+        }
+        [data-theme="dark"] .btn-primary:hover {
+            background-color: var(--primary-darkest, #004494);
+            border-color: var(--primary-darkest, #004494);
+        }
+         [data-theme="dark"] .btn-danger {
+            background-color: #a71d2a; /* Darker red */
+            border-color: #a71d2a;
+        }
+        [data-theme="dark"] .btn-danger:hover {
+            background-color: #8c1b23;
+            border-color: #8c1b23;
+        }
+
+
+        [data-theme="dark"] .filter-tab {
+            background-color: var(--button-bg-dark, #2c2c2c);
+            color: var(--text-dark-secondary, #b0b0b0);
+            border: 1px solid var(--button-border-dark, #383838);
+        }
+        [data-theme="dark"] .filter-tab:hover {
+            background-color: #383838;
+            color: var(--text-dark-primary, #e0e0e0);
+            border-color: #444;
+        }
+        [data-theme="dark"] .filter-tab.active {
+            background-color: var(--primary-darker, #0056b3); 
+            color: #ffffff;
+            border-color: var(--primary-darker, #0056b3);
+        }
+         [data-theme="dark"] .filter-tab.active:hover {
+            background-color: var(--primary-darkest, #004494);
+            border-color: var(--primary-darkest, #004494);
+        }
+        [data-theme="dark"] .filter-tab.active .filter-tab-count {
+            background-color: rgba(255,255,255,0.25);
+            color: #ffffff;
+        }
+        [data-theme="dark"] .filter-tab .filter-tab-count {
+            background-color: rgba(255,255,255,0.1); /* Lighter count for better contrast */
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+
+        /* Status Badges Dark Theme */
+        [data-theme="dark"] .status-confirmed { background: rgba(42, 160, 109, 0.2); color: #2aa06d; border: 1px solid rgba(42, 160, 109, 0.4); }
+        [data-theme="dark"] .status-active { background: rgba(31, 160, 184, 0.2); color: #1fa0b8; border: 1px solid rgba(31, 160, 184, 0.4); }
+        [data-theme="dark"] .status-completed { background: rgba(74, 74, 178, 0.2); color: #4a4ab2; border: 1px solid rgba(74, 74, 178, 0.4); }
+        [data-theme="dark"] .status-cancelled { background: rgba(191, 38, 0, 0.2); color: #bf2600; border: 1px solid rgba(191, 38, 0, 0.4); }
+        [data-theme="dark"] .status-upcoming { background: rgba(138, 109, 0, 0.2); color: #8a6d00; border: 1px solid rgba(138, 109, 0, 0.4); }
+        [data-theme="dark"] .status-pending { background: rgba(146, 64, 14, 0.2); color: #92400e; border: 1px solid rgba(146, 64, 14, 0.4); }
+
+
+        [data-theme="dark"] .no-bookings {
+            background-color: var(--card-bg-dark, #1e1e1e);
+            border: 1px solid var(--card-border-dark, #2c2c2c);
+        }
+        [data-theme="dark"] .no-bookings i.fas {
+            color: var(--primary-darker, #79b6f2);
+        }
+        [data-theme="dark"] .no-bookings h3 {
+            color: var(--text-dark-primary, #e0e0e0);
+        }
+        [data-theme="dark"] .no-bookings p {
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+        [data-theme="dark"] .no-bookings p a {
+            color: var(--primary-darker, #79b6f2);
+        }
+
+        /* Sort Controls Dark Theme */
+        [data-theme="dark"] .sort-controls label {
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+        [data-theme="dark"] .sort-controls select#sort {
+            background-color: var(--input-bg-dark, #252525);
+            color: var(--text-dark-primary, #e0e0e0);
+            border-color: var(--input-border-dark, #444);
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23cccccc' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e"); 
+        }
+        [data-theme="dark"] .sort-controls select#sort:hover {
+            border-color: var(--primary-darker, #79b6f2);
+        }
+        [data-theme="dark"] .sort-controls select#sort:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb-dark, 121, 182, 242), 0.35);
+        }
+
+
+        /* Modal Dark Theme */
+        [data-theme="dark"] .modal-content {
+            background-color: var(--modal-bg-dark, #252525);
+            color: var(--text-dark-primary, #e0e0e0);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+            border: 1px solid #333; /* Add a subtle border */
+        }
+        [data-theme="dark"] .modal-header,
+        [data-theme="dark"] .modal-footer {
+            border-color: var(--modal-border-dark, #333);
+        }
+        [data-theme="dark"] .modal-header .modal-title {
+            color: var(--text-dark-primary, #e0e0e0);
+        }
+         [data-theme="dark"] .close-modal {
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+        [data-theme="dark"] .close-modal:hover {
+            color: var(--text-dark-primary, #e0e0e0);
+        }
+        [data-theme="dark"] .modal-body p, 
+        [data-theme="dark"] .modal-body { 
+            color: var(--text-dark-secondary, #b0b0b0);
+        }
+
+        [data-theme="dark"] .error-message,
+        [data-theme="dark"] .alert-danger {
+            background-color: rgba(248, 215, 218, 0.1); /* More subtle background */
+            color: #f8d7da;
+            border: 1px solid rgba(245, 198, 203, 0.3);
+        }
+        [data-theme="dark"] .error-message::before, 
+        [data-theme="dark"] .alert-danger::before { color: #f8d7da; }
+
+
+        [data-theme="dark"] .success-message {
+            background-color: rgba(212, 237, 218, 0.1);
+            color: #d4edda;
+            border: 1px solid rgba(195, 230, 203, 0.3);
+        }
+        [data-theme="dark"] .success-message::before { color: #d4edda; }
+
+
+    </style>
+</head>
+
+<body>
+<header id="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="customer_dashboard.html">
+                    <i class="fas fa-car-side"></i>
+                    <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="mainNavMenu">
+                <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="my_bookings.html" class="nav-link active">My Bookings</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode" id="themeToggleBtn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="profile.html" class="profile-menu-item">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </a>
+                        <a href="my_bookings.html" class="profile-menu-item">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>My Bookings</span>
+                        </a>
+                        <a href="favorite_cars.html" class="profile-menu-item">
+                            <i class="fas fa-heart"></i>
+                            <span>Favorites</span>
+                        </a>
+                        <hr>
+                        <a href="../auth/logout.html" class="profile-menu-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+                <button class="menu-toggle" aria-label="Toggle Menu" id="menuToggleBtn" aria-expanded="false" aria-controls="mainNavMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <main class="container" style="margin-top: 40px; margin-bottom: 40px;">
+        <div class="section-header">
+            <h1 class="section-title">My Bookings</h1>
+            <p class="section-description">View and manage your rental reservations</p>
+        </div>
+
+        
+            <div class="error-message" id="error-message-alert" role="alert"></div>
+            
+        
+        
+            <div class="success-message" id="success-message-alert" role="alert"></div>
+            
+        
+
+
+        <div class="filter-tabs">
+            <a href="?filter=all&sort=" class="filter-tab ">
+                <i class="fas fa-th-list"></i> All
+                <span class="filter-tab-count"></span>
+            </a>
+            <a href="?filter=upcoming&sort=" class="filter-tab ">
+                <i class="fas fa-calendar-alt"></i> Upcoming
+                <span class="filter-tab-count"></span>
+            </a>
+            <a href="?filter=active&sort=" class="filter-tab ">
+                <i class="fas fa-car"></i> Active
+                <span class="filter-tab-count"></span>
+            </a>
+            <a href="?filter=completed&sort=" class="filter-tab ">
+                <i class="fas fa-check-circle"></i> Completed
+                <span class="filter-tab-count"></span>
+            </a>
+            <a href="?filter=cancelled&sort=" class="filter-tab ">
+                <i class="fas fa-times-circle"></i> Cancelled
+                <span class="filter-tab-count"></span>
+            </a>
+        </div>
+
+        <form method="get" class="sort-controls">
+            
+            <label for="sort">Sort by:</label>
+            <select name="sort" id="sort" onchange="this.form.submit()">
+                
+                    <option value="" ></option>
+                
+            </select>
+        </form>
+
+        
+            <div class="no-bookings">
+                <i class="fas fa-calendar-times"></i> <h3>No bookings found</h3>
+                <p>
+                    
+                        You haven't made any reservations yet. Start your journey now!
+                    
+                        You don't have any  bookings.
+                        <a href="?filter=all&sort=">View all bookings</a> or browse available vehicles.
+                    
+                </p>
+                <a href="cars.html" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Browse Vehicles
+                </a>
+            </div>
+        
+            <div class="bookings-list">
+                
+                    <div class="booking-card" id="booking-">
+                        <div class="booking-header">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;"> <span class="status-badge status-"> <i class="fas fa-"></i>
+                                    
+                                </span>
+                                <span class="license-plate">
+                                    <i class="fas fa-id-badge"></i> 
+                                </span>
+                            </div>
+                            <small class="text-muted">
+                                Ref: #TG- </small>
+                        </div>
+
+                        <div class="booking-timeline">
+                            <div>
+                                <i class="fas fa-calendar-plus"></i>&nbsp;<small>Booked: </small>
+                            </div>
+                            <div>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div>
+                                 <i class="fas fa-arrow-circle-up"></i>&nbsp;<small>Pickup: </small>
+                            </div>
+                            <div>
+                                <i class="fas fa-arrow-right"></i>
+                            </div>
+                            <div>
+                                <i class="fas fa-arrow-circle-down"></i>&nbsp;<small>Return: </small>
+                            </div>
+                        </div>
+
+                        <div class="booking-body">
+                            <div class="booking-image-container">
+                                <img src=""
+                                     alt=""
+                                     class="booking-image">
+                            </div>
+
+                            <div class="booking-details">
+                                <h3 class="vehicle-name">  <span class="vehicle-year">()</span> <span class="vehicle-type"></span></h3>
+
+                                <div class="booking-meta">
+                                    <div class="meta-item">
+                                        <span class="meta-label"><i class="fas fa-tag"></i> Daily Rate</span>
+                                        <span class="meta-value">
+                                            ₱
+                                        </span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label"><i class="fas fa-calendar-day"></i> Total Days</span>
+                                        <span class="meta-value">
+                                             day </span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label"><i class="fas fa-coins"></i> Total Cost</span>
+                                        <span class="meta-value">
+                                            ₱
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="booking-footer">
+                            <div class="price-tag">
+                                <i class="fas fa-money-bill-wave"></i> ₱
+                                
+                                <span class="daily-rate">
+                                    (₱/day)
+                                </span>
+                                
+                            </div>
+
+                            <div class="booking-actions">
+                                <a href="booking_details.html?id=" class="btn btn-outline" aria-label="View booking details for booking #">
+                                    <i class="fas fa-info-circle"></i> Details
+                                </a>                                
+                                
+                                    <button type="button" class="btn btn-danger"
+                                            onclick="openCancelModal()" aria-label="Cancel booking #">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+
+                                    <a href="modify_booking.html?id=" class="btn btn-primary" aria-label="Modify booking #">
+                                        <i class="fas fa-edit"></i> Modify
+                                    </a>
+                                
+
+                                
+                                    <a href="review.html?booking_id=" class="btn btn-primary" aria-label="Leave a review for booking #">
+                                        <i class="fas fa-star"></i> Leave Review
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+            <div class="pagination">
+                
+                    <a href="&page=" class="btn btn-outline" aria-label="Previous page">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </a>
+                
+                    <span class="btn btn-outline disabled"><i class="fas fa-chevron-left"></i> Previous</span>
+                
+
+                <span class="page-info">Page  of </span>
+
+                
+                    <a href="&page=" class="btn btn-outline" aria-label="Next page">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </a>
+                
+                    <span class="btn btn-outline disabled">Next <i class="fas fa-chevron-right"></i></span>
+                
+            </div>
+            
+        
+    </main>
+
+    <div id="cancelModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cancelModalTitle">Cancel Booking</h4>
+                <button type="button" class="close-modal" onclick="closeCancelModal()" aria-label="Close cancellation dialog">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to cancel this booking? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeCancelModal()">
+                    <i class="fas fa-ban"></i> No, Keep Booking
+                </button>
+                <form id="cancelForm" method="post" action="cancel_booking.html" style="display: inline;">
+                    <input type="hidden" id="modal_booking_id" name="booking_id" value="">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-check"></i> Yes, Cancel Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="customer_dashboard.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <label for="newsletterEmail" class="sr-only">Email for newsletter</label>
+                        <input type="email" id="newsletterEmail" class="newsletter-input" placeholder="Enter your email" aria-label="Email for newsletter">
+                        <button type="submit" class="newsletter-btn" aria-label="Subscribe to newsletter"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = document.getElementById('success-message-alert');
+            const errorMessage = document.getElementById('error-message-alert');
+
+            function dismissAlert(alertElement) {
+                if (alertElement) {
+                    setTimeout(function() {
+                        alertElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease, margin-bottom 0.5s ease, padding 0.5s ease, height 0.5s ease';
+                        alertElement.style.opacity = '0';
+                        alertElement.style.transform = 'translateY(-20px)';
+                        alertElement.style.marginBottom = '0';
+                        alertElement.style.paddingTop = '0';
+                        alertElement.style.paddingBottom = '0';
+                        alertElement.style.height = '0';
+                        alertElement.style.borderWidth = '0';
+                        setTimeout(function() {
+                            alertElement.style.display = 'none';
+                        }, 500);
+                    }, 5000); 
+                }
+            }
+            dismissAlert(successMessage);
+            dismissAlert(errorMessage);
+        });
+
+        // Cancel Modal Functions
+        const cancelModal = document.getElementById('cancelModal');
+        const modalBookingIdInput = document.getElementById('modal_booking_id');
+        const firstFocusableElementInModal = cancelModal ? cancelModal.querySelector('.btn-outline, .btn-danger, .close-modal') : null;
+        let previouslyFocusedElement = null;
+
+
+        function openCancelModal(bookingId) {
+            if (modalBookingIdInput) {
+                 modalBookingIdInput.value = bookingId;
+            }
+            if (cancelModal) {
+                previouslyFocusedElement = document.activeElement; // Save current focus
+                cancelModal.style.display = 'block';
+                cancelModal.setAttribute('aria-hidden', 'false');
+                if(firstFocusableElementInModal) firstFocusableElementInModal.focus();
+            }
+        }
+
+        function closeCancelModal() {
+             if (cancelModal) {
+                cancelModal.style.display = 'none';
+                cancelModal.setAttribute('aria-hidden', 'true');
+                if (previouslyFocusedElement) previouslyFocusedElement.focus(); // Restore focus
+            }
+        }
+
+        window.addEventListener('click', function(event) {
+            if (event.target == cancelModal) {
+                closeCancelModal();
+            }
+        });
+        window.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && cancelModal && cancelModal.style.display === 'block') {
+                closeCancelModal();
+            }
+        });
+
+
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('mainNavMenu');
+        if (menuToggleBtn && navMenu) {
+            menuToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                const isExpanded = navMenu.classList.toggle('active');
+                menuToggleBtn.classList.toggle('active');
+                menuToggleBtn.setAttribute('aria-expanded', isExpanded.toString());
+            });
+            document.addEventListener('click', function(e) {
+                if (navMenu.classList.contains('active') && !navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    menuToggleBtn.classList.remove('active');
+                    menuToggleBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
+        const themeToggleButton = document.getElementById('themeToggleBtn');
+        if (themeToggleButton) {
+            const themeToggleIcon = themeToggleButton.querySelector('i');
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme); 
+                if (theme === 'dark') {
+                    themeToggleIcon.classList.remove('fa-moon');
+                    themeToggleIcon.classList.add('fa-sun');
+                    themeToggleButton.setAttribute('aria-label', 'Toggle Light Mode');
+                } else {
+                    themeToggleIcon.classList.remove('fa-sun');
+                    themeToggleIcon.classList.add('fa-moon');
+                    themeToggleButton.setAttribute('aria-label', 'Toggle Dark Mode');
+                }
+            }
+
+            let currentTheme = localStorage.getItem('theme');
+            if (!currentTheme) {
+                currentTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            }
+            setTheme(currentTheme); 
+
+            themeToggleButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                let newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+        }
+
+
+        const profileToggleBtn = document.getElementById('profileToggleBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        if (profileToggleBtn && profileMenu) {
+            profileToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); 
+                const isExpanded = profileMenu.classList.toggle('active');
+                profileToggleBtn.classList.toggle('active'); 
+                profileToggleBtn.setAttribute('aria-expanded', isExpanded.toString());
+            });
+            document.addEventListener('click', function(e) {
+                 if (profileMenu.classList.contains('active') && !profileMenu.contains(e.target) && !profileToggleBtn.contains(e.target)) {
+                    profileMenu.classList.remove('active');
+                    profileToggleBtn.classList.remove('active');
+                    profileToggleBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Booking - TourGo</title>
+    <link rel="stylesheet" href="../public/assets/css/styles.css">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+   <style>
+    /* Main Container */
+    .modify-container {
+        max-width: 1200px; /* Increased from 800px */
+        margin: 40px auto;
+        background: var(--white); /* Uses white variable from styles.css */
+        border-radius: var(--card-border-radius); /* Uses card-border-radius variable from styles.css */
+        box-shadow: var(--card-shadow); /* Uses card-shadow variable from styles.css */
+        padding: 40px; /* Increased padding for better spacing */
+        transition: var(--transition); /* Uses transition variable from styles.css */
+    }
+
+    [data-theme="dark"] .modify-container {
+        background: var(--white); /* Correctly uses dark theme's --white which is a dark color */
+        border: 1px solid var(--accent-light); /* Uses dark theme's --accent-light for border */
+    }
+
+    /* Page Title */
+    .modify-container h1 {
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+        font-size: 1.8rem;
+        font-weight: 700;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .modify-container h1 i {
+        color: var(--primary); /* Uses primary variable from styles.css */
+    }
+
+    /* Vehicle Summary */
+    .vehicle-summary {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 32px;
+        padding: 24px;
+        background: var(--bg-light); /* Uses bg-light variable from styles.css */
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        border: 1px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+        align-items: center;
+        transition: var(--transition); /* Uses transition variable from styles.css */
+    }
+
+    [data-theme="dark"] .vehicle-summary {
+        background: var(--accent-light); /* Correctly uses dark theme's --accent-light */
+        border-color: var(--border-color, rgba(255, 255, 255, 0.1)); /* Added a fallback, better to define --border-color in :root */
+    }
+
+    .vehicle-image {
+        width: 200px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        box-shadow: var(--box-shadow); /* Uses box-shadow variable from styles.css */
+        border: 1px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+    }
+
+    [data-theme="dark"] .vehicle-image {
+        border-color: var(--border-color, rgba(255, 255, 255, 0.15)); /* Uses a slightly more visible border for images in dark mode */
+    }
+
+    .vehicle-summary h2 {
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+        font-size: 1.4rem;
+        margin-bottom: 12px;
+    }
+
+    .vehicle-summary p {
+        color: var(--text-light); /* Uses text-light variable from styles.css */
+        margin: 8px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .vehicle-summary strong {
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+    }
+
+    /* Booking Details Grid */
+    .booking-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 24px;
+        margin-bottom: 32px;
+        padding: 24px;
+        background: var(--gradient-light); /* Uses gradient-light variable from styles.css */
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        border: 1px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+    }
+
+    [data-theme="dark"] .booking-details {
+        background: var(--accent-light); /* Correctly uses dark theme's --accent-light */
+        border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+    }
+
+    .detail-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .detail-label {
+        font-size: 0.9em;
+        color: var(--text-light); /* Uses text-light variable from styles.css */
+        font-weight: 500;
+    }
+
+    .detail-value {
+        font-size: 1.1em;
+        font-weight: 600;
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+    }
+
+    /* Form Styling */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 14px;
+        border: 2px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        font-size: 1em;
+        transition: all 0.3s ease;
+        background: var(--white); /* Uses white variable from styles.css */
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+    }
+
+    [data-theme="dark"] .form-control {
+        background: var(--accent-light); /* Correctly uses dark theme's --accent-light */
+        border-color: var(--border-color, rgba(255, 255, 255, 0.1)); /* Uses a defined border color or fallback */
+        color: var(--text-dark); /* Ensures text is readable in dark inputs */
+    }
+
+    .form-control:focus {
+        border-color: var(--primary); /* Uses primary variable from styles.css */
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(77, 148, 255, 0.15);
+        transform: translateY(-1px);
+    }
+
+    /* Alert Messages */
+    .alert {
+        padding: 16px;
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .alert i {
+        font-size: 1.2em;
+    }
+
+    .alert-success {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: #2da44e;
+        border: 1px solid rgba(40, 167, 69, 0.2);
+    }
+
+    .alert-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #cf222e;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+
+    [data-theme="dark"] .alert-success {
+        background-color: rgba(40, 167, 69, 0.2); /* Slightly darker green for dark mode */
+        color: #3fb950; /* Brighter green text for dark mode */
+        border-color: rgba(40, 167, 69, 0.4);
+    }
+
+    [data-theme="dark"] .alert-danger {
+        background-color: rgba(220, 53, 69, 0.2); /* Slightly darker red for dark mode */
+        color: #f85149; /* Brighter red text for dark mode */
+        border-color: rgba(220, 53, 69, 0.4);
+    }
+
+    /* Button Container */
+    .btn-container {
+        display: flex;
+        gap: 16px;
+        justify-content: flex-end;
+        margin-top: 32px;
+    }
+
+    .btn { /* General button styling, ensure it inherits well or is overridden by specific btn classes */
+        padding: 14px 28px;
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn i {
+        font-size: 1.1em;
+    }
+
+    .btn-primary {
+        background: var(--gradient-primary); /* Uses gradient-primary variable from styles.css */
+        color: var(--white); /* Text color for primary button - should be light */
+        border: none;
+    }
+     /* Ensure dark theme primary button text is light */
+    [data-theme="dark"] .btn-primary {
+        color: #fff; /* Explicitly set for high contrast on dark gradient */
+    }
+
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(77, 148, 255, 0.2);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary); /* Uses primary variable from styles.css */
+        color: var(--primary); /* Uses primary variable from styles.css */
+    }
+    
+    [data-theme="dark"] .btn-outline {
+        color: var(--primary); /* Keep text color as primary */
+        border-color: var(--primary); /* Keep border color as primary */
+    }
+
+    .btn-outline:hover {
+        background: var(--accent-light); /* Uses accent-light for hover */
+        transform: translateY(-2px);
+    }
+    
+    [data-theme="dark"] .btn-outline:hover {
+        background: rgba(var(--rgb-primary, 77, 148, 255), 0.15); /* Use a subtle primary color background on hover */
+        /* Define --rgb-primary in your :root if you want to use var(--primary) directly in rgba() */
+    }
+
+
+    /* Additional Booking Options Styling */
+    .booking-extras {
+        margin: 32px 0;
+        padding: 24px;
+        background: var(--bg-light); /* Uses bg-light variable from styles.css */
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        border: 1px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+    }
+    /* This section was already well-covered by your [data-theme="dark"] .booking-extras rule */
+
+    .extras-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 16px;
+    }
+
+    .extra-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: var(--white); /* Uses white variable from styles.css */
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        border: 1px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+        transition: all 0.3s ease;
+    }
+    /* This section was already well-covered by your [data-theme="dark"] .extra-item rule */
+
+
+    .extra-item:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--box-shadow); /* Changed from --shadow-soft to --box-shadow for consistency */
+    }
+
+    .extra-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--primary); /* Uses primary variable from styles.css */
+        border-radius: 4px;
+        cursor: pointer;
+        accent-color: var(--primary); /* Modern way to style checkbox color */
+    }
+
+    .extra-item label {
+        flex: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .extra-name {
+        font-weight: 500;
+        color: var(--text-dark); /* Uses text-dark variable from styles.css */
+    }
+    /* This section was already well-covered by your [data-theme="dark"] .extra-name rule */
+
+    .extra-price {
+        font-size: 0.9em;
+        color: var(--primary); /* Uses primary variable from styles.css */
+        font-weight: 600;
+    }
+
+    /* Booking Summary Styling */
+    .booking-summary {
+        margin: 32px 0;
+        padding: 24px;
+        background: var(--gradient-light); /* Uses gradient-light variable from styles.css */
+        border-radius: var(--border-radius); /* Uses border-radius variable from styles.css */
+        border: 1px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+    }
+
+
+    .summary-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin-top: 16px;
+    }
+
+    .summary-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        color: var(--text-dark); /* Ensures text color for items */
+    }
+    
+    [data-theme="dark"] .summary-item {
+        color: var(--text-dark); /* Already uses dark theme's --text-dark */
+    }
+
+
+    .summary-item.total {
+        border-top: 2px solid var(--accent-light); /* Uses accent-light variable from styles.css */
+        margin-top: 8px;
+        padding-top: 16px;
+        font-weight: 600;
+        font-size: 1.1em;
+        color: var(--primary); /* Uses primary variable from styles.css */
+    }
+    
+    [data-theme="dark"] .summary-item.total {
+        border-top-color: var(--border-color, rgba(255, 255, 255, 0.15)); /* Darker border for total section */
+        color: var(--primary); /* Primary color should still be distinct */
+    }
+
+
+
+    [data-theme="dark"] .booking-extras,
+    [data-theme="dark"] .booking-summary {
+        background: var(--dark-bg);
+        border-color: var(--dark-border);
+    }
+
+    [data-theme="dark"] .extra-item {
+        background: var(--dark-card);
+        border-color: var(--dark-border);
+    }
+
+    [data-theme="dark"] .extra-name {
+        color: var(--dark-text);
+    }
+
+    /* Consider adding a general text color for the body in dark mode if not already global */
+    [data-theme="dark"] body {
+        color: var(--text-dark); /* Ensure default text color is set for dark mode */
+    }
+    
+    /* Ensure section subtitles also adapt */
+    [data-theme="dark"] .section-subtitle { /* Assuming .section-subtitle is used for h3 */
+        color: var(--primary); /* Or a slightly lighter shade of primary if needed for contrast */
+    }
+
+
+    /* Responsive Design */
+    @media (max-width: 1280px) {
+        .modify-container {
+            max-width: 95%;
+            margin: 20px auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .modify-container {
+            max-width: 100%;
+            margin: 10px;
+            padding: 20px;
+        }
+
+        .vehicle-summary {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .vehicle-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-container {
+            flex-direction: column-reverse;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .extras-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .extra-item {
+            padding: 12px;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <header id="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="customer_dashboard.html">
+                    <i class="fas fa-car-side"></i>
+                    <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="mainNavMenu">
+                <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="my_bookings.html" class="nav-link active">My Bookings</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode" id="themeToggleBtn">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                            <a href="profile.html" class="profile-menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="favorite_cars.html" class="profile-menu-item">
+                                <i class="fas fa-heart"></i>
+                                <span>Favorites</span>
+                            </a>
+                            <a href="contact.html" class="profile-menu-item">
+                                <i class="fas fa-calendar-check"></i>
+                                <span>About Us</span>
+                            </a>
+                            <hr>
+                            
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                </div>
+                <button class="menu-toggle" aria-label="Toggle Menu" id="menuToggleBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div class="modify-container">
+        <h1><i class="fas fa-edit"></i> Modify Booking</h1>
+<div class="vehicle-summary">
+            <img src="" 
+                 alt="" 
+                 class="vehicle-image">
+            <div>
+                <h2></h2>
+                <p><strong>License Plate:</strong> </p>
+                <p><strong>Agency:</strong> </p>
+                <p><strong>Contact:</strong> </p>
+            </div>
+        </div>
+
+        <div class="booking-details">
+            <div class="detail-group">
+                <span class="detail-label">Booking Reference</span>
+                <span class="detail-value">#</span>
+            </div>
+            <div class="detail-group">
+                <span class="detail-label">Status</span>
+                <span class="detail-value"></span>
+            </div>
+            <div class="detail-group">
+                <span class="detail-label">Daily Rate</span>
+                <span class="detail-value">₱</span>
+            </div>
+            <div class="detail-group">
+                <span class="detail-label">Current Total</span>
+                <span class="detail-value">₱</span>
+            </div>
+        </div>
+
+        <form method="post" id="modifyForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pickup_date">New Pickup Date</label>
+                    <input type="date" id="pickup_date" name="pickup_date" 
+                           class="form-control" 
+                           value="" 
+                           min="" 
+                           required>
+                </div>
+                <div class="form-group">
+                    <label for="return_date">New Return Date</label>
+                    <input type="date" id="return_date" name="return_date" 
+                           class="form-control" 
+                           value="" 
+                           required>
+                </div>
+            </div>
+
+            <div class="booking-extras">
+                <h3 class="section-subtitle">Additional Services</h3>
+                <div class="extras-grid">
+                    
+                        
+                            <div class="extra-item">
+                                <input type="checkbox"
+                                    id="service_"
+                                    name="extras[]"
+                                    value=""
+                                    data-price=""
+                                    data-price-type=""
+                                    data-service-name=""
+                                    >
+                                <label for="service_">
+                                    <span class="extra-name"></span>
+                                    <span class="extra-price">
+                                        ₱
+                                        
+                                    </span>
+                                    
+                                        <small style="display:block; color: #777; font-size:0.85em;">
+                                            
+                                        </small>
+                                    
+                                </label>
+                            </div>
+                        
+                    
+                        <p>No additional services available for this vehicle.</p>
+                    
+                </div>
+            </div>
+
+            <div class="booking-summary">
+                <h3 class="section-subtitle">Booking Summary</h3>
+                <div class="summary-list">
+                    <div class="summary-item">
+                        <span>Base Rate:</span>
+                        <span id="base_rate">₱ x <span id="days_count">0</span> days</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Selected Options:</span>
+                        <span id="options_total">₱0.00</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total Amount:</span>
+                        <span id="total_amount">₱</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="btn-container">
+                <a href="my_bookings.html" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+        <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">FAQs</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+           // Hamburger menu for nav
+    const menuToggleBtn = document.getElementById('menuToggleBtn');
+    const navMenu = document.getElementById('mainNavMenu');
+    if (menuToggleBtn && navMenu) {
+        menuToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            menuToggleBtn.classList.toggle('active');
+        });
+        // Close nav menu when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                navMenu.classList.remove('active');
+                menuToggleBtn.classList.remove('active');
+            }
+        });
+    }
+          // Toggle Theme (Dark/Light)
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', themeMode);
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (themeMode === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            localStorage.setItem('theme', themeMode);
+        });
+
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (savedTheme === 'dark') {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        }
+
+        // Toggle Profile Menu
+        document.querySelector('.profile-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelector('.profile-menu').classList.toggle('active');
+
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelector('.profile-menu').classList.remove('active');
+        });
+
+        // Prevent closing when clicking inside menus
+        document.querySelectorAll('.notification-menu, .profile-menu').forEach(menu => {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+        
+        // Smooth scrolling for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Update year dynamically
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+        // Date validation
+        document.getElementById('pickup_date').addEventListener('change', function() {
+            document.getElementById('return_date').min = this.value;
+            if (document.getElementById('return_date').value < this.value) {
+                document.getElementById('return_date').value = this.value;
+            }
+        });
+
+        // Form validation
+        document.getElementById('modifyForm').addEventListener('submit', function(e) {
+            const pickup = new Date(document.getElementById('pickup_date').value);
+            const returnDate = new Date(document.getElementById('return_date').value);
+            const now = new Date();
+
+            if (pickup < now) {
+                e.preventDefault();
+                alert('Pickup date cannot be in the past.');
+            } else if (returnDate <= pickup) {
+                e.preventDefault();
+                alert('Return date must be after pickup date.');
+            }
+        });
+
+        function calculateTotal() {
+    const pickupDate = document.getElementById('pickup_date').value;
+    const returnDate = document.getElementById('return_date').value;
+    
+    if (!pickupDate || !returnDate) {
+        updateSummary(0, 0, 0);
+        return;
+    }
+
+    const pickup = new Date(pickupDate);
+    const returnD = new Date(returnDate);
+    const days = Math.ceil((returnD - pickup) / (1000 * 60 * 60 * 24));
+    
+    if (days <= 0) {
+        updateSummary(0, 0, 0);
+        return;
+    }
+
+    const baseRate = ;
+    const baseTotal = baseRate * days;
+    let extrasTotal = 0;
+
+    // Calculate extras
+    const extras = {
+        'gps': 300,
+        'child_seat': 200,
+        'additional_driver': 500,
+        'full_insurance': 800
+    };
+
+    document.querySelectorAll('input[name="extras[]"]:checked').forEach(checkbox => {
+        extrasTotal += (extras[checkbox.value] || 0) * days;
+    });
+
+    const total = baseTotal + extrasTotal;
+    updateSummary(days, extrasTotal, total);
+}
+
+function updateSummary(days, extrasTotal, total) {
+    const baseRate = ;
+    document.getElementById('days_count').textContent = days;
+    document.getElementById('base_rate').textContent = 
+        '₱' + baseRate.toFixed(2) + ' x ' + days + ' days';
+    document.getElementById('options_total').textContent = 
+        '₱' + extrasTotal.toFixed(2);
+    document.getElementById('total_amount').textContent = 
+        '₱' + total.toFixed(2);
+}
+
+// Add event listeners for extras
+document.querySelectorAll('input[name="extras[]"]').forEach(checkbox => {
+    checkbox.addEventListener('change', calculateTotal);
+});
+    </script>
+</body>
+</html>

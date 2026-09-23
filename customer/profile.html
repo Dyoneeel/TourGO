@@ -1,0 +1,863 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TourGo - My Profile</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet"> 
+    <link href="../public/assets/css/style.css" rel="stylesheet"> 
+    <style>
+        /* Root variables are inherited from styles.css */
+        /* Additional specific styles or overrides for profile.php */
+
+        .main-content { min-height: calc(100vh - var(--header-height, 70px)); padding: 40px 0; background-color: var(--bg-light); }
+        .profile-container { max-width: 1200px; margin: 0 auto; background: var(--white); border-radius: var(--card-border-radius, 16px); box-shadow: var(--card-shadow); overflow: hidden; }
+        
+        .profile-header { background: var(--gradient-primary); color: #ffffff; padding: 40px; position: relative; overflow: hidden; }
+        .circle-decoration { position: absolute; background-color: rgba(255, 255, 255, 0.05); border-radius: 50%; z-index: 1; pointer-events: none; }
+        .circle-1 { width: 180px; height: 180px; top: -40px; left: 10px; }
+        .circle-2 { width: 100px; height: 100px; bottom: -30px; right: 40px; }
+        .profile-header-content { position: relative; z-index: 2; display: flex; align-items: center; gap: 30px; }
+        .profile-avatar-container { position: relative; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.2); object-fit: cover; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+        .avatar-upload-btn { position: absolute; bottom: 5px; right: 5px; width: 36px; height: 36px; border-radius: 50%; background: #ffffff; color: var(--primary); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); transition: var(--transition); }
+        .avatar-upload-btn:hover { transform: scale(1.1); }
+        .profile-info h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; color: #ffffff;}
+        .profile-info .email { opacity: 0.9; font-size: 1.1rem; margin-bottom: 15px; color: #ffffff;}
+        
+        .verification-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; font-size: 0.875rem; font-weight: 600; margin-bottom: 15px; border-width: 1px; border-style: solid;}
+        .verification-badge.verified { background: rgba(40, 167, 69, 0.15); color: var(--success); border-color: rgba(40, 167, 69, 0.3); }
+        .verification-badge.pending { background: rgba(255, 193, 7, 0.15); color: var(--warning); border-color: rgba(255, 193, 7, 0.3); }
+        .verification-badge.unverified, .verification-badge.rejected { background: rgba(220, 53, 69, 0.15); color: var(--danger); border-color: rgba(220, 53, 69, 0.3); }
+        
+        .completion-progress { margin-top: 20px; }
+        .completion-text { font-size: 0.9rem; margin-bottom: 8px; opacity: 0.9; color: #ffffff;}
+        .progress-bar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.2); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ffffff, rgba(255, 255, 255, 0.8)); border-radius: 4px; transition: width 0.5s ease; }
+        
+        .tab-navigation { display: flex; border-bottom: 1px solid var(--accent-light); background: var(--white); overflow-x: auto; } /* Use --white for tab nav bg based on styles.css */
+        .tab-button { background: none; border: none; padding: 20px 24px; font-size: 1rem; font-weight: 500; color: var(--text-light); cursor: pointer; transition: var(--transition); border-bottom: 3px solid transparent; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+        .tab-button:hover { color: var(--primary); background: var(--accent-light); } /* Use --accent-light for hover based on styles.css */
+        .tab-button.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--accent-light); } /* Use --accent-light for active based on styles.css */
+        
+        .tab-content { display: none; padding: 30px 40px; background-color: var(--white); /* Ensure tab content also uses --white from styles.css */ }
+        .tab-content.active { display: block; }
+        
+        .form-section { margin-bottom: 40px; }
+        .section-title { font-size: 1.4rem; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .section-title i { color: var(--primary); font-size: 1.2rem; }
+        
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .form-group { position: relative; }
+        .form-group label { display: block; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; font-size: 0.95rem; }
+        .required-field::after { content: ' *'; color: var(--danger); }
+        
+        /* .form-control is styled in styles.css, ensure consistency or override if needed */
+        /* For profile.php, we might need to ensure it picks up dark theme variables if not directly using .form-control class from styles.css */
+        input.form-control, select.form-control, textarea.form-control {
+             width: 100%; padding: 14px 16px; border: 1px solid var(--accent-light); /* Use accent-light for border */
+             border-radius: var(--border-radius); font-size: 1rem;
+             transition: var(--transition); background-color: var(--white); color: var(--text-dark); /* Use --white for bg */
+        }
+        input.form-control:focus, select.form-control:focus, textarea.form-control:focus {
+            outline: none; border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(77, 148, 255, 0.2); /* As per styles.css .form-control:focus */
+        }
+        
+        .file-upload-container { position: relative; border: 2px dashed var(--accent-light); border-radius: var(--border-radius); padding: 20px; text-align: center; transition: var(--transition); cursor: pointer; background-color: var(--white); }
+        .file-upload-container:hover { border-color: var(--primary); background: var(--accent-light); }
+        .file-upload-input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; top: 0; left: 0; }
+        .upload-icon { font-size: 3rem; color: var(--text-light); margin-bottom: 15px; }
+        .upload-text { color: var(--text-dark); font-weight: 500; margin-bottom: 5px; }
+        .upload-subtext { color: var(--text-light); font-size: 0.875rem; }
+        
+        .document-preview { display: flex; gap: 20px; margin-top: 20px; flex-wrap: wrap; }
+        .document-item { border: 1px solid var(--accent-light); border-radius: var(--border-radius); padding: 15px; text-align: center; flex: 1; min-width: 200px; background-color: var(--white); color: var(--text-dark); }
+        .document-item img, .document-item iframe { max-width: 100%; height: auto; max-height: 150px; border-radius: 8px; margin-bottom: 10px; display: block; margin-left: auto; margin-right: auto; border: 1px solid var(--accent-light); }
+        .document-item .pdf-icon { font-size: 3rem; color: var(--danger); margin-bottom: 10px; }
+        
+        .alerts-container { padding: 0 40px; }
+        .alert { padding: 16px 20px; margin-bottom: 20px; border-radius: var(--border-radius); display: flex; align-items: center; gap: 12px; border-left-width: 4px; border-left-style: solid; color: var(--text-dark); }
+        .alert-success { background-color: rgba(40,167,69,0.1); border-left-color: var(--success); color: var(--success); }
+        .alert-danger { background-color: rgba(220,53,69,0.1); border-left-color: var(--danger); color: var,--danger); }
+        .alert-info { background-color: rgba(23,162,184,0.1); border-left-color: var(--info); color: var,--info); }
+        .alert-warning { background-color: rgba(255,193,7,0.1); border-left-color: var(--warning); color: var,--warning); }
+        
+        .form-actions { display: flex; gap: 15px; justify-content: flex-end; padding-top: 30px; border-top: 1px solid var(--accent-light); margin-top: 30px; }
+        /* .btn styles are from styles.css */
+
+        /* Review Tab Specific Styles */
+        #review-tab .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px; }
+        #review-tab .review-section { background: var(--white); border: 1px solid var(--accent-light); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--box-shadow); }
+        #review-tab .review-section h3 { font-size: 1.2rem; font-weight: 600; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--accent-light); padding-bottom:10px;}
+        #review-tab .review-item { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 0; border-bottom: 1px dashed var(--accent-light); font-size: 0.95rem; }
+        #review-tab .review-item:last-child { border-bottom: none; }
+        #review-tab .review-item label { color: var(--text-light); font-weight: 500; margin-bottom: 4px; font-size: 0.85rem; }
+        #review-tab .review-item span { color: var(--text-dark); font-weight: normal; word-break: break-word; }
+        #review-tab .document-status-list { margin-top: 10px; }
+        #review-tab .doc-status-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; padding: 8px 0; border-bottom: 1px dashed var(--accent-light); }
+        #review-tab .doc-status-item:last-child { border-bottom: none; }
+        #review-tab .doc-status-item > span:first-of-type { display: flex; align-items: center; gap: 8px; color: var(--text-dark); }
+        #review-tab .doc-status-item .fas { color: var(--primary); font-size: 1.1rem; }
+        #review-tab .doc-status-badge { padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; border-width: 1px; border-style: solid;}
+        #review-tab .doc-status-badge.uploaded { background: rgba(40,167,69,0.1); color: var(--success); border-color: var(--success); }
+        #review-tab .doc-status-badge.missing { background: rgba(220,53,69,0.1); color: var(--danger); border-color: var(--danger); }
+        #review-tab .terms-agreement { margin-top: 24px; padding: 16px 0; border-top: 1px solid var(--accent-light); }
+        #review-tab .checkbox-container { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; }
+        #review-tab .checkbox-container input[type="checkbox"] { accent-color: var(--primary); width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
+        #review-tab .checkbox-container label { color: var(--text-dark); font-weight: normal; cursor: pointer; line-height: 1.5; }
+        #review-tab .checkbox-container a { color: var(--primary); text-decoration: underline; font-weight: 500; }
+
+        /* --- Dark Theme Styles using variables from styles.css --- */
+        [data-theme="dark"] .main-content { background-color: var(--bg-light); /* Dark: #1e1e2d */ }
+        [data-theme="dark"] .profile-container { background: var(--white); /* Dark: #283046 */ box-shadow: var(--box-shadow); color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        
+        [data-theme="dark"] .profile-header { background: linear-gradient(135deg, var(--primary-dark) 0%, #1a2035 100%); } /* Slightly darker than --white for gradient*/
+        [data-theme="dark"] .profile-avatar { border-color: rgba(255, 255, 255, 0.1); }
+        [data-theme="dark"] .avatar-upload-btn { background: var(--accent-light); /* Dark: #2c3344 */ color: var(--primary); }
+        [data-theme="dark"] .profile-info h1, [data-theme="dark"] .profile-info .email, [data-theme="dark"] .completion-text { color: #e1e1e1; } /* Explicit white/light text for header */
+        
+        [data-theme="dark"] .verification-badge { background-color: var(--accent-light); /* Dark: #2c3344 */ border-color: rgba(255,255,255,0.2); }
+        [data-theme="dark"] .verification-badge.verified { background: rgba(40, 167, 69, 0.2); color: #6ee7b7; border-color: rgba(40, 167, 69, 0.4); }
+        [data-theme="dark"] .verification-badge.pending { background: rgba(255, 193, 7, 0.2); color: #fcd34d; border-color: rgba(255, 193, 7, 0.4); }
+        [data-theme="dark"] .verification-badge.unverified, 
+        [data-theme="dark"] .verification-badge.rejected { background: rgba(220, 53, 69, 0.2); color: #fca5a5; border-color: rgba(220, 53, 69, 0.4); }
+        
+        [data-theme="dark"] .progress-bar { background: rgba(255, 255, 255, 0.1); }
+        [data-theme="dark"] .progress-fill { background: linear-gradient(90deg, var(--primary), var(--primary-dark)); }
+        
+        [data-theme="dark"] .tab-navigation { background: var(--white); /* Dark: #283046 */ border-bottom-color: var(--accent-light); /* Dark: #2c3344 */ }
+        [data-theme="dark"] .tab-button { color: var(--text-light); /* Dark: #a0a0a0 */ }
+        [data-theme="dark"] .tab-button:hover { color: var(--primary); background: var(--accent-light); /* Dark: #2c3344 */ }
+        [data-theme="dark"] .tab-button.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--accent-light); /* Dark: #2c3344 */ }
+        
+        [data-theme="dark"] .tab-content { background-color: var(--white); /* Dark: #283046 */ }
+        [data-theme="dark"] .section-title { color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        [data-theme="dark"] .section-title i { color: var(--primary); }
+        [data-theme="dark"] .form-group label { color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        
+        [data-theme="dark"] input.form-control, 
+        [data-theme="dark"] select.form-control, 
+        [data-theme="dark"] textarea.form-control {
+             background-color: var(--bg-light); /* Dark: #1e1e2d */ border-color: var(--accent-light); /* Dark: #2c3344 */
+             color: var(--text-dark); /* Dark: #e1e1e1 */
+        }
+        [data-theme="dark"] input.form-control:focus, 
+        [data-theme="dark"] select.form-control:focus, 
+        [data-theme="dark"] textarea.form-control:focus {
+             border-color: var(--primary); box-shadow: 0 0 0 3px rgba(77, 148, 255, 0.2);
+             background-color: var(--accent-light); /* Dark: #2c3344 for focused input bg */
+        }
+        [data-theme="dark"] input.form-control::placeholder, [data-theme="dark"] textarea.form-control::placeholder { color: var(--text-light); /* Dark: #a0a0a0 */ }
+        [data-theme="dark"] select.form-control option { background: var(--bg-light); /* Dark: #1e1e2d */ color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        [data-theme="dark"] input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.8); } /* Adjust if too light/dark */
+        
+        [data-theme="dark"] .file-upload-container { border-color: var(--accent-light); /* Dark: #2c3344 */ background-color: var(--bg-light); /* Dark: #1e1e2d */ }
+        [data-theme="dark"] .file-upload-container:hover { border-color: var(--primary); background: var(--accent-light); /* Dark: #2c3344 */ }
+        [data-theme="dark"] .upload-icon { color: var(--text-light); /* Dark: #a0a0a0 */ }
+        [data-theme="dark"] .upload-text { color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        [data-theme="dark"] .upload-subtext { color: var(--text-light); /* Dark: #a0a0a0 */ }
+        
+        [data-theme="dark"] .document-preview .document-item { background-color: var(--accent-light); /* Dark: #2c3344 */ border-color: var(--bg-light); /* Dark: #1e1e2d */ color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        [data-theme="dark"] .document-item img, [data-theme="dark"] .document-item iframe { border-color: var(--bg-light); /* Dark: #1e1e2d */ }
+        [data-theme="dark"] .document-item .pdf-icon { color: #f87171; }
+        
+        [data-theme="dark"] .alerts-container .alert { background-color: var(--accent-light); /* Dark: #2c3344 */ }
+        [data-theme="dark"] .alert-success { background-color: rgba(40,167,69,0.15); color: #6ee7b7; border-left-color: var(--success); }
+        [data-theme="dark"] .alert-danger { background-color: rgba(220,53,69,0.15); color: #fca5a5; border-left-color: var(--danger); }
+        [data-theme="dark"] .alert-info { background-color: rgba(23,162,184,0.15); color: #67e8f9; border-left-color: var(--info); }
+        [data-theme="dark"] .alert-warning { background-color: rgba(255,193,7,0.15); color: #fcd34d; border-left-color: var(--warning); }
+        
+        [data-theme="dark"] .form-actions { border-top-color: var(--accent-light); /* Dark: #2c3344 */ }
+        [data-theme="dark"] .btn.btn-primary { background: var(--primary); color: #ffffff; /* Primary btn text white for dark theme too */ }
+        [data-theme="dark"] .btn.btn-primary:hover { background: var(--primary-dark); }
+        [data-theme="dark"] .btn.btn-secondary { background: var(--text-light); /* Dark: #a0a0a0 */ color: var(--bg-light); /* Dark: #1e1e2d */ }
+        [data-theme="dark"] .btn.btn-secondary:hover { background: var(--text-dark); /* Dark: #e1e1e1 */ color: var(--bg-light); }
+        [data-theme="dark"] .btn:disabled { background: var(--accent-light); /* Dark: #2c3344 */ color: var(--text-light); /* Dark: #a0a0a0 */ opacity: 0.6; border: 1px solid var(--text-light); }
+
+        /* Dark Theme for Review Tab (using styles.css variables) */
+        [data-theme="dark"] #review-tab .review-section { background: var(--white); /* Dark: #283046 */ border-color: var(--accent-light); /* Dark: #2c3344 */ }
+        [data-theme="dark"] #review-tab .review-section h3 { color: var(--primary); border-bottom-color: var(--accent-light); }
+        [data-theme="dark"] #review-tab .review-item { border-bottom-color: var(--accent-light); }
+        [data-theme="dark"] #review-tab .review-item label { color: var(--text-light); /* Dark: #a0a0a0 */ }
+        [data-theme="dark"] #review-tab .review-item span { color: var(--text-dark); /* Dark: #e1e1e1 */ }
+        [data-theme="dark"] #review-tab .doc-status-item { border-bottom-color: var(--accent-light); }
+        [data-theme="dark"] #review-tab .doc-status-item > span:first-of-type { color: var(--text-dark); }
+        [data-theme="dark"] #review-tab .doc-status-item .fas { color: var(--primary); }
+        [data-theme="dark"] #review-tab .doc-status-badge.uploaded { background: rgba(40, 167, 69, 0.2); color: #6ee7b7; border-color: var(--success); }
+        [data-theme="dark"] #review-tab .doc-status-badge.missing { background: rgba(220, 53, 69, 0.2); color: #fca5a5; border-color: var(--danger); }
+        [data-theme="dark"] #review-tab .terms-agreement { border-top-color: var(--accent-light); }
+        [data-theme="dark"] #review-tab .checkbox-container label { color: var(--text-dark); }
+        [data-theme="dark"] #review-tab .checkbox-container a { color: var(--primary); }
+        [data-theme="dark"] #review-tab .checkbox-container input[type="checkbox"] { border: 1px solid var(--accent-light); /* Dark: #2c3344 */ }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content { padding: 20px 10px; }
+            .alerts-container { padding: 0 20px; }
+            .tab-content { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 20px; }
+            .form-actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center;}
+            .profile-header { padding: 30px 20px; }
+            #review-tab .review-grid { grid-template-columns: 1fr; }
+        }
+        .tab-navigation::-webkit-scrollbar { height: 4px; }
+        .tab-navigation::-webkit-scrollbar-track { background: var(--accent-light); /* Light: #f0f7ff */ }
+        .tab-navigation::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 2px; }
+        [data-theme="dark"] .tab-navigation::-webkit-scrollbar-track { background: var(--bg-light); /* Dark: #1e1e2d */ }
+        [data-theme="dark"] .tab-navigation::-webkit-scrollbar-thumb { background: var(--primary); }
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .slide-up { animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    </style>
+</head>
+<body>
+     <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="customer_dashboard.html"> <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                    <li><a href="my_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="profile.html" class="profile-menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="favorite_cars.html" class="profile-menu-item">
+                                <i class="fas fa-heart"></i>
+                                <span>Favorites</span>
+                            </a>
+                            <a href="about.html" class="profile-menu-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About Us</span>
+                            </a>
+                            <hr>
+                            
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="circle-decoration circle-1"></div>
+                    <div class="circle-decoration circle-2"></div>
+                    <div class="profile-header-content">
+                        <div class="profile-avatar-container">
+                            <img src="" alt="Profile" class="profile-avatar" id="headerAvatar">
+                            <button class="avatar-upload-btn" onclick="document.getElementById('profile_image_trigger').click()" title="Change Profile Picture">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <h1></h1>
+                            <p class="email"></p>
+                            <div class="verification-badge ">
+                                <i class="fas fa-"></i>
+                                <span> Account</span>
+                            </div>
+                            <div class="completion-progress">
+                                <div class="completion-text">Profile Completion: %</div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: %"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-navigation">
+                    <button class="tab-button " data-tab="personal"><i class="fas fa-user"></i> Personal Info</button>
+                    <button class="tab-button " data-tab="address"><i class="fas fa-map-marker-alt"></i> Address</button>
+                    <button class="tab-button " data-tab="license"><i class="fas fa-id-card"></i> License</button>
+                    <button class="tab-button " data-tab="documents"><i class="fas fa-file-upload"></i> Documents</button>
+                    <button class="tab-button " data-tab="security"><i class="fas fa-shield-alt"></i> Security</button>
+                    <button class="tab-button " data-tab="review"><i class="fas fa-clipboard-check"></i> Review & Submit</button>
+                    <button class="tab-button" onclick="window.location.href='profile.html?tab=support'">
+                        <i class="fas fa-headset"></i> Support
+                    </button>
+                </div>
+                
+                
+
+
+                <div class="tab-content " id="personal-tab">
+                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="form_type" value="personal_info">
+                        <div class="form-section">
+                            <h2 class="section-title"><i class="fas fa-user-circle"></i> Personal Information</h2>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="first_name" class="required-field">First Name</label><input type="text" id="first_name" name="first_name" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="last_name" class="required-field">Last Name</label><input type="text" id="last_name" name="last_name" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="phone" class="required-field">Phone Number</label><input type="tel" id="phone" name="phone" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="date_of_birth" class="required-field">Date of Birth</label><input type="date" id="date_of_birth" name="date_of_birth" class="form-control" value="" required></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile_image">Profile Picture</label>
+                                <div class="file-upload-container">
+                                    <input type="file" id="profile_image" name="profile_image" class="file-upload-input" accept="image/*" data-previewtarget="#headerAvatar" data-previewtarget2="#dropdownAvatar">
+                                    <input type="file" id="profile_image_trigger" style="display:none;" accept="image/*">
+                                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <div class="upload-text" id="profile_image_text">Upload Profile Picture</div>
+                                    <div class="upload-subtext">JPG, PNG, GIF up to 5MB</div>
+                                </div>
+                                
+                                <div class="document-preview" style="justify-content: center; margin-top:10px;">
+                                    <div class="document-item" style="flex: 0 1 150px;">
+                                        <img src="../uploads/profiles/" alt="Current Profile Picture">
+                                        <div>Current Picture</div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Personal Info</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="address-tab">
+                    <form method="POST">
+                        <input type="hidden" name="form_type" value="address_info">
+                        <div class="form-section">
+                            <h2 class="section-title"><i class="fas fa-home"></i> Address Information</h2>
+                            <div class="form-group"><label for="address" class="required-field">Street Address</label><textarea id="address" name="address" class="form-control" rows="3" required></textarea></div>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="city" class="required-field">City</label><input type="text" id="city" name="city" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="state">State/Province</label><input type="text" id="state" name="state" class="form-control" value=""></div>
+                                <div class="form-group"><label for="country" class="required-field">Country</label>
+                                    <select id="country" name="country" class="form-control" required>
+                                        <option value="">Select Country</option>
+                                        
+                                    </select>
+                                </div>
+                                <div class="form-group"><label for="postal_code" class="required-field">Postal/ZIP Code</label><input type="text" id="postal_code" name="postal_code" class="form-control" value="" required></div>
+                            </div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Address</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="license-tab">
+                    <form method="POST">
+                        <input type="hidden" name="form_type" value="license_info">
+                        <div class="form-section">
+                            <h2 class="section-title"><i class="fas fa-id-card"></i> Driving License Information</h2>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="driving_license_number" class="required-field">License Number</label><input type="text" id="driving_license_number" name="driving_license_number" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="driving_license_expiry" class="required-field">License Expiry Date</label><input type="date" id="driving_license_expiry" name="driving_license_expiry" class="form-control" value="" required></div>
+                            </div>
+                            <div class="alert alert-info" style="margin-top: 20px;"><i class="fas fa-info-circle"></i><div><strong>Important:</strong> Please ensure your driving license is valid and not expired. You'll need to upload license documents in the Documents tab for verification.</div></div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save License Info</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="documents-tab">
+                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="form_type" value="documents">
+                        <div class="form-section">
+                            <h2 class="section-title"><i class="fas fa-file-upload"></i> Verification Documents</h2>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="license_front_image">License Front Image (Required for Verification)</label>
+                                    <div class="file-upload-container"><input type="file" id="license_front_image" name="license_front_image" class="file-upload-input" accept="image/*,.pdf"><div class="upload-icon"><i class="fas fa-id-card"></i></div><div class="upload-text" id="license_front_text">Upload License Front</div><div class="upload-subtext">JPG, PNG, PDF up to 10MB</div></div>
+                                </div>
+                                <div class="form-group"><label for="license_back_image">License Back Image (Required for Verification)</label>
+                                    <div class="file-upload-container"><input type="file" id="license_back_image" name="license_back_image" class="file-upload-input" accept="image/*,.pdf"><div class="upload-icon"><i class="fas fa-id-card"></i></div><div class="upload-text" id="license_back_text">Upload License Back</div><div class="upload-subtext">JPG, PNG, PDF up to 10MB</div></div>
+                                </div>
+                            </div>
+                            
+                            <h3 style="margin-top:30px; margin-bottom:15px; font-size: 1.2rem; color:var(--text-dark);">Current Documents:</h3>
+                            <div class="document-preview">
+                                
+                                <div class="document-item">
+                                    <img src="" alt="License Front">
+                                    <a href="" target="_blank" title="View PDF"><i class="fas fa-file-pdf pdf-icon"></i><p>View PDF</p></a>
+                                    <div>License Front</div>
+                                </div>
+                                
+                                
+                                <div class="document-item">
+                                     <img src="" alt="License Back">
+                                    <a href="" target="_blank" title="View PDF"><i class="fas fa-file-pdf pdf-icon"></i><p>View PDF</p></a>
+                                    <div>License Back</div>
+                                </div>
+                                
+                            </div>
+                            
+                            <div class="alert alert-info" style="margin-top: 30px;"><i class="fas fa-shield-alt"></i><div><strong>Verification Process:</strong><br>&bull; Upload clear images/PDFs of both sides of your license.<br>&bull; Ensure all profile info (Personal, Address, License) is complete.<br>&bull; Go to 'Review & Submit' tab to request verification.<br>&bull; Review typically within 24-48 hours.</div></div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Upload/Update Documents</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="security-tab">
+                    <div class="form-section">
+                        <h2 class="section-title"><i class="fas fa-shield-alt"></i> Account Security</h2>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i>
+                            <div><strong>Account Status:</strong>
+                                
+                            </div>
+                        </div>
+                        <div class="form-actions" style="justify-content: flex-start;">
+                            <a href="../auth/change_password.html" class="btn btn-secondary"><i class="fas fa-key" style="margin-right: 10px;"></i> Change Password</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content " id="review-tab">
+                    <form method="POST">
+                        <input type="hidden" name="form_type" value="request_verification">
+                        <div class="form-section">
+                            <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Review Your Information</h2>
+                              
+                                <div class="alert alert-danger">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <div>
+                                        <strong>Reason for Rejection:</strong><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="alert alert-info" style="margin-top: 15px;">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <div>
+                                        <strong>What to do next:</strong><br>
+                                        Please review the reason above, make the necessary corrections to your profile and documents, 
+                                        then resubmit for verification.
+                                    </div>
+                                </div>
+                            
+
+                            <div class="review-grid">
+                                <div class="review-section">
+                                    <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                                    <div class="review-item"><label>Full Name:</label> <span></span></div>
+                                    <div class="review-item"><label>Email:</label> <span></span></div>
+                                    <div class="review-item"><label>Phone:</label> <span></span></div>
+                                    <div class="review-item"><label>Date of Birth:</label> <span></span></div>
+                                </div>
+                                <div class="review-section">
+                                    <h3><i class="fas fa-map-marked-alt"></i> Address Information</h3>
+                                    <div class="review-item"><label>Address:</label> <span></span></div>
+                                    <div class="review-item"><label>City:</label> <span></span></div>
+                                    <div class="review-item"><label>State/Province:</label> <span></span></div>
+                                    <div class="review-item"><label>Country:</label> <span></span></div>
+                                    <div class="review-item"><label>Postal Code:</label> <span></span></div>
+                                </div>
+                                <div class="review-section">
+                                    <h3><i class="fas fa-id-card"></i> License Information</h3>
+                                    <div class="review-item"><label>License Number:</label> <span></span></div>
+                                    <div class="review-item"><label>Expiry Date:</label> <span></span></div>
+                                </div>
+                                <div class="review-section">
+                                    <h3><i class="fas fa-file-alt"></i> Uploaded Documents</h3>
+                                    <div class="document-status-list">
+                                        <div class="doc-status-item"><span><i class="fas fa-portrait"></i> Profile Picture:</span> <span class="doc-status-badge " id="review_profile_image_status"></span></div>
+                                        <div class="doc-status-item"><span><i class="fas fa-id-card-alt"></i> License Front:</span> <span class="doc-status-badge " id="review_license_front_status"></span></div>
+                                        <div class="doc-status-item"><span><i class="fas fa-id-card-alt"></i> License Back:</span> <span class="doc-status-badge " id="review_license_back_status"></span></div>
+                                    </div>
+                                    <small style="display:block; margin-top:10px; color:var(--text-light);">To upload or change documents, please visit the 'Personal Info' or 'Documents' tabs.</small>
+                                </div>
+                            </div>
+
+                            
+                                <div class="terms-agreement">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="terms_agreement" name="terms_agreement" required>
+                                        <label for="terms_agreement">I confirm all information is accurate and I agree to the <a href="../terms.html" target="_blank">Terms of Service</a> and <a href="../privacy.html" target="_blank">Privacy Policy</a>.</label>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" id="requestVerificationBtn" class="btn btn-primary" disabled>
+                                        <i class="fas fa-paper-plane"></i> Request Verification
+                                    </button>
+                                </div>
+                                <div id="verificationBlockerMsg" class="alert alert-warning" style="margin-top: 15px; display: none; justify-content: center;">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <div>Your profile is % complete. Please ensure all sections are fully updated and agree to terms to request verification.</div>
+                                </div>
+                            
+                                <div class="alert alert-info" style="margin-top: 20px;"><i class="fas fa-clock"></i><div>Your verification request is currently pending review.</div></div>
+                            
+                                <div class="alert alert-success" style="margin-top: 20px;"><i class="fas fa-check-circle"></i><div>Your account is already verified.</div></div>
+                            
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="support">
+                    <div class="form-section">
+                        <div class="section-title"><i class="fas fa-headset"></i> Support & Complaints</div>
+                        
+                            <div style="color: #888;">You have not submitted any complaints yet.</div>
+                        
+                            <div class="complaints-list">
+                                
+                                    <div class="complaint-card" style="border:1px solid #eee; border-radius:10px; margin-bottom:20px; padding:20px; background:#fafbfc;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                                            <div>
+                                                <span class="complaint-subject" style="font-weight:600; font-size:1.1rem; color:#333;">
+                                                    
+                                                </span>
+                                                <span class="status-badge status-" style="margin-left:15px; padding:3px 10px; border-radius:12px; font-size:0.9em; background:; color:#222;">
+                                                    
+                                                </span>
+                                            </div>
+                                            <div style="font-size:0.95em; color:#888;">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="complaint-message" style="margin:12px 0 8px 0; color:#444;">
+                                            
+                                        </div>
+                                        
+                                            <div class="admin-notes" style="background:#e9f7ef; border-left:4px solid #28a745; padding:10px 15px; border-radius:6px; margin-top:10px;">
+                                                <strong>Admin Notes:</strong><br>
+                                                
+                                            </div>
+                                        
+                                        
+                                            <div style="font-size:0.9em; color:#28a745; margin-top:6px;">Resolved on: </div>
+                                        
+                                    </div>
+                                
+                            </div>
+                        
+                        <div style="margin-top:30px;">
+                            <a href="contact.html" class="btn btn-primary"><i class="fas fa-plus"></i> Submit a New Complaint</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+        <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">FAQs</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const themeToggle = document.querySelector('.theme-toggle');
+        const themeIcon = themeToggle ? themeToggle.querySelector('i') : null;
+        const profileToggleBtn = document.getElementById('profileToggleBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('mainNavMenu');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const targetTab = this.dataset.tab;
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                this.classList.add('active');
+                const activeContent = document.getElementById(targetTab + '-tab');
+                if (activeContent) {
+                    activeContent.classList.add('active', 'slide-up');
+                    setTimeout(() => activeContent.classList.remove('slide-up'), 300);
+                    if (history.pushState) {
+                         try { history.pushState(null, null, '?tab=' + targetTab); }
+                         catch(e) { window.location.hash = targetTab; }
+                    } else { location.hash = targetTab; }
+                }
+            });
+        });
+
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            if (themeIcon) themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', theme); 
+        }
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                setTheme(currentTheme);
+            });
+        }
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme);
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !savedTheme) {
+            setTheme('dark');
+        } else {
+            setTheme('light'); 
+        }
+
+        function setupToggle(btn, menuElem) {
+            if (btn && menuElem) {
+                btn.addEventListener('click', e => { e.stopPropagation(); menuElem.classList.toggle('active'); });
+                menuElem.addEventListener('click', e => e.stopPropagation());
+            }
+        }
+        setupToggle(profileToggleBtn, profileMenu);
+        setupToggle(menuToggleBtn, navMenu);
+        document.addEventListener('click', () => {
+            if(profileMenu) profileMenu.classList.remove('active');
+            if (navMenu) navMenu.classList.remove('active');
+        });
+
+        function setupFileInput(inputId, textDisplayId, previewTargets = []) {
+            const input = document.getElementById(inputId);
+            const textDisplay = document.getElementById(textDisplayId);
+            const originalText = textDisplay ? textDisplay.textContent : '';
+
+            if (input) {
+                input.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (textDisplay) textDisplay.textContent = file ? file.name : originalText;
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            previewTargets.forEach(selector => {
+                                const el = document.querySelector(selector);
+                                if (el) el.src = event.target.result;
+                            });
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                    updateReviewTabDocumentStatus(); 
+                });
+            }
+        }
+        setupFileInput('profile_image', 'profile_image_text', ['#headerAvatar', '#dropdownAvatar']);
+        setupFileInput('license_front_image', 'license_front_text');
+        setupFileInput('license_back_image', 'license_back_text');
+
+        const avatarUploadBtnOnHeader = document.querySelector('.profile-avatar-container .avatar-upload-btn');
+        const actualProfileImageInput = document.getElementById('profile_image');
+        const profileImageTrigger = document.getElementById('profile_image_trigger');
+        if(avatarUploadBtnOnHeader && actualProfileImageInput && profileImageTrigger) {
+            avatarUploadBtnOnHeader.addEventListener('click', function() {
+                const personalTabButton = document.querySelector('.tab-button[data-tab="personal"]');
+                if(personalTabButton && !personalTabButton.classList.contains('active')) personalTabButton.click();
+                profileImageTrigger.click(); 
+            });
+            profileImageTrigger.addEventListener('change', function(e){
+                actualProfileImageInput.files = e.target.files;
+                actualProfileImageInput.dispatchEvent(new Event('change', { bubbles: true }));
+            });
+        }
+
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                form.querySelectorAll('[required]').forEach(field => {
+                    let fieldError = false;
+                    if (field.type === 'checkbox') { if (!field.checked) fieldError = true; }
+                    else if (!field.value.trim()) { fieldError = true; }
+                    
+                    if (fieldError) {
+                        isValid = false;
+                        field.style.borderColor = 'var(--danger)';
+                         if (field.type === 'checkbox') field.closest('.checkbox-container').style.outline = '1px solid var(--danger)';
+                    } else {
+                        field.style.borderColor = '';
+                        if (field.type === 'checkbox') field.closest('.checkbox-container').style.outline = '';
+                    }
+                });
+
+                const dobInput = form.querySelector('#date_of_birth');
+                if (dobInput && dobInput.value) {
+                    const birthDate = new Date(dobInput.value);
+                    const today = new Date();
+                    let age = today.getFullYear() - birthDate.getFullYear();
+                    const m = today.getMonth() - birthDate.getMonth();
+                    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                        age--;
+                    }
+                    if (age < 18) { isValid = false; dobInput.style.borderColor = 'var(--danger)'; showAlertInForm(form, 'Must be at least 18 years old.');}
+                }
+                const licenseExpiryInput = form.querySelector('#driving_license_expiry');
+                if (licenseExpiryInput && licenseExpiryInput.value) {
+                     const today = new Date(); today.setHours(0,0,0,0);
+                    if (new Date(licenseExpiryInput.value) <= today) { isValid = false; licenseExpiryInput.style.borderColor = 'var(--danger)'; showAlertInForm(form, 'License expiry must be future date.');}
+                }
+
+                if (!isValid) {
+                    e.preventDefault();
+                    showAlertInForm(form, 'Please fill all required fields correctly.', 'danger');
+                     // Re-enable button if client validation fails before server submission
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) submitBtn.disabled = false;
+
+                } else {
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    }
+                }
+            });
+        });
+
+        function showAlertInForm(form, message, type = 'info') { 
+            const alertContainer = form.querySelector('.form-alerts') || document.createElement('div');
+            if (!form.querySelector('.form-alerts')) { alertContainer.className = 'form-alerts'; form.insertBefore(alertContainer, form.firstChild); }
+            alertContainer.innerHTML = ''; 
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} fade-in`; // Use general alert classes for styling
+            alertDiv.innerHTML = `<i class="fas ${type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i><div>${message}</div>`;
+            alertContainer.appendChild(alertDiv);
+            setTimeout(() => { alertDiv.style.opacity = '0'; setTimeout(() => alertDiv.remove(), 300);}, 5000);
+        }
+        
+        document.querySelectorAll('.alerts-container .alert').forEach(alert => {
+            setTimeout(() => { alert.style.opacity = '0'; alert.style.transform = 'translateY(-20px)'; setTimeout(() => alert.remove(), 500);}, 7000);
+        });
+
+        const dobInput = document.getElementById('date_of_birth');
+        if (dobInput) { dobInput.max = new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]; }
+        const licenseExpiryDateInput = document.getElementById('driving_license_expiry');
+        if (licenseExpiryDateInput) { 
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            licenseExpiryDateInput.min = tomorrow.toISOString().split('T')[0]; 
+        }
+
+        const progressFill = document.querySelector('.progress-fill');
+        if (progressFill) { setTimeout(() => { progressFill.style.width = '%'; }, 300); }    
+
+        const termsCheckbox = document.getElementById('terms_agreement');
+        const requestVerificationBtn = document.getElementById('requestVerificationBtn');
+        const verificationBlockerMsg = document.getElementById('verificationBlockerMsg');
+        const completionPercentage = ;
+        const verificationStatus = '';
+
+        function updateReviewTabDocumentStatus() {
+            const profileImgStatusEl = document.getElementById('review_profile_image_status');
+            const licenseFrontStatusEl = document.getElementById('review_license_front_status');
+            const licenseBackStatusEl = document.getElementById('review_license_back_status');
+
+            const profileImgUploaded = ;
+            const licenseFrontUploaded = ;
+            const licenseBackUploaded = ;
+
+            if(profileImgStatusEl){
+                profileImgStatusEl.textContent = profileImgUploaded ? 'Uploaded' : 'Missing';
+                profileImgStatusEl.className = 'doc-status-badge ' + (profileImgUploaded ? 'uploaded' : 'missing');
+            }
+            if(licenseFrontStatusEl){
+                licenseFrontStatusEl.textContent = licenseFrontUploaded ? 'Uploaded' : 'Missing';
+                licenseFrontStatusEl.className = 'doc-status-badge ' + (licenseFrontUploaded ? 'uploaded' : 'missing');
+            }
+            if(licenseBackStatusEl){
+                licenseBackStatusEl.textContent = licenseBackUploaded ? 'Uploaded' : 'Missing';
+                licenseBackStatusEl.className = 'doc-status-badge ' + (licenseBackUploaded ? 'uploaded' : 'missing');
+            }
+        }
+        
+        function checkVerificationButtonState() {
+            if (requestVerificationBtn) {
+                const canRequest = completionPercentage >= 100 && (termsCheckbox ? termsCheckbox.checked : true) && (verificationStatus === 'unverified' || verificationStatus === 'rejected');
+                requestVerificationBtn.disabled = !canRequest;
+                if (verificationBlockerMsg) {
+                    if (verificationStatus === 'unverified' || verificationStatus === 'rejected') {
+                        verificationBlockerMsg.style.display = (completionPercentage < 100) ? 'flex' : 'none';
+                        if(completionPercentage < 100) {
+                             verificationBlockerMsg.querySelector('div:last-child').innerHTML = `Your profile is ${completionPercentage}% complete. Please ensure all sections are fully updated and agree to terms to request verification.`;
+                        }
+                    } else {
+                        verificationBlockerMsg.style.display = 'none';
+                    }
+                }
+                 requestVerificationBtn.title = canRequest ? "Submit your profile for verification" : "Please complete your profile 100% and agree to terms.";
+            }
+        }
+
+        if (termsCheckbox) {
+            termsCheckbox.addEventListener('change', checkVerificationButtonState);
+        }
+        updateReviewTabDocumentStatus(); 
+        checkVerificationButtonState(); 
+
+        const currentActiveTabFromPHP = '';
+        if (currentActiveTabFromPHP) { // Ensure tab is active if PHP determined it (e.g. after form error)
+            const targetButton = document.querySelector(`.tab-button[data-tab="${currentActiveTabFromPHP}"]`);
+            if (targetButton && !targetButton.classList.contains('active')) {
+                targetButton.click();
+            }
+        }
+        
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    });
+    </script>
+</body>
+</html>

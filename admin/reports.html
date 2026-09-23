@@ -1,0 +1,721 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Reports - TourGo Admin</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/admin-dashboard.css">
+    <style>
+        /* Admin Reports Specific Styles */
+        .reports-container {
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        /* Filter Controls Styling */
+        .filter-controls {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        /* Search Container */
+        .search-container {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Filter Groups */
+        .status-filter,
+        .user-type-filter {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .status-filter span,
+        .user-type-filter span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .form-control {
+            padding: 0.75rem 2rem 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            cursor: pointer;
+            min-width: 150px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%236B7280'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5em;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+
+        .status-filter {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-in-progress {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        
+        .status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .complaint-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .complaint-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .complaint-subject {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+        
+        .complaint-meta {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .complaint-message {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .complaint-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .admin-notes {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .notes-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        /* Dark Theme Enhancements */
+        [data-theme="dark"] .filter-controls {
+            background: var(--dark-bg);
+            border: 1px solid var(--dark-border);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        [data-theme="dark"] .search-input {
+            background: var(--dark-bg-alt);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+        }
+
+        [data-theme="dark"] .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+        }
+
+        [data-theme="dark"] .search-icon {
+            color: var(--dark-text-muted);
+        }
+
+        [data-theme="dark"] .form-control {
+            background-color: var(--dark-bg-alt);
+            border-color: var(--dark-border);
+            color: var(--dark-text);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23959EAE'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        }
+
+        [data-theme="dark"] .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+        }
+
+        [data-theme="dark"] .status-filter span,
+        [data-theme="dark"] .user-type-filter span {
+            color: var(--dark-text-muted);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .filter-controls {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .status-filter,
+            .user-type-filter {
+                width: 100%;
+            }
+
+            .form-control {
+                width: 100%;
+            }
+        }
+
+        /* Hover States */
+        .search-input:hover,
+        .form-control:hover {
+            border-color: var(--primary);
+        }
+
+        [data-theme="dark"] .search-input:hover,
+        [data-theme="dark"] .form-control:hover {
+            border-color: var(--primary);
+            background-color: var(--dark-bg-hover);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <div class="logo-area">
+                    <div class="logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas "></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <div class="profile-toggle">
+                            <img src="https://avatar.iran.liara.run/public/boy?username=Admin" alt="Admin">
+                            <span>Admin</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-menu">
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <aside class="admin-sidebar">
+                <div class="sidebar-nav">
+                    <div class="sidebar-header">MAIN MENU</div>
+                    <a href="admin_dashboard.html" class="sidebar-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="manage_users.html" class="sidebar-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                    <a href="admin_vehicles.html" class="sidebar-item">
+                        <i class="fas fa-car"></i>
+                        <span>Vehicles</span>
+                    </a>
+                    <a href="admin_bookings.html" class="sidebar-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Bookings</span>
+                    </a>
+                    <a href="reports.html" class="sidebar-item active">
+                        <i class="fas fa-flag"></i>
+                        <span>Reports</span>
+                    </a>
+                    <div class="sidebar-header">SYSTEM</div>
+                    <a href="../auth/logout.html" class="sidebar-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </aside>
+
+            <main class="main-content">
+                <div class="section-header">
+                    <div class="section-title">User Complaints & Reports</div>
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="exportToCSV()">
+                            <i class="fas fa-file-export"></i> Export CSV
+                        </button>
+                    </div>
+                </div>
+<div class="stats-cards">
+                    <div class="stat-card">
+                        <i class="fas fa-flag" style="color: #ffc107;"></i>
+                        <div class="stat-value">
+                            
+                        </div>
+                        <div class="stat-label">Pending Complaints</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-spinner" style="color: #0d6efd;"></i>
+                        <div class="stat-value">
+                            
+                        </div>
+                        <div class="stat-label">In Progress</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-check-circle" style="color: #198754;"></i>
+                        <div class="stat-value">
+                            
+                        </div>
+                        <div class="stat-label">Resolved</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
+                        <div class="stat-value">
+                            
+                        </div>
+                        <div class="stat-label">Total Complaints</div>
+                    </div>
+                </div>
+
+                <div class="filter-controls">
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search complaints...">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <div class="status-filter">
+                        <span>Filter by status:</span>
+                        <select id="statusFilter" class="form-control">
+                            <option value="all">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="resolved">Resolved</option>
+                        </select>
+                    </div>
+                    <div class="user-type-filter">
+                        <span>Filter by user type:</span>
+                        <select id="userTypeFilter" class="form-control">
+                            <option value="all">All</option>
+                            <option value="customer">Customer</option>
+                            <option value="agency">Agency</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="reports-container">
+                    
+                        <div class="no-data-message">
+                            <i class="fas fa-flag" style="font-size: 48px;"></i>
+                            <h3>No complaints found</h3>
+                            <p>There are currently no user complaints to display.</p>
+                        </div>
+                    
+                        
+                            <div class="complaint-card" data-status="" data-user-type="">
+                                <div class="complaint-header">
+                                    <div class="user-info">
+                                        <img src="" 
+                                             alt="" class="user-avatar">
+                                        <div>
+                                            <div class="complaint-subject"></div>
+                                            <div class="complaint-meta">
+                                                <span></span> • 
+                                                <span></span> • 
+                                                <span></span> • 
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span class="status-badge status-">
+                                        
+                                    </span>
+                                </div>
+                                
+                                <div class="complaint-message">
+                                    
+                                </div>
+                                
+                                <form method="POST" class="complaint-actions-form">
+                                    <input type="hidden" name="complaint_id" value="">
+                                    
+                                    <div class="form-group">
+                                        <label>Update Status:</label>
+                                        <select name="status" class="form-control" style="width: auto; display: inline-block; margin-left: 10px;">
+                                            <option value="pending" >Pending</option>
+                                            <option value="in_progress" >In Progress</option>
+                                            <option value="resolved" >Resolved</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="admin-notes">
+                                        <label>Admin Notes:</label>
+                                        <textarea name="admin_notes" class="notes-textarea" placeholder="Add internal notes about this complaint..."></textarea>
+                                    </div>
+                                    
+                                    <div class="complaint-actions">
+                                        <button type="submit" name="update_status" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Update
+                                        </button>
+                                        <button type="button" class="btn btn-outline view-user-btn" data-user-id="">
+                                            <i class="fas fa-user"></i> View User
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- User View Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>User Details</h3>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="userModalBody">
+                <!-- User details will be loaded here via AJAX -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../public/assets/js/script.js"></script>
+    <script>
+        // Filter complaints
+        function filterComplaints() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const userTypeFilter = document.getElementById('userTypeFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            document.querySelectorAll('.complaint-card').forEach(card => {
+                const status = card.getAttribute('data-status');
+                const userType = card.getAttribute('data-user-type');
+                const textContent = card.textContent.toLowerCase();
+                
+                const statusMatch = statusFilter === 'all' || status === statusFilter;
+                const userTypeMatch = userTypeFilter === 'all' || userType === userTypeFilter;
+                const searchMatch = textContent.includes(searchTerm);
+                
+                if (statusMatch && userTypeMatch && searchMatch) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Initialize filter event listeners
+        document.getElementById('statusFilter').addEventListener('change', filterComplaints);
+        document.getElementById('userTypeFilter').addEventListener('change', filterComplaints);
+        document.getElementById('searchInput').addEventListener('input', filterComplaints);
+        
+        // View user button functionality
+        document.querySelectorAll('.view-user-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                fetchUserDetails(userId);
+            });
+        });
+        
+        // Fetch user details via AJAX
+        function fetchUserDetails(userId) {
+            fetch(`get_user_details.html?id=${userId}`)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('userModalBody').innerHTML = data;
+                    document.getElementById('userModal').style.display = 'flex';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('userModalBody').innerHTML = '<p>Failed to load user details.</p>';
+                    document.getElementById('userModal').style.display = 'flex';
+                });
+        }
+        
+        function closeModal() {
+            document.getElementById('userModal').style.display = 'none';
+        }
+        
+        // Export to CSV
+        function exportToCSV() {
+            // In a real implementation, this would generate and download a CSV file
+            // For now, we'll simulate it with an alert
+            alert('Exporting complaints to CSV...');
+            // window.location.href = 'export_complaints.html';
+        }
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === document.getElementById('userModal')) {
+                closeModal();
+            }
+        });
+
+                // Toggle Sidebar
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-collapsed');
+            
+            // For mobile view
+            document.querySelector('.admin-sidebar').classList.toggle('active');
+            
+            // Create or toggle backdrop for mobile
+            let backdrop = document.querySelector('.sidebar-backdrop');
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.className = 'sidebar-backdrop';
+                document.body.appendChild(backdrop);
+            }
+            backdrop.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.admin-sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const backdrop = document.querySelector('.sidebar-backdrop');
+            
+            if (sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+                if (backdrop) backdrop.classList.remove('active');
+            }
+        });
+
+        // Toggle Theme (Dark/Light)
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', themeMode);
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (themeMode === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            localStorage.setItem('theme', themeMode);
+        });
+
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (savedTheme === 'dark') {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        }
+
+        // Toggle Notification Menu
+        document.querySelector('.notification-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelector('.notification-menu').classList.toggle('active');
+            document.querySelector('.profile-menu').classList.remove('active');
+        });
+
+        // Toggle Profile Menu
+        document.querySelector('.profile-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelector('.profile-menu').classList.toggle('active');
+            document.querySelector('.notification-menu').classList.remove('active');
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelector('.notification-menu').classList.remove('active');
+            document.querySelector('.profile-menu').classList.remove('active');
+        });
+
+        // Prevent closing when clicking inside menus
+        document.querySelectorAll('.notification-menu, .profile-menu').forEach(menu => {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Profile Dropdown functionality
+        const profileToggleBtn = document.getElementById('profileToggleBtn');
+        const profileMenu = document.getElementById('profileMenu');
+
+        if (profileToggleBtn && profileMenu) {
+            profileToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileMenu.classList.toggle('active');
+                this.querySelector('.fa-chevron-down').style.transform = 
+                    profileMenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!profileToggleBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+                    profileMenu.classList.remove('active');
+                    profileToggleBtn.querySelector('.fa-chevron-down').style.transform = 'rotate(0)';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

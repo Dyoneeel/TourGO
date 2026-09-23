@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Cars - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="../public/assets/css/cars.css" rel="stylesheet"> 
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+    <style>
+        .page-title { background: var(--gradient-primary); color: white; padding: 60px 0; text-align: center; position: relative; overflow: hidden; margin-bottom: 40px; }
+        .page-title h1 { font-size: 3rem; font-weight: 700; margin-bottom: 10px; position: relative; z-index: 2; }
+        .page-title p { font-size: 1.2rem; opacity: 0.9; position: relative; z-index: 2; }
+        .circle-decoration { position: absolute; background-color: rgba(255, 255, 255, 0.08); border-radius: 50%; z-index: 1; pointer-events: none; }
+        .circle-decoration.circle-1 { width: 250px; height: 250px; top: -80px; left: -50px; }
+        .circle-decoration.circle-2 { width: 180px; height: 180px; bottom: -70px; right: -40px; opacity: 0.7; }
+        .cars-section { padding-bottom: 60px; }
+        .no-favorites-message { text-align: center; padding: 60px 20px; border: 2px dashed var(--accent-light); border-radius: var(--border-radius); background-color: var(--white); margin-top: 30px; }
+        .no-favorites-message i.fa-heart-crack, .no-favorites-message i.far.fa-heart { font-size: 3rem; color: var(--primary); margin-bottom: 20px; } /* Updated icon */
+        .no-favorites-message h2 { font-size: 1.8rem; color: var(--text-dark); margin-bottom: 10px; }
+        .no-favorites-message p { color: var(--text-light); margin-bottom: 20px; }
+        [data-theme="dark"] .page-title { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--bg-light) 100%); }
+        [data-theme="dark"] .no-favorites-message { background-color: var(--white); border-color: var(--accent-light); }
+        [data-theme="dark"] .no-favorites-message h2 { color: var(--text-dark); } 
+        [data-theme="dark"] .no-favorites-message p { color: var(--text-light); } 
+        .car-card .car-wishlist.active i { color: var(--danger, #dc3545); } 
+        /* Toast styles */
+        .toast-container { position: fixed; top: 80px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 15px 20px; border-radius: 8px; color: #fff; font-size: 1em; box-shadow: 0 4px 15px rgba(0,0,0,0.1); opacity: 0; transform: translateX(100%); transition: opacity 0.3s ease, transform 0.3s ease; display: flex; align-items: center; gap: 10px; }
+        .toast.show { opacity: 1; transform: translateX(0); }
+        .toast.success { background-color: var(--success, #28a745); }
+        .toast.error { background-color: var(--danger, #dc3545); }
+        .toast i { font-size: 1.2em; }
+    </style>
+</head>
+<body data-theme="light">
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo"> <a href="../index.html"> <i class="fas fa-car-side"></i> <span><span>Tour</span><span>Go</span></span> </a> </div>
+            <ul class="nav-menu" id="mainNavMenuFavorites">
+                <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="my_bookings.html" class="nav-link">My Bookings</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode" id="themeToggleBtnFavorites"> <i class="fas fa-moon"></i> </button>
+                <div class="profile-dropdown">
+                    <button class="profile-toggle" id="profileToggleBtnFavorites" type="button"> <img src="" alt="Profile">
+                        <span>  </span> <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenuFavorites"> 
+                        <a href="profile.html" class="profile-menu-item"><i class="fas fa-user"></i><span>My Profile</span></a>
+                        <a href="favorite_cars.html" class="profile-menu-item active"><i class="fas fa-heart"></i><span>Favorites</span></a>
+                        <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a> <hr>
+                        <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                    </div>
+                </div>
+                <button class="menu-toggle" aria-label="Toggle Menu" id="mainMenuToggleBtnFavorites"> <i class="fas fa-bars"></i> </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="toast-container"></div> <section class="page-title">
+    <div class="container"> <h1>My Favorite Cars</h1> <p>Your handpicked collection of vehicles</p> </div>
+    <div class="circle-decoration circle-1"></div> <div class="circle-decoration circle-2"></div>
+</section>
+
+<section class="cars-section">
+    <div class="container">
+        
+            <div class="no-favorites-message" data-aos="fade-up">
+                <i class="fas fa-exclamation-triangle"></i> <h2>Oops!</h2>
+                <p></p>
+            </div>
+        
+            <div class="no-favorites-message" data-aos="fade-up" id="noFavoritesMessage">
+                <i class="far fa-heart"></i> <h2>No Favorites Yet</h2>
+                <p>You haven't added any cars to your favorites. Start exploring our fleet!</p>
+                <a href="cars.html" class="btn btn-primary">Explore Cars</a>
+            </div>
+            <div class="cars-grid" data-aos="fade-up" id="favoritesGrid"> </div>
+        
+            <div class="cars-grid" data-aos="fade-up" id="favoritesGrid">
+                
+                <div class="car-card" data-vehicle-id="">
+                    <div class="car-image">
+                        <span class="car-type"></span>
+                        <button class="car-wishlist active" title="Remove from Favorites"> <i class="fas fa-heart"></i> </button>
+                        
+                        <img src="" alt=" ">
+                    </div>
+                    <div class="car-details">
+                        <h3 class="car-title"> </h3>
+                        <div class="car-features">
+                            <span class="car-feature"><i class="fas fa-cog"></i> </span>
+                            <span class="car-feature"><i class="fas fa-gas-pump"></i> </span>
+                            <span class="car-feature"><i class="fas fa-users"></i>  Seats</span>
+                        </div>
+                        <div class="car-price-row">
+                            <span class="car-price">₱<span>/day</span></span>
+                            <a href="car_details.html?id=" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            
+            <div class="pagination-wrapper" data-aos="fade-up" data-aos-delay="100">
+                <div class="pagination-info">
+                    Page  of  &bull; Showing - of  favorites
+                </div>
+                <div class="pagination">
+                    
+                      <a href="page=1" class="page-item" title="First Page"><i class="fas fa-angle-double-left"></i></a> 
+                     <a href="page=" class="page-item" title="Previous Page"><i class="fas fa-angle-left"></i> <span class="pagination-nav-text">Prev</span></a>  <span class="page-item disabled"><i class="fas fa-angle-left"></i> <span class="pagination-nav-text">Prev</span></span> 
+                     <a href="page=" class="page-item "></a> 
+                     <a href="page=" class="page-item" title="Next Page"><span class="pagination-nav-text">Next</span> <i class="fas fa-angle-right"></i></a>  <span class="page-item disabled"><span class="pagination-nav-text">Next</span> <i class="fas fa-angle-right"></i></span> 
+                     <a href="page=" class="page-item" title="Last Page"><i class="fas fa-angle-double-right"></i></a> 
+                </div>
+            </div>
+            
+        
+    </div>
+</section>
+
+<footer> <div class="container">
+        <div class="footer-content">
+            <div class="footer-about"> <div class="footer-logo"> <i class="fas fa-car-side"></i> <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span> </div> <p class="footer-text">TourGo offers a premium car rental experience...</p> <div class="social-links"> <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a> <a href="#" class="social-link"><i class="fab fa-twitter"></i></a> <a href="#" class="social-link"><i class="fab fa-instagram"></i></a> <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a> </div> </div>
+            <div class="footer-links"> <h4 class="footer-title">Quick Links</h4> <ul class="footer-menu"> <li><a href="../index.html">Home</a></li> <li><a href="cars.html">Our Fleet</a></li> <li><a href="about.html">About Us</a></li> <li><a href="contact.html">Contact Us</a></li> <li><a href="contact.html#faq">FAQs</a></li> <li><a href="../terms.html">Terms & Conditions</a></li> </ul> </div>
+            <div class="footer-newsletter"> <h4 class="footer-title">Stay Updated</h4> <p class="footer-text">Subscribe to our newsletter...</p> <form class="newsletter-form"> <input type="email" class="newsletter-input" placeholder="Enter your email"> <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button> </form> </div>
+        </div>
+        <div class="footer-bottom"> <p>&copy; <span id="currentYearFooterFavorites"></span> TourGo Premium Car Rental. All Rights Reserved.</p> </div>
+    </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggleButtonFav = document.getElementById('themeToggleBtnFavorites');
+    const themeToggleIconFav = themeToggleButtonFav ? themeToggleButtonFav.querySelector('i') : null;
+    
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (themeToggleIconFav) {
+            themeToggleIconFav.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+         // Also update the icon for the other theme toggle if it exists
+        const themeToggleBtn = document.querySelector('.theme-toggle:not(#themeToggleBtnFavorites)');
+        if(themeToggleBtn){
+            const icon = themeToggleBtn.querySelector('i');
+            if(icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+    }
+    let savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+        savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    setTheme(savedTheme); 
+    localStorage.setItem('theme', savedTheme); 
+
+    if (themeToggleButtonFav) {
+        themeToggleButtonFav.addEventListener('click', function(e) {
+            e.stopPropagation();
+            let currentTheme = document.documentElement.getAttribute('data-theme');
+            let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+
+    const profileToggleBtnFav = document.getElementById('profileToggleBtnFavorites');
+    const profileMenuFav = document.getElementById('profileMenuFavorites');
+    if (profileToggleBtnFav && profileMenuFav) {
+        profileToggleBtnFav.addEventListener('click', function(e) {
+            e.stopPropagation();
+            profileMenuFav.classList.toggle('active');
+            profileToggleBtnFav.classList.toggle('active'); 
+        });
+        document.addEventListener('click', function(e) { 
+            if (profileMenuFav.classList.contains('active') && !profileMenuFav.contains(e.target) && !profileToggleBtnFav.contains(e.target)) {
+                profileMenuFav.classList.remove('active');
+                profileToggleBtnFav.classList.remove('active');
+            }
+        });
+    }
+    
+    const mainMenuToggleBtnFav = document.getElementById('mainMenuToggleBtnFavorites');
+    const mainNavMenuFav = document.getElementById('mainNavMenuFavorites'); 
+    if(mainMenuToggleBtnFav && mainNavMenuFav){
+        mainMenuToggleBtnFav.addEventListener('click', function(e){
+            e.stopPropagation();
+            mainNavMenuFav.classList.toggle('active');
+        });
+         document.addEventListener('click', function(e) {
+            if (mainNavMenuFav.classList.contains('active') && !mainNavMenuFav.contains(e.target) && !mainMenuToggleBtnFav.contains(e.target)) {
+                mainNavMenuFav.classList.remove('active');
+            }
+        });
+    }
+
+    document.querySelectorAll('.car-wishlist').forEach(wishlistBtn => {
+        wishlistBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const carCard = this.closest('.car-card');
+            const vehicleId = carCard.dataset.vehicleId;
+            if (!vehicleId) return;
+            const action = 'remove'; // Always remove on this page
+
+            fetch('../ajax/wishlist.html', { 
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=${action}&vehicle_id=${vehicleId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message || 'Removed from favorites!', true);
+                    carCard.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    carCard.style.opacity = '0';
+                    carCard.style.transform = 'scale(0.9)';
+                    setTimeout(() => { 
+                        carCard.remove(); 
+                        const favoritesGrid = document.getElementById('favoritesGrid');
+                        const noFavoritesMessageDiv = document.getElementById('noFavoritesMessage');
+                        const paginationWrapper = document.querySelector('.pagination-wrapper');
+
+                        if (favoritesGrid && favoritesGrid.children.length === 0) {
+                            if(noFavoritesMessageDiv) noFavoritesMessageDiv.style.display = 'block'; // Show message
+                            if(paginationWrapper) paginationWrapper.style.display = 'none'; // Hide pagination
+                             // If current page > 1 and becomes empty, could redirect to page 1 or just show message
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const currentPageNum = parseInt(urlParams.get('page')) || 1;
+                            if (currentPageNum > 1) {
+                                window.location.href = 'favorite_cars.html'; // Redirect to first page
+                            }
+                        }
+                        // Optionally, update pagination info if not reloading fully
+                        // For simplicity, a reload on empty page or redirect to page 1 is often easiest.
+                    }, 500);
+                } else {
+                     if(data.redirect) { 
+                        window.location.href = data.redirect;
+                    } else {
+                        showToast(data.message || 'Could not remove from wishlist.', false);
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Wishlist Error:', error);
+                showToast('An error occurred. Please try again.', false);
+            });
+        });
+    });
+
+    function showToast(message, isSuccess = true) {
+        const toastContainer = document.querySelector('.toast-container');
+         if (!toastContainer) {
+            console.error("Toast container not found!");
+            return;
+        }
+        const toast = document.createElement('div');
+        toast.className = `toast ${isSuccess ? 'success' : 'error'}`;
+        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        toastContainer.appendChild(toast);
+        
+        setTimeout(() => { toast.classList.add('show'); }, 100); 
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => { 
+                if (toast.parentNode === toastContainer) { 
+                    toastContainer.removeChild(toast); 
+                }
+            }, 500); 
+        }, 3000);
+    }
+    
+    if (typeof AOS !== 'undefined') { AOS.init({ duration: 800, once: true, offset: 50 }); }
+    
+    const currentYearFooterFav = document.getElementById('currentYearFooterFavorites');
+    if(currentYearFooterFav) currentYearFooterFav.textContent = new Date().getFullYear();
+
+    // Initially hide "no favorites" message if there are vehicles
+    const initialFavoritesGrid = document.getElementById('favoritesGrid');
+    const initialNoFavoritesMessage = document.getElementById('noFavoritesMessage');
+    if (initialFavoritesGrid && initialFavoritesGrid.children.length > 0 && initialNoFavoritesMessage) {
+        initialNoFavoritesMessage.style.display = 'none';
+    } else if (initialFavoritesGrid && initialFavoritesGrid.children.length === 0 && initialNoFavoritesMessage){
+         initialNoFavoritesMessage.style.display = 'block';
+    }
+
+
+});
+</script>
+</body>
+</html>

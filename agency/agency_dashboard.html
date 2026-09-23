@@ -1,0 +1,1167 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency Dashboard - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+    <style>
+        .hero {
+    padding: 80px 0; /* */
+    position: relative; /* */
+    overflow: hidden; /* */
+    min-height: 100vh; /* */
+}
+        .dashboard {
+            padding: 40px 0;
+            background-color: var(--bg-light);
+            min-height: 100vh;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .dashboard-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent-light);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-light);
+            font-size: 16px;
+        }
+
+        .dashboard-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+        }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .vehicle-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+        }
+
+        .vehicle-image {
+            height: 200px;
+            background-color: #f8f8f8;
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .vehicle-card:hover .vehicle-image img {
+            transform: scale(1.05);
+        }
+
+        .vehicle-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .vehicle-details {
+            padding: 20px;
+        }
+
+        .vehicle-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+
+        .vehicle-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-icon i {
+            font-size: 16px;
+        }
+
+        .chart-container {
+            height: 400px;
+            margin-bottom: 30px;
+        }
+
+        .bookings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .bookings-table th,
+        .bookings-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .bookings-table th {
+            background-color: var(--accent-light);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .bookings-table tr:hover {
+            background-color: rgba(77, 148, 255, 0.03);
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+
+ /* Add these styles to your existing <style> section */
+
+/* Enhanced Modal Styles */
+.verification-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.verification-modal .modal-content {
+    background: var(--white);
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: scale(0.95);
+    opacity: 0;
+    transition: all 0.3s ease;
+    animation: modalFadeIn 0.3s ease forwards;
+}
+
+.verification-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color, #eee);
+}
+
+.verification-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.verification-modal .close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-light);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.verification-modal .close-modal:hover {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.verification-modal .modal-body {
+    margin-bottom: 25px;
+}
+
+.verification-modal .alert {
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border-left: 4px solid transparent;
+}
+
+.verification-modal .alert-info {
+    background-color: rgba(13, 110, 253, 0.1);
+    border-left-color: var(--primary);
+}
+
+.verification-modal .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--danger);
+}
+
+.verification-modal .alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left-color: var(--warning);
+}
+
+.verification-modal .alert i {
+    font-size: 20px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.verification-modal .rejection-reason {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(220, 53, 69, 0.05);
+    border-radius: 8px;
+    border-left: 4px solid var(--danger);
+}
+
+.verification-modal .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color, #eee);
+}
+
+/* Enhanced Button Styles */
+.verification-modal .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 120px;
+}
+
+.verification-modal .btn-primary {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+}
+
+.verification-modal .btn-primary:hover {
+    background-color: var(--primary-dark, #0056b3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.verification-modal .btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.verification-modal .btn-outline:hover {
+    background-color: var(--primary);
+    color: white;
+}
+
+.verification-modal .btn-secondary {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    border: 1px solid var(--border-color, #eee);
+}
+
+.verification-modal .btn-secondary:hover {
+    background-color: var(--border-color, #eee);
+}
+
+/* Modal Animation */
+@keyframes modalFadeIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Dark Mode Modal Styles */
+[data-theme="dark"] .verification-modal .modal-content {
+    background: var(--white); /* Uses dark theme's --white variable */
+}
+
+[data-theme="dark"] .verification-modal .modal-header h3 {
+    color: var(--text-dark); /* Uses dark theme's text color */
+}
+
+[data-theme="dark"] .verification-modal .modal-body p,
+[data-theme="dark"] .verification-modal .rejection-reason p {
+    color: var(--text-dark); /* Uses dark theme's text color */
+}
+
+[data-theme="dark"] .verification-modal .alert {
+    background-color: var(--accent-light); /* Uses dark theme's accent color */
+}
+
+[data-theme="dark"] .verification-modal .alert-info {
+    background-color: rgba(77, 148, 255, 0.1);
+    border-left-color: var(--primary);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--danger);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left-color: var(--warning);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .rejection-reason {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .btn-secondary {
+    background-color: var(--accent-light);
+    color: var(--text-dark);
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .verification-modal .close-modal {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .modal-header,
+[data-theme="dark"] .verification-modal .modal-footer {
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-sm i {
+    font-size: 14px;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-outline:hover {
+    background-color: var(--primary);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+    position: relative;
+}
+
+/* Dark mode support */
+[data-theme="dark"] .btn-outline {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+/* Dark mode styles for bookings table */
+[data-theme="dark"] .bookings-table th,
+[data-theme="dark"] .bookings-table td {
+    color: var(--text-dark);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .bookings-table th {
+    background-color: var(--accent-light);
+}
+
+[data-theme="dark"] .bookings-table tr:hover {
+    background-color: rgba(77, 148, 255, 0.05);
+}
+
+/* Status badge colors for dark mode */
+[data-theme="dark"] .status-badge {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .status-pending {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: #ffd149;
+}
+
+[data-theme="dark"] .status-confirmed {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: #34c759;
+}
+
+[data-theme="dark"] .status-completed {
+    background-color: rgba(23, 162, 184, 0.2);
+    color: #5ac8fa;
+}
+
+[data-theme="dark"] .status-cancelled {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: #ff3b30;
+}
+
+/* Empty state text color for dark mode */
+[data-theme="dark"] .dashboard-section p {
+    color: var(--text-dark);
+}
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text animate__animated animate__fadeInLeft">
+                    <div class="hero-subtitle">Welcome Back, !</div>
+                    <h1 class="hero-title">Manage Your <span>Fleet & Bookings</span></h1>
+                    <p class="hero-description">
+                        Oversee your vehicles, track bookings, and monitor your agency's performance with TourGo's all-in-one dashboard.
+                    </p>
+                    <div class="action-buttons">
+    
+        <a href="add_car.html" class="btn btn-primary btn-lg">
+            <i class="fas fa-plus" style="margin-right: 10px;"></i>
+            Add New Vehicle
+        </a>
+    
+        <button class="btn btn-primary btn-lg">
+            <i class="fas fa-plus" style="margin-right: 10px;" ></i>
+            Add New Vehicle
+        </button>
+    
+    <a href="view_bookings.html" class="btn btn-outline btn-lg">
+        <i class="fas fa-calendar-check" style="margin-right: 10px;"></i>
+        View Bookings
+    </a>
+</div>
+                </div>
+                <div class="hero-image animate__animated animate__fadeInRight">
+                    <img src="../public/assets/images/car.png" alt="Luxury Car">
+                </div>
+            </div>
+        </div>
+        <div class="decoration-circle circle-1"></div>
+        <div class="decoration-circle circle-2"></div>
+    </section>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title"> Dashboard</h1>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Vehicles</h3>
+                        <div class="stat-icon">
+                            <i class="fas fa-car"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value"></div>
+                    <div class="stat-label">Total Vehicles</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Revenue</h3>
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">₱</div>
+                    <div class="stat-label">Monthly Revenue</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Occupancy</h3>
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">%</div>
+                    <div class="stat-label">Occupancy Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <h3>Ratings</h3>
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value"></div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <h2 class="section-title">Monthly Revenue Overview</h2>
+                <div class="chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 class="section-title">Recent Vehicles</h2>
+        <a href="my_cars.html" class="btn btn-outline btn-sm">
+            <i class="fas fa-eye"></i> View All Vehicles
+        </a>
+    </div>
+    
+        <p>No vehicles found. <a href="add_car.html">Add your first vehicle</a>.</p>
+    
+        <div class="vehicles-grid">
+            
+            <div class="vehicle-card">
+                <div class="vehicle-image">
+                    
+                        <img src="" alt="">
+                    
+                        <img src="../public/assets/images/vehicle-placeholder.jpg" alt="Vehicle placeholder">
+                    
+                    <span class="vehicle-status"></span>
+                </div>
+                <div class="vehicle-details">
+                    <h3 class="vehicle-title"> </h3>
+                    <div class="vehicle-meta">
+                        <span>₱/day</span>
+                        <span></span>
+                    </div>
+                    <div class="vehicle-actions">
+                        <a href="edit_car.html?id=" class="btn btn-outline btn-icon">
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </a>
+                        <a href="vehicle-stats.html?id=" class="btn btn-outline btn-icon">
+                            <i class="fas fa-chart-bar"></i>
+                            Stats
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    
+</div>
+
+            <div class="dashboard-section">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 class="section-title">Recent Reviews</h2>
+        <a href="my_cars.html" class="btn btn-outline btn-sm">
+            <i class="fas fa-car"></i> View All Vehicles
+        </a>
+    </div>
+    
+    <div class="testimonials">
+        
+            
+                <div class="testimonial-card">
+                    <div class="quote">"</div>
+                    <p class="testimonial-text"></p>
+                    <div class="testimonial-rating">
+                        
+                            <i class="fas fa-star"></i>
+                        
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            
+                                <img src="../uploads/profiles/" alt="User Avatar">
+                            
+                                <div class="avatar-placeholder">
+                                    
+                                </div>
+                            
+                        </div>
+                        <div class="author-info">
+                            <h4> </h4>
+                            <p></p>
+                            <small style="color:var(--text-light);">Vehicle: </small>
+                        </div>
+                    </div>
+                </div>
+            
+        
+            <div class="no-reviews">
+                <i class="fas fa-comment fa-2x"></i>
+                <p>No reviews yet for your vehicles.</p>
+            </div>
+        
+    </div>
+</div>
+
+            <div class="dashboard-section">
+    <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2 class="section-title">Recent Bookings</h2>
+        <a href="view_bookings.html" class="btn btn-outline btn-sm">
+            <i class="fas fa-eye"></i> View All Bookings
+        </a>
+    </div>
+    
+        <p>No bookings found yet.</p>
+    
+        <table class="bookings-table">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Customer</th>
+                    <th>Vehicle</th>
+                    <th>Dates</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr>
+                    <td>#TG-</td>
+                    <td></td>
+                    <td> </td>
+                    <td>
+                         - 
+                        
+                    </td>
+                    <td>
+                        <span class="status-badge status-">
+                            
+                        </span>
+                    </td>
+                    <td>$</td>
+                </tr>
+                
+            </tbody>
+        </table>
+    
+</div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="agency_dashboard.html">Home</a></li>
+                        <li><a href="my_cars.html">Fleet</a></li>
+                        <li><a href="view_bookings.html">Bookings</a></li>
+                        <li><a href="contact_support.html">Support</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="verification-modal" id="verificationModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Account Verification Required</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Your agency account is pending verification. You'll be able to add vehicles once approved.</p>
+                    <p>Please wait while our team reviews your documents.</p>
+                </div>
+            
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Your agency verification was rejected.</p>
+                    
+                        <div class="rejection-reason">
+                            <strong>Reason:</strong>
+                            <p></p>
+                        </div>
+                    
+                </div>
+            
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Please complete your agency profile and submit verification documents to start adding vehicles.</p>
+                </div>
+            
+        </div>
+        <div class="modal-footer">
+            
+                <a href="agency_profile.html" class="btn btn-primary">Complete Verification</a>
+            
+            
+                <a href="contact_support.html" class="btn btn-outline">Contact Support</a>
+            
+            <button class="btn btn-secondary close-modal">Close</button>
+        </div>
+    </div>
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('mainNavMenu');
+        if (menuToggleBtn && navMenu) {
+            menuToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                menuToggleBtn.classList.toggle('active');
+            });
+            // Close nav menu when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (navMenu && !navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    menuToggleBtn.classList.remove('active');
+                }
+            });
+        }
+        // Toggle Theme (Dark/Light)
+        const themeToggleButton = document.querySelector('.theme-toggle');
+        if (themeToggleButton) {
+            themeToggleButton.addEventListener('click', function() {
+                const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', themeMode);
+
+                // Change icon
+                const icon = this.querySelector('i');
+                if (themeMode === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                localStorage.setItem('theme', themeMode);
+            });
+        }
+
+
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (themeToggleIcon) {
+                if (savedTheme === 'dark') {
+                    themeToggleIcon.classList.remove('fa-moon');
+                    themeToggleIcon.classList.add('fa-sun');
+                } else {
+                    themeToggleIcon.classList.remove('fa-sun');
+                    themeToggleIcon.classList.add('fa-moon');
+                }
+            }
+        }
+
+        // Toggle Profile Menu
+        const profileToggleButton = document.querySelector('.profile-toggle');
+        const profileMenuDiv = document.querySelector('.profile-menu');
+
+        if (profileToggleButton && profileMenuDiv) {
+            profileToggleButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileMenuDiv.classList.toggle('active');
+            });
+
+            // Close menus when clicking outside
+            document.addEventListener('click', function() {
+                profileMenuDiv.classList.remove('active');
+            });
+
+            // Prevent closing when clicking inside menus
+            profileMenuDiv.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current year in footer
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+            
+            // Initialize Revenue Chart
+            const revenueChartCanvas = document.getElementById('revenueChart');
+            if (revenueChartCanvas) {
+                const ctx = revenueChartCanvas.getContext('2d');
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                
+                const revenueData = ;
+                
+                const revenueChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: monthNames,
+                        datasets: [{
+                            label: 'Monthly Revenue (₱)',
+                            data: revenueData,
+                            backgroundColor: 'rgba(77, 148, 255, 0.7)',
+                            borderColor: 'rgba(77, 148, 255, 1)',
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            barThickness: 20,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                padding: 12,
+                                titleFont: {
+                                    size: 14,
+                                    weight: 'bold'
+                                },
+                                bodyFont: {
+                                    size: 14
+                                },
+                                callbacks: {
+                                    label: function(context) {
+                                        return '₱ ' + context.raw.toLocaleString();
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: 'rgba(0, 0, 0, 0.05)'
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    },
+                                    callback: function(value) {
+                                        return '₱ ' + value.toLocaleString();
+                                    }
+                                }
+                            },
+                            x: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    font: {
+                                        size: 12
+                                    }
+                                }
+                            }
+                        }
+                    }});
+                
+            }
+        });
+        
+        // Enhance animation for vehicle cards
+        const vehicleCards = document.querySelectorAll('.vehicle-card');
+        if (vehicleCards.length && 'IntersectionObserver' in window) {
+            const observerOptions = {
+                threshold: 0.1
+            };
+            
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            vehicleCards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+        
+        // Add visual feedback for action buttons
+        const actionButtons = document.querySelectorAll('.btn-icon');
+        if (actionButtons.length) {
+            actionButtons.forEach(btn => {
+                btn.addEventListener('mousedown', function() {
+                    this.style.transform = 'scale(0.95)';
+                });
+                
+                btn.addEventListener('mouseup', function() {
+                    this.style.transform = '';
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    this.style.transform = '';
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const addVehicleButton = document.querySelector('.action-buttons .btn-primary');
+    const verificationStatus = '';
+    
+    if (addVehicleButton && verificationStatus !== 'approved') {
+        addVehicleButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            showVerificationModal();
+        });
+    }
+
+    // Close modal handlers
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', closeVerificationModal);
+    });
+    
+    // Close on outside click
+    const modal = document.querySelector('.verification-modal');
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVerificationModal();
+            }
+        });
+    }
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeVerificationModal();
+        }
+    });
+});
+
+function showVerificationModal() {
+    const modal = document.getElementById('verificationModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeVerificationModal() {
+    const modal = document.getElementById('verificationModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+    </script>
+</body>
+</html>

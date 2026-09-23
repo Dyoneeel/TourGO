@@ -1,0 +1,1380 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Vehicles - </title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+<style>
+        .vehicle-page {
+            padding: 40px 0;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .content-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .section-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .filter-dropdown, .sort-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button { /* Style for the button that triggers the dropdown */
+            background: var(--white);
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dropdown-button:hover {
+            border-color: #ccc;
+        }
+
+        .filter-dropdown .dropdown-content,
+        .sort-dropdown .dropdown-content { /* Adjusted from your original HTML structure */
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%; /* Position below the button */
+            min-width: 200px;
+            background-color: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px 0; /* Adjusted padding */
+            z-index: 10;
+            margin-top: 5px;
+        }
+
+        .filter-dropdown:hover .dropdown-content,
+        .sort-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .filter-option, .sort-option { /* Combined styling */
+            display: block; /* Changed from flex for simpler layout */
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .filter-option:hover, .sort-option:hover {
+            background-color: #f5f5f5;
+            color: var(--primary);
+        }
+
+        .filter-option.active, .sort-option.active {
+            color: var(--primary);
+            font-weight: 500;
+            background-color: #eef; /* Optional: highlight active item */
+        }
+
+
+        .filter-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 10px 0;
+        }
+
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .vehicle-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .vehicle-image {
+            height: 200px;
+            background-color: #f8f8f8;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .vehicle-card:hover .vehicle-image img {
+            transform: scale(1.05);
+        }
+
+        .vehicle-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1;
+            text-transform: capitalize;
+        }
+
+        .status-available { /* Class based on status_display */
+            background-color: var(--success-light, #d4edda); /* Use CSS var or fallback */
+            color: var(--success, #155724);
+        }
+
+        .status-booked {
+            background-color: var(--warning-light, #fff3cd);
+            color: var(--warning, #856404);
+        }
+
+        .status-maintenance {
+            background-color: var(--info-light, #d1ecf1); /* Example for maintenance */
+            color: var(--info, #0c5460);
+        }
+        .status-unavailable {
+             background-color: var(--danger-light, #f8d7da);
+             color: var(--danger, #721c24);
+        }
+
+
+        .vehicle-bookmark {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .vehicle-bookmark:hover, .vehicle-bookmark.active {
+            color: var(--primary);
+            background: white;
+        }
+
+        .vehicle-details {
+            padding: 20px;
+        }
+
+        .vehicle-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .vehicle-features {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            min-height: 20px; /* Ensure some space even if no features listed */
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .vehicle-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .vehicle-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .price-period {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: normal;
+        }
+
+        .vehicle-type-badge { /* Renamed from vehicle-type to avoid conflict if used elsewhere */
+            background-color: var(--accent-light);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .vehicle-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .vehicle-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-icon i {
+            font-size: 16px; /* Ensure icon size is consistent */
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+            padding-bottom: 20px; /* Added padding at bottom */
+        }
+
+        .page-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .page-link.active, .page-link:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* Tabs */
+        .tab-controls {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-light);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+        }
+
+        .tab-btn.active::after {
+            content: "";
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Table Styles for List View */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px; /* Added margin for spacing */
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px; /* Adjusted padding */
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle; /* Align content vertically */
+        }
+
+        .data-table th {
+            background-color: var(--accent-light, #f8f9fa); /* Use CSS var or fallback */
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px; /* Slightly smaller font for headers */
+        }
+        .data-table td {
+            font-size: 14px;
+        }
+
+        .vehicle-img-small {
+            width: 60px; /* Slightly larger for list view */
+            height: 40px; /* Adjusted for aspect ratio */
+            object-fit: cover;
+            border-radius: 6px; /* Adjusted radius */
+            margin-right: 10px; /* Space between image and text */
+        }
+        .vehicle-info-list {
+            display: flex;
+            align-items: center;
+        }
+        .vehicle-name-list {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .vehicle-year-list {
+            font-size: 12px;
+            color: var(--text-light);
+            display: block; /* Put year on new line or adjust styling */
+        }
+
+
+        .action-menu {
+            position: relative;
+        }
+
+        .action-btn { /* Kebab menu button */
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px; /* Icon size */
+            width: 36px; /* Button size */
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background-color: #f0f0f0; /* Light background on hover */
+            color: var(--primary);
+        }
+
+        .action-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%; /* Position below button */
+            min-width: 160px; /* Increased width */
+            background-color: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 10;
+            display: none; /* Hidden by default, shown on hover/click */
+            margin-top: 5px; /* Space from button */
+        }
+
+        /* Show dropdown on hover for .action-menu */
+        .action-menu:hover .action-dropdown {
+            display: block;
+        }
+        /* OR if using JS for click: .action-menu.open .action-dropdown */
+
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s ease; /* Smooth transition */
+        }
+        .action-item i {
+            width: 16px; /* Align icons */
+            text-align: center;
+        }
+
+        .action-item:hover {
+            background-color: #f5f5f5;
+            color: var(--primary);
+        }
+        .action-item.delete:hover { /* Specific hover for delete */
+            background-color: var(--danger-light, #f8d7da);
+            color: var(--danger, #721c24);
+        }
+
+
+        .status-indicator { /* For list view status */
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px; /* Space next to text */
+        }
+
+        .status-indicator.status-available { background-color: var(--success, #28a745); }
+        .status-indicator.status-booked { background-color: var(--warning, #ffc107); }
+        .status-indicator.status-maintenance { background-color: var(--info, #17a2b8); }
+        .status-indicator.status-unavailable { background-color: var(--danger, #dc3545); }
+
+
+        /* Alert messages */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid transparent; /* Base border */
+        }
+
+        .alert-success {
+            background-color: var(--success-light, #d4edda);
+            color: var(--success-dark, #155724); /* Darker text for better contrast */
+            border-color: var(--success-border, #c3e6cb);
+        }
+
+        .alert-danger {
+            background-color: var(--danger-light, #f8d7da);
+            color: var(--danger-dark, #721c24);
+            border-color: var(--danger-border, #f5c6cb);
+        }
+        .alert-info { /* For general messages */
+             background-color: var(--info-light, #d1ecf1);
+             color: var(--info-dark, #0c5460);
+             border-color: var(--info-border, #bee5eb);
+        }
+
+
+        /* No vehicles message */
+        .no-data-message { /* More generic class name */
+            text-align: center;
+            padding: 50px 20px; /* Added horizontal padding */
+            border: 1px dashed #ddd; /* Optional: visual cue */
+            border-radius: 8px;
+            background-color: #f9f9f9; /* Light background */
+            margin-top: 20px;
+        }
+
+        .no-data-message i {
+            font-size: 48px; /* Adjusted size */
+            color: var(--text-light, #aaa);
+            margin-bottom: 20px;
+        }
+
+        .no-data-message h3 {
+            font-size: 22px; /* Adjusted size */
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .no-data-message p {
+            color: var(--text-light);
+            margin-bottom: 25px; /* Adjusted margin */
+            font-size: 15px; /* Slightly larger text */
+        }
+
+        /* Verification Modal Styles */
+.verification-modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.verification-modal .modal-content {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+}
+
+.verification-modal .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.verification-modal .modal-header h3 {
+    margin: 0;
+    font-size: 1.5em;
+    color: var(--text-dark);
+}
+
+.verification-modal .close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-light);
+}
+
+.verification-modal .rejection-reason {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(220, 53, 69, 0.1);
+    border-radius: 8px;
+    border-left: 3px solid var(--danger);
+}
+
+.verification-modal .modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Dark mode support */
+[data-theme="dark"] .verification-modal .modal-content {
+    background: var(--dark-bg-alt);
+    color: var(--dark-text);
+}
+
+/* Add to your existing <style> section */
+.btn[disabled] {
+    opacity: 0.65;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.text-muted {
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.text-muted i {
+    margin-right: 0.25rem;
+}
+/* Dark Mode Modal Styles */
+[data-theme="dark"] .verification-modal .modal-content {
+    background: var(--white); /* Uses dark theme's --white variable */
+}
+
+[data-theme="dark"] .verification-modal .modal-header h3 {
+    color: var(--text-dark); /* Uses dark theme's text color */
+}
+
+[data-theme="dark"] .verification-modal .modal-body p,
+[data-theme="dark"] .verification-modal .rejection-reason p {
+    color: var(--text-dark); /* Uses dark theme's text color */
+}
+
+[data-theme="dark"] .verification-modal .alert {
+    background-color: var(--accent-light); /* Uses dark theme's accent color */
+}
+
+[data-theme="dark"] .verification-modal .alert-info {
+    background-color: rgba(77, 148, 255, 0.1);
+    border-left-color: var(--primary);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--danger);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .alert-warning {
+    background-color: rgba(255, 193, 7, 0.1);
+    border-left-color: var(--warning);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .rejection-reason {
+    background: rgba(220, 53, 69, 0.1);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .btn-secondary {
+    background-color: var(--accent-light);
+    color: var(--text-dark);
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .verification-modal .close-modal {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .verification-modal .modal-header,
+[data-theme="dark"] .verification-modal .modal-footer {
+    border-color: var(--border-color, rgba(255, 255, 255, 0.1));
+}
+
+
+/* Dark Mode Styles for Filter/Sort Dropdowns */
+[data-theme="dark"] .dropdown-button {
+    background: var(--dark-bg-alt);
+    border-color: var(--border-color);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .dropdown-content {
+    background-color: var(--dark-bg-alt);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .filter-option,
+[data-theme="dark"] .sort-option {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .filter-option:hover,
+[data-theme="dark"] .sort-option:hover {
+    background-color: var(--dark-bg);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .filter-option.active,
+[data-theme="dark"] .sort-option.active {
+    background-color: rgba(77, 148, 255, 0.1);
+    color: var(--primary);
+}
+
+/* Dark Mode for No Vehicles Message */
+[data-theme="dark"] .no-data-message {
+    background-color: var(--dark-bg-alt);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .no-data-message h3 {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .no-data-message p {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .no-data-message i {
+    color: var(--text-light);
+}
+
+/* Dark Mode for Vehicle Cards */
+[data-theme="dark"] .vehicle-card {
+    background-color: var(--dark-bg-alt);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .vehicle-title {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .vehicle-meta {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .vehicle-features .feature {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .vehicle-type-badge {
+    background-color: rgba(77, 148, 255, 0.1);
+}
+
+[data-theme="dark"] .vehicle-stats {
+    border-top-color: var(--border-color);
+}
+
+[data-theme="dark"] .stat-value {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .stat-label {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .vehicle-image {
+    background-color: var(--dark-bg);
+}
+
+[data-theme="dark"] .vehicle-bookmark {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .vehicle-bookmark:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--primary);
+}
+
+/* Dark mode for buttons in vehicle cards */
+[data-theme="dark"] .btn-outline {
+    border-color: var(--border-color);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+    background-color: var(--primary);
+    color: var(--white);
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .btn-danger-outline {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+[data-theme="dark"] .btn-danger-outline:hover {
+    background-color: var(--danger);
+    color: var(--white);
+}
+
+/* Dark mode for search input */
+[data-theme="dark"] .search-input {
+    background-color: var(--dark-bg-alt);
+    border-color: var(--border-color);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .search-input::placeholder {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .search-icon {
+    color: var(--text-light);
+}
+    </style>
+</head>
+<body>
+<header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<main class="vehicle-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Vehicle Management</h1>
+                <div class="action-buttons">
+                    
+                        <a href="add_car.html" class="btn btn-primary">
+                            <i class="fas fa-plus" style="margin-right: 10px;"></i>
+                            Add New Vehicle
+                        </a>
+                    
+                        <button class="btn btn-primary" disabled>
+                            <i class="fas fa-plus" style="margin-right: 10px;"></i>
+                            Add New Vehicle
+                        </button>
+                    
+                </div>
+            </div>
+<div class="alert alert-success">Vehicle has been added successfully!</div>
+                
+                    <div class="alert alert-success">Vehicle has been updated successfully!</div>
+                
+                    <div class="alert alert-success">Vehicle has been deleted successfully!</div>
+                
+                    <div class="alert alert-danger">Error deleting vehicle. It might have active bookings.</div>
+                
+            
+
+
+            <div class="content-card">
+                <div class="tab-controls">
+                    <button class="tab-btn active" data-tab="grid-view">Grid View</button>
+                    <button class="tab-btn" data-tab="list-view">List View</button>
+                    </div>
+
+                <div class="section-header" style="margin-top: 20px;"> <div class="section-controls">
+                        <form action="my_cars.html" method="GET" id="searchFilterSortForm" style="display: flex; gap: 15px; align-items: center;">
+                            <div class="search-container">
+                                <input type="text" name="search" class="search-input" placeholder="Search make, model, year..." value="">
+                                <i class="fas fa-search search-icon"></i>
+                            </div>
+                            <div class="filter-dropdown">
+                                <button type="button" class="dropdown-button"> <i class="fas fa-filter"></i>
+                                    <span>Filter: </span>
+                                    <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="?search=&filter=all&sort=" class="filter-option ">All Vehicles</a>
+                                    <a href="?search=&filter=available&sort=" class="filter-option ">Available</a>
+                                    <a href="?search=&filter=booked&sort=" class="filter-option ">Booked</a>
+                                    <a href="?search=&filter=maintenance&sort=" class="filter-option ">Maintenance</a>
+                                </div>
+                            </div>
+                            <div class="sort-dropdown">
+                                <button type="button" class="dropdown-button">
+                                    <i class="fas fa-sort"></i>
+                                    <span>Sort: </span>
+                                    <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="?search=&filter=&sort=newest" class="sort-option ">Newest First</a>
+                                    <a href="?search=&filter=&sort=price_low" class="sort-option ">Price: Low to High</a>
+                                    <a href="?search=&filter=&sort=price_high" class="sort-option ">Price: High to Low</a>
+                                    <a href="?search=&filter=&sort=popular" class="sort-option ">Most Popular</a>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-outline">Apply</button> </form>
+                    </div>
+                </div>
+
+
+                <div class="tab-content active" id="grid-view">
+                    
+                    <div class="vehicles-grid">
+                        
+                        <div class="vehicle-card">
+                            <div class="vehicle-image">
+                                <img src="" alt="">
+                                <div class="vehicle-bookmark" title="Bookmark">
+                                    <i class="far fa-bookmark"></i> </div>
+                                <div class="vehicle-status status-">
+                                    
+                                </div>
+                            </div>
+                            <div class="vehicle-details">
+                                <h3 class="vehicle-title"></h3>
+                                <div class="vehicle-features">
+                                    
+                                        <span class="feature"><i class="fas fa-users"></i>  Seats</span>
+                                    
+                                    
+                                        <span class="feature"><i class="fas fa-cogs"></i> </span>
+                                    
+                                    
+                                        <span class="feature"><i class="fas fa-gas-pump"></i> </span>
+                                    
+                                    </div>
+                                <div class="vehicle-meta">
+                                    <span class="vehicle-price">₱<span class="price-period">/day</span></span>
+                                    <span class="vehicle-type-badge"></span>
+                                </div>
+                                <div class="vehicle-stats">
+                                    <div class="stat">
+                                        <span class="stat-value">%</span>
+                                        <span class="stat-label">Popularity</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value"> <i class="fas fa-star" style="color: #fdcc0d;"></i></span>
+                                        <span class="stat-label">Rating</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value"></span>
+                                        <span class="stat-label">Bookings</span>
+                                    </div>
+                                </div>
+                                <div class="vehicle-actions">
+                                    <a href="edit_car.html?id=" class="btn btn-outline btn-icon">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <a href="delete_car.html?id=" class="btn btn-danger-outline btn-icon delete-vehicle-btn" onclick="return confirm('Are you sure you want to delete this vehicle? This cannot be undone.');">
+                                        <i class="fas fa-trash-alt"></i>
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="no-data-message">
+                        <i class="fas fa-car-side"></i>
+                        <h3>No vehicles found</h3>
+                        <p>You haven't added any vehicles yet, or no vehicles match your current filter or search criteria.</p>
+                        
+        <a href="add_car.html" class="btn btn-primary">Add Your First Vehicle</a>
+    
+        <button class="btn btn-primary" disabled>Add Your First Vehicle</button>
+        <p class="mt-2 text-muted" style="font-size: 20px;">
+            
+                <small><i class="fas fa-info-circle" style="font-size: 15px;"></i> Your account is pending verification</small>
+            
+                <small><i class="fas fa-exclamation-circle"></i> Your verification was rejected</small>
+            
+                <small><i class="fas fa-exclamation-triangle"></i> Please complete verification first</small>
+            
+        </p>
+    
+                    </div>
+                    
+                </div>
+
+                <div class="tab-content" id="list-view">
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Type</th>
+                                <th>Plate No.</th>
+                                <th>Status</th>
+                                <th>Daily Rate</th>
+                                <th>Popularity</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td>
+                                    <div class="vehicle-info-list">
+                                        <img src="" alt="" class="vehicle-img-small">
+                                        <div>
+                                            <span class="vehicle-name-list"></span>
+                                            <span class="vehicle-year-list">()</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span class="status-indicator status-"></span>
+                                    
+                                </td>
+                                <td>₱</td>
+                                <td>%</td>
+                                <td> <i class="fas fa-star" style="color: #fdcc0d; font-size:0.9em;"></i></td>
+                                <td>
+                                    <div class="action-menu">
+                                        <button class="action-btn">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="action-dropdown">
+                                            <a href="view_car.html?id=" class="action-item">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                            <a href="edit_car.html?id=" class="action-item">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <div class="filter-divider"></div>
+                                            <a href="delete_car.html?id=" class="action-item delete delete-vehicle-btn" onclick="return confirm('Are you sure you want to delete this vehicle? This cannot be undone.');">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    
+                    <div class="no-data-message">
+                        <i class="fas fa-list-alt"></i>
+                        <h3>No vehicles to display in list view.</h3>
+                        <p>Please check your search or filter criteria, or add new vehicles.</p>
+                    </div>
+                    
+                </div>
+
+
+                
+                <div class="pagination">
+                    
+                    <a href="?page=&search=&filter=&sort=" class="page-link">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                    
+
+                    
+                    <a href="?page=&search=&filter=&sort=" class="page-link ">
+                        
+                    </a>
+                    
+
+                     
+
+                    
+                    <a href="?page=&search=&filter=&sort=" class="page-link">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                </div>
+                
+            </div> </div> </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="agency_dashboard.html">Home</a></li>
+                        <li><a href="my_cars.html">Fleet</a></li>
+                        <li><a href="view_bookings.html">Bookings</a></li>
+                        <li><a href="contact_support.html">Support</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="../public/assets/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    btn.classList.add('active');
+                    const targetTabId = btn.getAttribute('data-tab');
+                    const targetTabContent = document.getElementById(targetTabId);
+                    if (targetTabContent) {
+                        targetTabContent.classList.add('active');
+                    }
+                });
+            });
+
+            // Bookmark toggle functionality (simple visual toggle)
+            const bookmarks = document.querySelectorAll('.vehicle-bookmark');
+            bookmarks.forEach(bookmark => {
+                bookmark.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent navigation if it's an <a> tag
+                    bookmark.classList.toggle('active');
+                    const icon = bookmark.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('far'); // Empty bookmark
+                        icon.classList.toggle('fas'); // Filled bookmark
+                    }
+                    // Add AJAX call here to save bookmark status to server if needed
+                });
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active'); // You'll need CSS for .nav-menu.active
+                });
+            }
+
+            // Dropdown toggle for header user menu (and other dropdowns if needed)
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button'); // Or the element that triggers it
+                if(button) {
+                    button.addEventListener('click', (event) => {
+                        // Close other open dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown) {
+                                otherDropdown.querySelector('.dropdown-content').style.display = 'none';
+                            }
+                        });
+                        let content = dropdown.querySelector('.dropdown-content');
+                        if (content) {
+                            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                        }
+                        event.stopPropagation();
+                    });
+                }
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (event) => {
+                dropdowns.forEach(dropdown => {
+                    let content = dropdown.querySelector('.dropdown-content');
+                    if (content && !dropdown.contains(event.target)) {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+
+            // Delete vehicle confirmation (already inline, but can be centralized)
+             const deleteButtons = document.querySelectorAll('.delete-vehicle-btn');
+             deleteButtons.forEach(button => {
+                 button.addEventListener('click', function(event) {
+                     if (!confirm('Are you sure you want to delete this vehicle? This cannot be undone.')) {
+                         event.preventDefault();
+                     }
+                 });
+            });
+
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show verification modal if not verified
+            const verificationStatus = '';
+            
+            if (verificationStatus !== 'approved') {
+                showVerificationModal();
+            }
+            
+            // Close modal handlers
+            document.querySelectorAll('.close-modal').forEach(button => {
+                button.addEventListener('click', closeVerificationModal);
+            });
+            
+            // Close on outside click
+            document.querySelector('.verification-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeVerificationModal();
+                }
+            });
+            
+            // Close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeVerificationModal();
+                }
+            });
+        });
+
+        function showVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+    <div class="verification-modal" id="verificationModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Account Verification Required</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Your agency account is pending verification. You'll be able to add vehicles once approved.</p>
+                    <p>Please wait while our team reviews your documents.</p>
+                </div>
+            
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Your agency verification was rejected.</p>
+                    
+                        <div class="rejection-reason">
+                            <strong>Reason:</strong>
+                            <p></p>
+                        </div>
+                    
+                </div>
+            
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Please complete your agency profile and submit verification documents to start adding vehicles.</p>
+                </div>
+            
+        </div>
+        <div class="modal-footer">
+            
+                <a href="agency_profile.html" class="btn btn-primary">Complete Verification</a>
+            
+            
+                <a href="contact_support.html" class="btn btn-outline">Contact Support</a>
+            
+            <button class="btn btn-secondary close-modal">Close</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

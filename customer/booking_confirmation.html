@@ -1,0 +1,447 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/styles.css">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', 'SF Pro Display', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        .confirmation-section {
+            padding: 2rem 0;
+            min-height: calc(100vh - var(--header-height) - 50px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .confirmation-card {
+            background: var(--white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 2rem 2.5rem;
+            margin: 1rem auto;
+            max-width: 700px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            border-top: 5px solid var(--success);
+        }
+
+        .confirmation-card h1 {
+            color: var(--success);
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .confirmation-card h1 i.fa-check-circle {
+            font-size: 2.5rem;
+            animation: popIn 0.5s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .confirmation-message {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .confirmation-message strong {
+            color: var(--primary-dark);
+        }
+
+        .booking-summary-title {
+            font-size: 1.3rem;
+            color: var(--primary-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--accent-light);
+            padding-bottom: 0.5rem;
+        }
+
+        .confirmation-details {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.8rem;
+            padding: 1rem 0;
+            margin: 1rem 0 2rem 0;
+            text-align: left;
+        }
+
+        .confirmation-details p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--accent-light);
+        }
+        .confirmation-details p:last-child {
+            border-bottom: none;
+        }
+
+        .confirmation-details strong.label {
+            color: var(--text-light);
+            font-weight: 500;
+            margin-right: 1rem;
+        }
+        .confirmation-details span.value {
+            color: var(--primary-dark);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn-confirmation {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-confirmation-primary {
+            background: var(--gradient-primary);
+            color: var(--white);
+            border: none;
+        }
+
+        .btn-confirmation-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(77, 148, 255, 0.2);
+        }
+
+        .btn-confirmation-secondary {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-confirmation-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-card {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            .confirmation-card h1 {
+                font-size: 1.8rem;
+            }
+            .confirmation-card h1 i.fa-check-circle {
+                font-size: 2rem;
+            }
+            .confirmation-details p {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .confirmation-details span.value {
+                text-align: left;
+                margin-top: 0.25rem;
+            }
+            .confirmation-actions {
+                flex-direction: column;
+            }
+            .btn-confirmation {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        .additional-services {
+            text-align: left;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--accent-light);
+        }
+        .additional-services h4 {
+            font-size: 1.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+        }
+        .additional-services p {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            padding: 0.4rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="customer_dashboard.html"> <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                    <li><a href="my_bookings.html" class="nav-link active">My Bookings</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                         <div class="profile-menu" id="profileMenu">
+                            <a href="profile.html" class="profile-menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="favorite_cars.html" class="profile-menu-item">
+                                <i class="fas fa-heart"></i>
+                                <span>Favorites</span>
+                            </a>
+                             <a href="about.html" class="profile-menu-item"> <i class="fas fa-info-circle"></i>
+                                <span>About Us</span>
+                            </a>
+                            <hr>
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="confirmation-section">
+        <div class="container">
+            <div class="confirmation-card animate__animated animate__fadeInUp">
+                <h1><i class="fas fa-check-circle"></i> Booking Confirmed!</h1>
+                <p class="confirmation-message">
+                    Thank you, <strong></strong>! Your car rental booking is confirmed.
+                    A confirmation email with all the details has been sent to you (simulated).
+                </p>
+
+                <h2 class="booking-summary-title">Booking Summary</h2>
+                <div class="confirmation-details">
+                    <p><strong class="label"><i class="fas fa-hashtag"></i> Booking ID:</strong> <span class="value"></span></p>
+                    <p><strong class="label"><i class="fas fa-car"></i> Vehicle:</strong> <span class="value"></span></p>
+                    
+                    <p><strong class="label"><i class="fas fa-id-badge"></i> License Plate:</strong> <span class="value"></span></p>
+                    
+                     
+                    <p><strong class="label"><i class="fas fa-building"></i> Rental Agency:</strong> <span class="value"></span></p>
+                    
+                    <p><strong class="label"><i class="fas fa-calendar-alt"></i> Pickup Date:</strong> <span class="value"></span></p>
+                    <p><strong class="label"><i class="far fa-calendar-alt"></i> Return Date:</strong> <span class="value"></span></p>
+                    <p><strong class="label"><i class="fas fa-credit-card"></i> Payment Method:</strong> <span class="value"></span></p>
+                    <p><strong class="label"><i class="fas fa-money-check-alt"></i> Payment Status:</strong> <span class="value" style="color: ; text-transform:capitalize;"></span></p>
+                    <p><strong class="label"><i class="fas fa-file-invoice-dollar"></i> Total Amount:</strong> <span class="value">₱</span></p>
+                </div>
+
+                <!-- Additional Services Section -->
+                
+                <div class="additional-services">
+                    <h4>Additional Services</h4>
+                    
+                        <p>
+                            <strong class="label">
+                                <i class="fas fa-plus-circle"></i> 
+                                :
+                            </strong>
+                            <span class="value">
+                                ₱
+                                
+                                    (₱ x  days)
+                                
+                            </span>
+                        </p>
+                    
+                </div>
+                
+
+                <div class="confirmation-actions">
+                    <a href="booking_details.html?id=" class="btn-confirmation btn-confirmation-primary">
+                        <i class="fas fa-eye"></i> View Full Details
+                    </a>
+                    <a href="my_bookings.html" class="btn-confirmation btn-confirmation-secondary">
+                        <i class="fas fa-list-alt"></i> My Bookings
+                    </a>
+                    <a href="cars.html" class="btn-confirmation btn-confirmation-secondary">
+                        <i class="fas fa-car"></i> Rent Another Car
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="customer_dashboard.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // Basic JS for header interactions (theme, profile, nav toggle)
+    document.addEventListener('DOMContentLoaded', function () {
+        // Hamburger menu for nav
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('mainNavMenu');
+        if (menuToggleBtn && navMenu) {
+            menuToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                menuToggleBtn.classList.toggle('active');
+            });
+        }
+
+        // Toggle Theme (Dark/Light)
+        const themeToggle = document.querySelector('.theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const themeMode = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', themeMode);
+                const icon = this.querySelector('i');
+                if (themeMode === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                localStorage.setItem('theme', themeMode);
+            });
+        }
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if themeToggleIcon) {
+                if (savedTheme === 'dark') {
+                    themeToggleIcon.classList.remove('fa-moon');
+                    themeToggleIcon.classList.add('fa-sun');
+                } else {
+                    themeToggleIcon.classList.remove('fa-sun');
+                    themeToggleIcon.classList.add('fa-moon');
+                }
+            }
+        }
+
+        // Toggle Profile Menu
+        const profileToggleBtn = document.getElementById('profileToggleBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        if (profileToggleBtn && profileMenu) {
+            profileToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileMenu.classList.toggle('active');
+            });
+        }
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function(e) {
+            if (navMenu && navMenu.classList.contains('active') && !navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                navMenu.classList.remove('active');
+                if(menuToggleBtn) menuToggleBtn.classList.remove('active');
+            }
+            if (profileMenu && profileMenu.classList.contains('active') && !profileMenu.contains(e.target) && !profileToggleBtn.contains(e.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+
+        // Prevent closing when clicking inside menus (already handled for profile menu by its own toggle logic)
+        if(navMenu) {
+            navMenu.addEventListener('click', function(e) { e.stopPropagation(); });
+        }
+        if(profileMenu){
+            profileMenu.addEventListener('click', function(e) { e.stopPropagation(); });
+        }
+
+
+        // Update year dynamically
+        const yearSpan = document.getElementById('currentYear');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+    });
+    </script>
+</body>
+</html>

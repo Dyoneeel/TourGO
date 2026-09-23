@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TourGo - Our Fleet</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <link href="public/assets/css/cars.css" rel="stylesheet">
+    <link href="public/assets/css/styles.css" rel="stylesheet">
+    <link href="public/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <i class="fas fa-car-side"></i>
+                    <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="about.html" class="nav-link">About Us</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="header-buttons">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="btn btn-outline"><a href="auth/login.html" class="">Sign In</a></button>
+                <button class="btn btn-primary"><a href="auth/register.html" class="">Register</a></button>
+                <button class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div class="toast-container"></div>
+
+    <section class="page-title">
+        <div class="container">
+            <h1>Explore Our Premium Fleet</h1>
+            <p>Browse our extensive collection of high-quality vehicles for every occasion</p>
+        </div>
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </section>
+
+    <div class="container">
+        <div class="search-filter">
+            <form method="GET" action="cars.html" id="filter-form">
+                <div class="search-box">
+                    <input type="text" name="search" class="search-input" value="" placeholder="Search by make, model, or features...">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search" style="margin-right: 10px;"></i>
+                        Search
+                    </button>
+                </div>
+                
+                <div class="filter-options">
+                    <div class="filter-group">
+                        <label class="filter-label">Vehicle Type</label>
+                        <select name="vehicle_type" class="filter-select">
+                            <option value="">All Types</option>
+                            
+                                <option value="" >
+                                    
+                                </option>
+                            
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Make</label>
+                        <select name="make" class="filter-select">
+                            <option value="">All Makes</option>
+                            
+                                <option value="" >
+                                    
+                                </option>
+                            
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Price Range</label>
+                        <select name="price_range" class="filter-select">
+                            <option value="">Any Price</option>
+                            <option value="budget" >Budget (₱2,000–₱3,500/day)</option>
+                            <option value="mid" >Mid-range (₱3,501–₱5,000/day)</option>
+                            <option value="premium" >Premium (₱5,001–₱8,000/day)</option>
+                            <option value="luxury" >Luxury (₱8,001+/day)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Transmission</label>
+                        <select name="transmission" class="filter-select">
+                            <option value="">Any Transmission</option>
+                            
+                                <option value="" >
+                                    
+                                </option>
+                            
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="filter-actions">
+                    <button type="button" id="reset-filters" class="btn btn-outline">
+                        <i class="fas fa-undo" style="margin-right: 10px;"></i>
+                        Reset Filters
+                    </button>
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                </div>
+                
+                <div class="active-filters">
+                    
+                        <div class="filter-tag" data-filter="vehicle_type">
+                             <i class="fas fa-times"></i>
+                        </div>
+                    
+                    
+                    
+                        <div class="filter-tag" data-filter="make">
+                             <i class="fas fa-times"></i>
+                        </div>
+                    
+                    
+                    
+                        <div class="filter-tag" data-filter="price_range">
+                             <i class="fas fa-times"></i>
+                        </div>
+                    
+                    
+                    
+                        <div class="filter-tag" data-filter="transmission">
+                             <i class="fas fa-times"></i>
+                        </div>
+                    
+                </div>
+                
+                <!-- Hidden sort field to preserve during form submit -->
+                <input type="hidden" name="sort" value="">
+            </form>
+        </div>
+    </div>
+
+    <section class="cars-section">
+        <div class="container">
+            
+                <p class="error-message"></p>
+            
+                <div class="no-cars-uploaded" style="text-align:center; padding:60px 0;">
+                    <img src="public/assets/images/no-cars.svg" alt="No Cars" style="max-width:180px; margin-bottom:24px;">
+                    <h2>No Cars Available Yet</h2>
+                    <p>There are currently no cars uploaded to the platform.<br>
+                    Please check back later or contact support for more information.</p>
+                </div>
+            
+                <div class="cars-header">
+                    <div class="cars-count">
+                        Showing  of  vehicles
+                    </div>
+                    <div class="sort-options">
+                        <span class="sort-label">Sort by:</span>
+                        <select class="sort-select" id="sort-select">
+                            <option value="recommended" >Recommended</option>
+                            <option value="price-low" >Price (Low to High)</option>
+                            <option value="price-high" >Price (High to Low)</option>
+                            <option value="newest" >Newest First</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="cars-grid">
+                    
+                        <div class="no-results">
+                            <p>No vehicles match your search criteria. Please try different filters.</p>
+                        </div>
+                    
+                        
+    <div class="car-card" data-vehicle-id="">
+        <div class="car-image">
+            <span class="car-type"></span>
+            <button class="car-wishlist ">
+                <i class=" fa-heart"></i>
+            </button>
+            
+                <img src="uploads/vehicles/" 
+                    alt=" ">
+            
+                <img src="placeholder.jpg" alt="Vehicle placeholder">
+            
+        </div>
+        <div class="car-details">
+            <h3 class="car-title"> </h3>
+            <div class="car-features">
+                
+                <span class="car-feature"><i class="fas fa-cog"></i> </span>
+                
+                
+                <span class="car-feature"><i class="fas fa-gas-pump"></i> </span>
+                
+                
+                <span class="car-feature"><i class="fas fa-users"></i>  Seats</span>
+                
+            </div>
+            <div class="car-price-row">
+                <span class="car-price">₱<span>/day</span></span>
+                <a href="car_details.html?id=" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    </div>
+
+                    
+                </div>
+
+                <div class="pagination-wrapper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="pagination-info">
+                        Page  of  • Showing - of  vehicles
+                    </div>
+                    <div class="pagination">
+                        
+                        
+                            <a href="&page=1" class="page-item" title="First Page">
+                                <i class="fas fa-angle-double-left"></i>
+                            </a>
+                        
+                        
+                            <a href="&page=" class="page-item" title="Previous Page">
+                                <i class="fas fa-angle-left"></i>
+                                <span class="pagination-nav-text">Prev</span>
+                            </a>
+                        
+                            <span class="page-item disabled">
+                                <i class="fas fa-angle-left"></i>
+                                <span class="pagination-nav-text">Prev</span>
+                            </span>
+                        
+                        
+                            <a href="&page=" class="page-item ">
+                                
+                            </a>
+                        
+                        
+                            <a href="&page=" class="page-item" title="Next Page">
+                                <span class="pagination-nav-text">Next</span>
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        
+                            <span class="page-item disabled">
+                                <span class="pagination-nav-text">Next</span>
+                                <i class="fas fa-angle-right"></i>
+                            </span>
+                        
+                        
+                            <a href="&page=" class="page-item" title="Last Page">
+                                <i class="fas fa-angle-double-right"></i>
+                            </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+    </section>
+
+   <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="contact.html">FAQs</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="public/assets/js/script.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle sort selection change
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            // Update hidden sort field and submit form
+            document.querySelector('input[name="sort"]').value = this.value;
+            document.getElementById('filter-form').submit();
+        });
+    }
+    
+    // Handle filter tag removal
+    document.querySelectorAll('.filter-tag i').forEach(icon => {
+        icon.addEventListener('click', function() {
+            const tag = this.parentElement;
+            const filter = tag.getAttribute('data-filter');
+            if (filter) {
+                // Clear the corresponding form field
+                document.querySelector(`[name="${filter}"]`).value = '';
+                document.getElementById('filter-form').submit();
+            }
+        });
+    });
+    
+    // Handle reset filters button
+    document.getElementById('reset-filters').addEventListener('click', function() {
+        // Clear all filter fields except sort
+        const currentSort = document.querySelector('input[name="sort"]').value;
+        const filterFields = document.querySelectorAll('.filter-select, .search-input');
+        filterFields.forEach(field => {
+            field.value = '';
+        });
+        
+        // Keep the current sort selection
+        document.querySelector('input[name="sort"]').value = currentSort;
+        
+        // Submit the form
+        document.getElementById('filter-form').submit();
+    });
+
+       // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu'); // Target the <ul> directly
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active'); // Toggle active on the <ul>
+
+            // Optional: Toggle icon class for visual feedback (e.g., bars to X)
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-times');
+            }
+        });
+    }
+    
+    // Toast notification function
+    function showToast(message, isSuccess = true) {
+        const toastContainer = document.querySelector('.toast-container') || (() => {
+            const container = document.createElement('div');
+            container.className = 'toast-container';
+            document.body.appendChild(container);
+            return container;
+        })();
+        
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.innerHTML = `
+            <i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+            ${message}
+        `;
+        
+        toastContainer.appendChild(toast);
+        
+        // Remove toast after 3 seconds
+        setTimeout(() => {
+            toast.classList.add('hide');
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, 300);
+        }, 3000);
+    }
+    
+    // Add wishlist functionality
+    document.querySelectorAll('.car-wishlist').forEach(wishlistBtn => {
+        // Set initial state based on session data
+        const vehicleId = wishlistBtn.closest('.car-card').dataset.vehicleId;
+        
+        wishlistBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get vehicle ID from data attribute
+            const vehicleId = this.closest('.car-card').dataset.vehicleId;
+            
+            if (!vehicleId) {
+                console.error('Vehicle ID not found');
+                return;
+            }
+            
+            // Determine action based on current state
+            const isActive = this.classList.contains('active');
+            const action = isActive ? 'remove' : 'add';
+            
+            // Send AJAX request
+            fetch('ajax/wishlist.html', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=${action}&vehicle_id=${vehicleId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update button appearance
+                    this.classList.toggle('active');
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fas');
+                    icon.classList.toggle('far');
+                    
+                    // Add heart beat animation
+                    if (action === 'add') {
+                        icon.classList.add('heart-beat');
+                        setTimeout(() => {
+                            icon.classList.remove('heart-beat');
+                        }, 1000);
+                    }
+                    
+                    // Show toast notification
+                    showToast(data.message);
+                    
+                    // Update wishlist count if needed
+                    // This could update a counter in the navigation
+                } else {
+                    showToast(data.message, false);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showToast('An error occurred. Please try again.', false);
+            });
+        });
+    });
+});
+</script>
+</body>
+</html>

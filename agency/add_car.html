@@ -1,0 +1,964 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Vehicle - TourGo Agency</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+    <link rel="stylesheet" href="../public/assets/css/agency-dashboard.css">
+    <style>
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.6rem 1.35rem; border-radius: 0.5rem; font-weight: 500;
+            text-decoration: none; cursor: pointer; transition: all 0.2s;
+            border: none; font-size: 0.95rem; line-height: 1.5; /* Ensure consistent line height */
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary, #3a86ff) 60%, var(--primary-dark, #4361ee) 100%);
+            box-shadow: 0 2px 8px rgba(var(--primary-rgb, 58,134,255), 0.22); /* Use RGB for shadow */
+            border: none; font-weight: 600; letter-spacing: 0.02em; color: #fff;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--primary-dark, #4361ee) 60%, var(--primary, #3a86ff) 100%);
+            transform: translateY(-1px); box-shadow: 0 4px 12px rgba(var(--primary-rgb, 58,134,255), 0.3);
+        }
+        .btn-outline {
+            border: 1.5px solid var(--primary, #3a86ff); color: var(--primary, #3a86ff);
+            background: transparent; font-weight: 600;
+        }
+        .btn-outline:hover { background: rgba(var(--primary-rgb, 58,134,255), 0.1); }
+        .btn-danger { background-color: var(--danger, #dc3545); color: white; }
+        .btn-danger:hover { background-color: #c82333; }
+        .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+
+
+        /* --- Main Content & Form Structure --- */
+        .dashboard { padding: 2rem 0; } /* Reduced top/bottom padding */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; } /* Slightly reduced padding */
+        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .dashboard-title { font-size: 1.7rem; font-weight: 700; color: var(--text-dark); margin: 0; }
+
+        .add-vehicle-form {
+            background: var(--white, #fff);
+            box-shadow: 0 6px 24px rgba(var(--primary-rgb, 58,134,255), 0.08), 0 1px 4px rgba(0,0,0,0.05);
+            border-radius: 1rem; border: 1px solid var(--border-color, #e0e7ff);
+            margin-bottom: 2rem; padding: 2rem; /* Consistent padding */
+            position: relative;
+        }
+        .add-vehicle-form::before { /* Top border accent */
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(to right, var(--primary, #3a86ff), var(--secondary, #4361ee));
+            border-top-left-radius: 1rem; border-top-right-radius: 1rem;
+        }
+
+        .form-section {
+            background: rgba(var(--primary-rgb, 58,134,255), 0.03); /* Very light primary bg */
+            border-radius: 0.75rem; margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+            padding: 1.75rem; border: 1px solid rgba(var(--primary-rgb, 58,134,255), 0.1);
+        }
+        .form-section:last-of-type { margin-bottom: 0; }
+
+        .section-title { /* For titles within form sections */
+            font-size: 1.2rem; font-weight: 600; margin-bottom: 1.25rem;
+            color: var(--primary, #3a86ff); display: flex; align-items: center;
+            border-bottom: 1px solid rgba(var(--primary-rgb, 58,134,255),0.15); padding-bottom: 0.75rem;
+        }
+        .section-title i {
+            margin-right: 0.6rem; color: var(--primary, #3a86ff);
+            font-size: 1.1em; /* Slightly larger icon */
+        }
+
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+        .form-group { margin-bottom: 0; position: relative; } /* Removed default bottom margin, grid handles gap */
+
+        .form-label {
+            font-weight: 500; color: var(--text-dark, #333);
+            display: block; margin-bottom: 0.5rem; font-size: 0.9rem;
+        }
+        .form-label-sm { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.25rem; color: #555; }
+
+
+        .form-required { color: var(--danger, #dc3545); margin-left: 0.25rem; font-weight:normal; }
+
+        .form-control, .select2-container--default .select2-selection--single, .sp-replacer {
+            border: 1px solid var(--border-color-light, #cbd5e1);
+            border-radius: 0.375rem; /* Softer radius */
+            background: var(--input-bg, #fff); color: var(--text-input, #333);
+            font-size: 0.95rem; transition: border-color 0.2s, box-shadow 0.2s;
+            width: 100%; padding: 0.65rem 0.85rem; /* Adjusted padding */
+            box-sizing: border-box; line-height: 1.5;
+        }
+        .form-control:focus,
+        .select2-container--default.select2-container--open .select2-selection--single,
+        .sp-active { /* Spectrum active state */
+            border-color: var(--primary, #3a86ff);
+            box-shadow: 0 0 0 2.5px rgba(var(--primary-rgb, 58,134,255), 0.2);
+            outline: none;
+        }
+        .form-control.is-invalid, /* For JS validation feedback */
+        .select2-container--default .select2-selection--single.is-invalid,
+        .sp-replacer.is-invalid {
+            border-color: var(--danger, #dc3545) !important;
+            box-shadow: 0 0 0 2.5px rgba(var(--danger-rgb, 220,53,69), 0.2) !important;
+        }
+        .form-control::placeholder { color: var(--text-placeholder, #9ca3af); }
+        .form-hint { font-size: 0.8rem; color: var(--text-muted, #6c757d); margin-top: 0.3rem; }
+        textarea.form-control { min-height: 100px; }
+
+        /* Currency Input */
+        .currency-input { position: relative; }
+        .currency-input .peso-sign {
+            position: absolute; left: 0.85rem; top: 50%; transform: translateY(-50%);
+            color: var(--text-muted, #6c757d); font-weight: 500; font-size: 0.95rem; pointer-events: none;
+        }
+        .currency-input .price-input { padding-left: 2rem !important; }
+        .form-control-sm.price-input { padding-left: 1.8rem !important; }
+
+
+        /* Checkbox Group */
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }
+        .feature-checkbox {
+            display: flex; align-items: center; background: var(--white, #fff);
+            padding: 0.6rem 0.85rem; border-radius: 0.375rem; transition: all 0.2s;
+            cursor: pointer; border: 1px solid var(--border-color-light, #e0e0e0);
+        }
+        .feature-checkbox:hover { background: rgba(var(--primary-rgb, 58,134,255), 0.05); border-color: rgba(var(--primary-rgb, 58,134,255), 0.3); }
+        .feature-checkbox input[type="checkbox"] { margin-right: 0.6rem; cursor: pointer; accent-color: var(--primary, #3a86ff); width: 1em; height: 1em;}
+        .feature-checkbox input[type="checkbox"]:checked + span { color: var(--primary, #3a86ff); font-weight: 500; }
+        .feature-checkbox:has(input:checked) { border-color: var(--primary, #3a86ff); background-color: rgba(var(--primary-rgb, 58,134,255), 0.08); }
+
+        /* Toggle Switch */
+        .toggle-container { display: flex; align-items: center; margin: 1rem 0; }
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; margin-right: 0.75rem; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border-color, #ccc); transition: .3s; border-radius: 24px;
+        }
+        .toggle-slider:before {
+            position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px;
+            background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        input:checked + .toggle-slider { background-color: var(--success, #28a745); }
+        input:checked + .toggle-slider:before { transform: translateX(20px); }
+        .toggle-label { font-weight: 500; color: var(--text-dark, #333); font-size: 0.95rem; }
+
+        /* File Upload & Image Preview */
+        .file-upload-container { margin-top: 1rem; }
+        .file-upload-label {
+            display: block; width: 100%; padding: 1.5rem;
+            border: 2px dashed var(--border-color, #d1d5db); border-radius: 0.5rem;
+            background: var(--input-bg-light, #f9fafb); text-align: center; cursor: pointer; transition: all 0.2s;
+        }
+        .file-upload-label:hover { border-color: var(--primary, #3a86ff); background: rgba(var(--primary-rgb, 58,134,255), 0.03); }
+        .file-upload-label.is-invalid { border-color: var(--danger, #dc3545) !important; border-style: dashed !important; }
+        .upload-prompt i { color: var(--primary, #3a86ff); margin-bottom: 0.6rem; font-size: 2rem; }
+        .upload-prompt p { margin: 0.2rem 0; color: var(--text-dark, #333); font-size: 0.95rem; }
+
+        .image-preview-container { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+        .image-preview-item {
+            position: relative; width: 100px; height: 75px; /* Smaller previews */
+            border-radius: 0.375rem; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color-light, #e0e0e0); transition: transform 0.2s;
+        }
+        .image-preview-item:hover { transform: scale(1.05); }
+        .image-preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .remove-image {
+            position: absolute; top: 4px; right: 4px;
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(2px);
+            border-radius: 50%; width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            color: var(--danger, #dc3545); transition: all 0.2s;
+            font-weight: bold; font-size: 0.9rem; line-height: 1;
+        }
+        .remove-image:hover { background: var(--danger, #dc3545); color: white; }
+
+        /* Form Buttons */
+        .form-buttons { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .btn-submit { padding: 0.75rem 1.5rem; font-size: 1rem; }
+        .btn-submit i { margin-right: 0.5rem; }
+
+        /* Select2 Customization */
+        .select2-container--default .select2-selection--single { height: calc(1.5em + 1.3rem + 2px); padding: 0.65rem 0.75rem; }
+        .select2-container--default .select2-selection--single .select2-selection__rendered { line-height: 1.5; color: var(--text-input, #333); padding-left: 0; padding-right: 20px; }
+        .select2-container--default .select2-selection--single .select2-selection__arrow { height: calc(1.5em + 1.3rem); top: 1px; right: 5px; width: 20px; }
+        .select2-container--default .select2-results__option--highlighted[aria-selected] { background-color: var(--primary, #3a86ff); color: white; }
+        .select2-dropdown { border: 1px solid var(--primary-light, #a8c7fa); border-radius: 0.375rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+
+        /* Spectrum Color Picker */
+        .sp-replacer { /* Button that triggers picker */
+            border: 1px solid var(--border-color-light, #cbd5e1); border-radius: 0.375rem;
+            background: var(--input-bg, #fff); display: inline-flex; align-items: center;
+            height: calc(1.5em + 1.3rem + 2px); width: 100%; padding: 0 0.5rem; /* Add horizontal padding */
+        }
+        .sp-replacer:hover, .sp-replacer.sp-active { border-color: var(--primary, #3a86ff); }
+        .sp-preview { /* Color swatch */
+            width: calc(1.5em + 1.3rem + 2px - 1.2rem); /* Full height minus some padding */
+            height: calc(1.5em + 1.3rem + 2px - 1.2rem);
+            border: 1px solid var(--border-color-light, #e0e0e0); border-radius: 0.25rem;
+            margin-right: 0.5rem; 
+        }
+        .sp-preview-inner { border-radius: 0.2rem; }
+        .sp-dd { /* Dropdown arrow */
+            padding: 0 0.3rem; line-height: calc(1.5em + 1.3rem + 2px); color: var(--text-muted, #6c757d);
+            font-size: 0.7rem;
+        }
+        .sp-input { /* Input field within spectrum if shown */
+            border: 1px solid var(--border-color-light, #e0e0e0) !important; border-radius: 0.25rem !important;
+            padding: 0.25rem 0.5rem !important; background: white !important; color: var(--text-dark, #333) !important;
+        }
+        .sp-container { border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1); } /* Picker popup */
+
+        /* Tags Input for Custom Features */
+        .tags-input-container {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.5rem;
+            border: 1px solid var(--border-color-light, #cbd5e1); border-radius: 0.375rem;
+            background: var(--input-bg, #fff); min-height: calc(1.5em + 1.3rem + 2px); margin-bottom: 0.5rem;
+        }
+         .tags-input-container:focus-within { /* Style when internal input has focus */
+            border-color: var(--primary, #3a86ff);
+            box-shadow: 0 0 0 2.5px rgba(var(--primary-rgb, 58,134,255), 0.2);
+        }
+        .tag-item {
+            background: var(--primary, #3a86ff); color: #fff; padding: 0.3rem 0.7rem;
+            border-radius: 15px; display: flex; align-items: center; font-size: 0.9rem;
+        }
+        .tag-remove { margin-left: 0.4em; cursor: pointer; font-weight: bold; opacity: 0.7; transition: opacity 0.2s; }
+        .tag-remove:hover { opacity: 1; }
+        #additional-feature-input.form-control { border: none; box-shadow: none; padding: 0.3rem 0; flex-grow: 1; background: transparent; }
+        #additional-feature-input.form-control:focus { border: none; box-shadow: none; }
+
+
+        /* Additional Services Dynamic Form */
+        .additional-service-item {
+            border: 1px solid var(--border-color-lighter, #eef2f7);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            background-color: var(--white, #fff);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+         .additional-service-item .form-grid {
+            align-items: flex-end; /* Align items to bottom for button alignment */
+            gap: 0.75rem; /* Smaller gap for service items */
+        }
+        .additional-service-item .form-group {
+            margin-bottom: 0; /* Remove bottom margin as grid handles gap */
+        }
+         .additional-service-item .form-control-sm { /* Style for smaller inputs in this section */
+            font-size: 0.875rem;
+            padding: 0.5rem 0.75rem;
+            height: auto;
+        }
+        .additional-service-item .price-input.form-control-sm {
+            padding-left: 1.8rem !important;
+        }
+         .additional-service-item .currency-input .peso-sign {
+            font-size: 0.875rem;
+            left: 0.65rem;
+        }
+        .additional-service-item .select2-container--default .select2-selection--single { /* Adjust Select2 for sm */
+            height: calc(1.5em + 1rem + 2px); /* Based on 0.5rem padding */
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+        }
+         .additional-service-item .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: calc(1.5em + 1rem);
+        }
+
+
+        /* Messages */
+        .success-message, .error-message {
+            padding: 0.9rem 1.1rem; border-radius: 0.375rem; margin-bottom: 1.25rem;
+            display: flex; align-items: center; animation: fadeIn 0.3s ease-out;
+            font-size: 0.95rem; border-left-width: 3px;
+        }
+        .success-message { background-color: rgba(var(--success-rgb, 22,163,74), 0.1); color: var(--success-dark, #14532d); border-left-color: var(--success, #16a34a); }
+        .error-message { background-color: rgba(var(--danger-rgb, 220,38,38), 0.1); color: var(--danger-dark, #991b1b); border-left-color: var(--danger, #dc2626); }
+        .success-message i, .error-message i { margin-right: 0.6rem; font-size: 1.1rem; }
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .add-vehicle-form { padding: 1.5rem; }
+            .form-grid { grid-template-columns: 1fr; } /* Single column for form items */
+            .form-buttons { flex-direction: column-reverse; gap: 0.75rem; }
+            .btn-submit, .btn-outline { width: 100%; justify-content: center; }
+            .checkbox-group { grid-template-columns: 1fr; }
+            .dashboard-header { flex-direction: column; align-items: flex-start; gap: 0.75rem; }
+            .form-section { padding: 1.25rem; }
+             .additional-service-item .form-grid { grid-template-columns: 1fr; } /* Stack service inputs on mobile */
+
+        }
+        @media (max-width: 480px) {
+            .add-vehicle-form { padding: 1rem; }
+            .form-section { padding: 1rem; }
+            .dashboard-title { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <header id="header" class="header-agency"> <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu"> <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode" id="themeToggleBtn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenuAgency">
+                            <img src="" alt="Agency Logo" class="profile-avatar">
+                            <span class="profile-name"></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenuAgency">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr class="dropdown-divider">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <button class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu" aria-expanded="false" aria-controls="mainNavMenu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Add New Vehicle</h1>
+                <a href="my_cars.html" class="btn btn-outline">
+                    <i class="fas fa-arrow-left" style="margin-right:10px;"></i>
+                    Back to My Fleet
+                </a>
+            </div>
+
+            
+            <div class="success-message animate__animated animate__fadeIn">
+                <i class="fas fa-check-circle"></i> 
+            </div>
+            
+
+            
+            <div class="error-message animate__animated animate__shakeX">
+                <i class="fas fa-exclamation-circle"></i> 
+            </div>
+            
+
+            <form action="add_car.html" method="post" enctype="multipart/form-data" class="add-vehicle-form" id="addVehicleForm" novalidate>
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-car-side"></i> Basic Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="make" class="form-label">Make <span class="form-required">*</span></label>
+                            <input type="text" id="make" name="make" class="form-control" placeholder="e.g. Toyota" required value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="model" class="form-label">Model <span class="form-required">*</span></label>
+                            <input type="text" id="model" name="model" class="form-control" placeholder="e.g. Camry" required value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="year" class="form-label">Year <span class="form-required">*</span></label>
+                            <input type="number" id="year" name="year" class="form-control" placeholder="e.g. 2023" min="1900" max="" required value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="vehicle_type" class="form-label">Vehicle Type <span class="form-required">*</span></label>
+                            <select id="vehicle_type" name="vehicle_type" class="form-control select2-init" required>
+                                <option value="">Select Vehicle Type</option>
+                                
+                                    <option value="" ></option>
+                                
+                                 <option value="Other" >Other (Specify)</option> 
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-cogs"></i> Technical Specifications</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fuel_type" class="form-label">Fuel Type</label>
+                            <select id="fuel_type" name="fuel_type" class="form-control select2-init">
+                                <option value="">Select Fuel Type</option>
+                                
+                                <option value="" ></option>
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="transmission" class="form-label">Transmission</label>
+                            <select id="transmission" name="transmission" class="form-control select2-init">
+                                <option value="">Select Transmission</option>
+                                 
+                                <option value="" ></option>
+                                
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mileage" class="form-label">Mileage (km)</label>
+                            <input type="number" id="mileage" name="mileage" class="form-control" placeholder="e.g. 15000" min="0" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="seats" class="form-label">Seats</label>
+                            <input type="number" id="seats" name="seats" class="form-control" placeholder="e.g. 5" min="1" max="50" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="doors" class="form-label">Doors</label>
+                            <input type="number" id="doors" name="doors" class="form-control" placeholder="e.g. 4" min="1" max="10" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="color" class="form-label">Color <span class="form-required">*</span></label>
+                            <input type="text" id="color" name="color" class="form-control color-picker" placeholder="Select Color" required value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="engine" class="form-label">Engine Details</label>
+                            <input type="text" id="engine" name="engine" class="form-control" placeholder="e.g. 2.5L 4-Cylinder Turbo" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="license_plate" class="form-label">License Plate <span class="form-required">*</span></label>
+                            <input type="text" id="license_plate" name="license_plate" class="form-control" placeholder="e.g. ABC1234" required value="">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-dollar-sign"></i> Pricing Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="daily_rate" class="form-label">Daily Rate <span class="form-required">*</span></label>
+                            <div class="currency-input">
+                                <span class="peso-sign">₱</span>
+                                <input type="number" id="daily_rate" name="daily_rate" class="form-control price-input" placeholder="0.00" step="0.01" min="0.01" required value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="weekly_rate" class="form-label">Weekly Rate (Optional)</label>
+                            <div class="currency-input">
+                                <span class="peso-sign">₱</span>
+                                <input type="number" id="weekly_rate" name="weekly_rate" class="form-control price-input" placeholder="0.00" step="0.01" min="0" value="">
+                            </div>
+                            <div class="form-hint">Leave empty/0 for auto-calculation (10% off daily) or set manually.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="monthly_rate" class="form-label">Monthly Rate (Optional)</label>
+                            <div class="currency-input">
+                                <span class="peso-sign">₱</span>
+                                <input type="number" id="monthly_rate" name="monthly_rate" class="form-control price-input" placeholder="0.00" step="0.01" min="0" value="">
+                            </div>
+                             <div class="form-hint">Leave empty/0 for auto-calculation (20% off daily) or set manually.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-list-ul"></i> Features & Amenities</h3>
+                    <p class="form-label" style="margin-bottom: 0.75rem;">Standard Features (select all that apply)</p>
+                    <div class="checkbox-group">
+                        
+                        <label class="feature-checkbox">
+                            <input type="checkbox" name="features[]" value="" 
+                                >
+                            <span></span>
+                        </label>
+                        
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1.5rem;">
+                        <label for="additional-feature-input" class="form-label">Additional Custom Features (comma-separated)</label>
+                        <input type="text" id="additional_features" name="custom_features" class="form-control" placeholder="e.g. Roof Rack, Tow Hitch" value="">
+                        <div class="form-hint">Enter features separated by commas. They will be added to the list.</div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-concierge-bell"></i> Additional Services (Optional)</h3>
+                    <div id="additional-services-container">
+                        
+                                <div class="additional-service-item form-grid">
+                                    <div class="form-group">
+                                        <label for="service_name_" class="form-label-sm">Service Name</label>
+                                        <input type="text" id="service_name_" name="additional_services[][name]" class="form-control form-control-sm" placeholder="e.g. Child Seat" value="" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="service_price_" class="form-label-sm">Price</label>
+                                        <div class="currency-input">
+                                            <span class="peso-sign">₱</span>
+                                            <input type="number" id="service_price_" name="additional_services[][price]" class="form-control form-control-sm price-input" placeholder="0.00" step="0.01" min="0" value="" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="service_price_type_" class="form-label-sm">Price Type</label>
+                                        <select id="service_price_type_" name="additional_services[][price_type]" class="form-control form-control-sm" required>
+                                            <option value="per_day" >Per Day</option>
+                                            <option value="fixed" >Fixed (One-time)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="service_description_" class="form-label-sm">Description</label>
+                                        <input type="text" id="service_description_" name="additional_services[][description]" class="form-control form-control-sm" placeholder="Short description" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-danger btn-sm remove-service-btn" style="padding: 0.5rem 0.75rem; margin-top:1.3rem;"><i class="fas fa-trash-alt"></i></button>
+                                    </div>
+                                </div>
+                                
+                    </div>
+                    <button type="button" id="addServiceBtn" class="btn btn-outline" style="margin-top: 1rem;">
+                        <i class="fas fa-plus-circle"></i> Add Another Service
+                    </button>
+                    <div class="form-hint">Define optional services customers can add (e.g., GPS, Child Seat, WiFi).</div>
+                </div>
+
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-file-alt"></i> Listing Details</h3>
+                    <div class="form-group">
+                        <label for="title" class="form-label">Listing Title <span class="form-required">*</span></label>
+                        <input type="text" id="title" name="title" class="form-control" placeholder="e.g. 2023 Toyota Camry - Comfortable & Reliable" required value="">
+                        <div class="form-hint">A catchy and descriptive title for your listing.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="form-label">Description <span class="form-required">*</span></label>
+                        <textarea id="description" name="description" class="form-control" rows="5" placeholder="Provide a detailed description of your vehicle, its condition, and any special terms or pickup instructions." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="pickup_location" class="form-label">Primary Pickup/Return Location <span class="form-required">*</span></label>
+                        <input type="text" id="pickup_location" name="pickup_location" class="form-control" placeholder="e.g. 123 Main St, City, Province" required value="">
+                        <div class="form-hint">This is where customers will typically pick up and return the vehicle.</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-images"></i> Photos</h3>
+                    <div class="form-group">
+                        <label class="form-label">Vehicle Images <span class="form-required">*</span></label>
+                        <div class="file-upload-container">
+                            <label for="vehicle_images" class="file-upload-label">
+                                <div class="upload-prompt">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <p>Drag & drop images or click to browse</p>
+                                    <p class="form-hint">Upload multiple images (JPG, PNG, WEBP, GIF). Max 10 images, 5MB per image. First image is primary.</p>
+                                </div>
+                                <input type="file" id="vehicle_images" name="vehicle_images[]" multiple accept="image/jpeg,image/png,image/webp,image/gif" style="display: none;">
+                            </label>
+                        </div>
+                        <div class="image-preview-container" id="imagePreviewContainer">
+                            </div>
+                         <div class="form-hint" id="fileValidationMessage" style="color: var(--danger); margin-top: 0.5rem; display:none;"></div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title"><i class="fas fa-calendar-check"></i> Availability & Rental Terms</h3>
+                    <div class="toggle-container">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="is_available" name="is_available" >
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span class="toggle-label">Make Available for Booking Immediately</span>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="available_from" class="form-label">Available From</label>
+                            <input type="date" id="available_from" name="available_from" class="form-control" value="" min="">
+                            <div class="form-hint">Date when this vehicle starts being available. Defaults to today.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="available_until" class="form-label">Available Until (Optional)</label>
+                            <input type="date" id="available_until" name="available_until" class="form-control" min="" value="">
+                            <div class="form-hint">Leave empty if no specific end date for availability.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="min_rental_period" class="form-label">Minimum Rental (days)</label>
+                            <input type="number" id="min_rental_period" name="min_rental_period" class="form-control" value="" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="max_rental_period" class="form-label">Maximum Rental (days, Optional)</label>
+                            <input type="number" id="max_rental_period" name="max_rental_period" class="form-control" placeholder="e.g. 30" min="1" value="">
+                            <div class="form-hint">Leave empty if no maximum. Must be ≥ min period.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-outline" id="resetFormBtn">
+                        <i class="fas fa-undo"></i> Clear Form
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-submit">
+                        <i class="fas fa-save"></i> Add Vehicle to Fleet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer-agency"> <div class="container">
+            <div class="footer-content">
+                 <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Agency Portal. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.1/spectrum.min.js"></script>
+    <script src="../public/assets/js/agency_script.js"></script> <script>
+    $(document).ready(function() {
+        // Initialize Select2 for static selects
+        $('.select2-init').select2({
+            width: '100%',
+            minimumResultsForSearch: 7 
+        });
+        
+        // Initialize Color Picker
+        $('.color-picker').spectrum({
+            preferredFormat: "hex",
+            showInput: true,
+            allowEmpty: true,
+            showInitial: true,
+            showAlpha: false, // Typically don't need alpha for car color
+            palette: [
+                ["#000000", "#444444", "#666666", "#999999", "#cccccc", "#eeeeee", "#f3f3f3", "#ffffff"],
+                ["#ff0000", "#ff9900", "#ffff00", "#00ff00", "#00ffff", "#0000ff", "#9900ff", "#ff00ff"],
+                // Add more palette rows if desired
+            ],
+            change: function(color) { $(this).trigger('input'); } // For validation
+        });
+        $('.color-picker').on('dragstop.spectrum', function(e, color) { $(this).trigger('input'); });
+
+
+        // Auto-calculate weekly/monthly rates if not manually entered
+        $('#daily_rate').on('input change', function() {
+            const dailyRateVal = $(this).val().trim();
+            const dailyRate = parseFloat(dailyRateVal);
+            const weeklyInput = $('#weekly_rate');
+            const monthlyInput = $('#monthly_rate');
+
+            if (dailyRateVal === '' || isNaN(dailyRate) || dailyRate <= 0) {
+                if (!weeklyInput.data('manual-entry')) weeklyInput.val('');
+                if (!monthlyInput.data('manual-entry')) monthlyInput.val('');
+                return;
+            }
+
+            if (!weeklyInput.data('manual-entry')) {
+                weeklyInput.val((dailyRate * 7 * 0.90).toFixed(2)); // 10% discount
+            }
+            if (!monthlyInput.data('manual-entry')) {
+                monthlyInput.val((dailyRate * 30 * 0.80).toFixed(2)); // 20% discount
+            }
+        });
+
+        $('#weekly_rate, #monthly_rate').on('input change', function() {
+            if ($(this).val().trim() !== '' && parseFloat($(this).val()) > 0) {
+                $(this).data('manual-entry', true);
+            } else {
+                 $(this).data('manual-entry', false);
+                 // If cleared and daily rate has value, re-trigger auto-calculation
+                if (parseFloat($('#daily_rate').val()) > 0) {
+                     $('#daily_rate').trigger('input');
+                } else {
+                    $(this).val(''); // Ensure it's fully cleared
+                }
+            }
+        });
+         // Initial calculation if daily_rate has a value on page load (e.g., from POSTback)
+        if ($('#daily_rate').val().trim() !== '' && parseFloat($('#daily_rate').val()) > 0) {
+            $('#daily_rate').trigger('input');
+        }
+
+
+        let accumulatedFiles = [];
+        const MAX_IMAGES = 10;
+        const MAX_FILE_SIZE_MB = 5; // 5MB
+
+        $('#vehicle_images').change(function(event) {
+            const newFiles = Array.from(event.target.files);
+            let fileValidationMessage = $('#fileValidationMessage');
+            fileValidationMessage.hide().text('');
+
+            newFiles.forEach(newFile => {
+                if (accumulatedFiles.length >= MAX_IMAGES) {
+                    fileValidationMessage.text(`Cannot upload more than ${MAX_IMAGES} images.`).show();
+                    return; // Stop processing further files in this batch
+                }
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+                if (!allowedTypes.includes(newFile.type)) {
+                    fileValidationMessage.text(`Invalid file type: ${newFile.name}. Allowed: JPG, PNG, WEBP, GIF.`).show();
+                    return; // Skip this file
+                }
+                if (newFile.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+                    fileValidationMessage.text(`File too large: ${newFile.name}. Max ${MAX_FILE_SIZE_MB}MB.`).show();
+                    return; // Skip this file
+                }
+                if (!accumulatedFiles.some(f => f.name === newFile.name && f.size === newFile.size)) {
+                    accumulatedFiles.push(newFile);
+                }
+            });
+            renderImagePreviews();
+            $(this).val(''); // Clear the file input
+        });
+
+        function renderImagePreviews() {
+            const previewContainer = $('#imagePreviewContainer');
+            previewContainer.html('');
+            accumulatedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewContainer.append(
+                        `<div class="image-preview-item">
+                            <img src="${e.target.result}" alt="${file.name}">
+                            <span class="remove-image" data-index="${index}" title="Remove image">×</span>
+                        </div>`
+                    );
+                }
+                reader.readAsDataURL(file);
+            });
+            $('#fileValidationMessage').toggleClass('is-invalid-message', accumulatedFiles.length === 0 && $('#vehicle_images').prop('required'));
+
+        }
+
+        $(document).on('click', '.remove-image', function() {
+            const indexToRemove = parseInt($(this).data('index'), 10);
+            accumulatedFiles.splice(indexToRemove, 1);
+            renderImagePreviews();
+        });
+
+        // Custom Features Tag Input (Simple comma-separated for now)
+        // More advanced tagging libraries could be used if needed.
+
+        // --- Additional Services Logic ---
+        let serviceCounter = ; // Initialize counter based on POST data
+        $('#addServiceBtn').click(function() {
+            serviceCounter++; // Use a unique counter for new items
+            const serviceHtml = `
+                <div class="additional-service-item form-grid">
+                    <div class="form-group">
+                        <label for="service_name_${serviceCounter}" class="form-label-sm">Service Name <span class="form-required">*</span></label>
+                        <input type="text" id="service_name_${serviceCounter}" name="additional_services[new_${serviceCounter}][name]" class="form-control form-control-sm" placeholder="e.g. Child Seat" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="service_price_${serviceCounter}" class="form-label-sm">Price <span class="form-required">*</span></label>
+                        <div class="currency-input">
+                            <span class="peso-sign">₱</span>
+                            <input type="number" id="service_price_${serviceCounter}" name="additional_services[new_${serviceCounter}][price]" class="form-control form-control-sm price-input" placeholder="0.00" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="service_price_type_${serviceCounter}" class="form-label-sm">Price Type <span class="form-required">*</span></label>
+                        <select id="service_price_type_${serviceCounter}" name="additional_services[new_${serviceCounter}][price_type]" class="form-control form-control-sm" required>
+                            <option value="per_day" selected>Per Day</option>
+                            <option value="fixed">Fixed (One-time)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="service_description_${serviceCounter}" class="form-label-sm">Description (Optional)</label>
+                        <input type="text" id="service_description_${serviceCounter}" name="additional_services[new_${serviceCounter}][description]" class="form-control form-control-sm" placeholder="Short description">
+                    </div>
+                    <div class="form-group" style="align-self: flex-end;">
+                        <button type="button" class="btn btn-danger btn-sm remove-service-btn" style="padding: 0.5rem 0.75rem;"><i class="fas fa-trash-alt"></i> Remove</button>
+                    </div>
+                </div>
+            `;
+            $('#additional-services-container').append(serviceHtml);
+             // If using Select2 for these dynamically added selects:
+            // $(`#service_price_type_${serviceCounter}`).select2({ width: '100%', minimumResultsForSearch: Infinity });
+        });
+
+        $('#additional-services-container').on('click', '.remove-service-btn', function() {
+            $(this).closest('.additional-service-item').remove();
+        });
+
+
+        // Form Validation and Submission
+        $('#addVehicleForm').submit(function(e) {
+            $('.form-control, .select2-selection--single, .sp-replacer').removeClass('is-invalid');
+            $('.file-upload-label').removeClass('is-invalid');
+             $('#fileValidationMessage').hide();
+            let isValid = true;
+            let firstInvalidElement = null;
+            let errorMessagesList = [];
+
+            // Check standard required fields
+            $(this).find('[required]').each(function() {
+                const $this = $(this);
+                let val = $this.val();
+                if ($this.is('select') && $this.hasClass('select2-init')) { // Handle Select2
+                    val = $this.val(); // Select2 updates the original select's value
+                } else if (typeof val === 'string') {
+                    val = val.trim();
+                }
+
+                if (!val || val === "" || ($this.attr('type') === 'number' && parseFloat(val) <= 0 && $this.attr('id') === 'daily_rate')) {
+                    isValid = false;
+                    const label = $(`label[for='${$this.attr('id')}']`).clone().children().remove().end().text().replace('*','').trim();
+                    errorMessagesList.push(label || $this.attr('name'));
+                    
+                    if ($this.hasClass('select2-init')) {
+                        $this.next('.select2-container').find('.select2-selection--single').addClass('is-invalid');
+                        if (!firstInvalidElement) firstInvalidElement = $this.next('.select2-container');
+                    } else if ($this.hasClass('color-picker')) {
+                         $this.closest('.sp-replacer').addClass('is-invalid');
+                         if (!firstInvalidElement) firstInvalidElement = $this.closest('.sp-replacer');
+                    }
+                    else {
+                        $this.addClass('is-invalid');
+                        if (!firstInvalidElement) firstInvalidElement = $this;
+                    }
+                }
+            });
+            
+            // Validate Additional Services dynamic fields
+            $('#additional-services-container .additional-service-item').each(function() {
+                const $item = $(this);
+                const serviceNameInput = $item.find('input[name*="[name]"]');
+                const servicePriceInput = $item.find('input[name*="[price]"]');
+
+                if (serviceNameInput.val().trim() === '') {
+                    isValid = false; errorMessagesList.push('Service Name (in Additional Services)');
+                    serviceNameInput.addClass('is-invalid');
+                    if (!firstInvalidElement) firstInvalidElement = serviceNameInput;
+                }
+                if (servicePriceInput.val().trim() === '' || parseFloat(servicePriceInput.val()) < 0) {
+                    isValid = false; errorMessagesList.push('Service Price (in Additional Services)');
+                    servicePriceInput.addClass('is-invalid');
+                     if (!firstInvalidElement) firstInvalidElement = servicePriceInput;
+                }
+            });
+
+
+            // Image validation
+            if (accumulatedFiles.length === 0) {
+                 if ($('#vehicle_images').prop('required')) { // Check if field is actually required
+                    isValid = false;
+                    errorMessagesList.push('At least one Vehicle Image');
+                    $('.file-upload-label').addClass('is-invalid');
+                     $('#fileValidationMessage').text('Please upload at least one image.').show();
+                    if (!firstInvalidElement) firstInvalidElement = $('.file-upload-label');
+                 }
+            }
+            if (accumulatedFiles.length > MAX_IMAGES) {
+                isValid = false;
+                errorMessagesList.push(`Maximum ${MAX_IMAGES} images allowed`);
+                 $('.file-upload-label').addClass('is-invalid');
+                $('#fileValidationMessage').text(`Too many images selected. Maximum ${MAX_IMAGES}.`).show();
+                 if (!firstInvalidElement) firstInvalidElement = $('.file-upload-label');
+            }
+
+
+            if (!isValid) {
+                e.preventDefault();
+                let uniqueErrors = [...new Set(errorMessagesList)]; // Remove duplicate messages
+                alert("Please correct the following errors:\n- " + uniqueErrors.join("\n- "));
+                if (firstInvalidElement && firstInvalidElement.length > 0) {
+                    $('html, body').animate({ scrollTop: firstInvalidElement.offset().top - 120 }, 300, function() {
+                        if(firstInvalidElement.is(':input:not([type=hidden])')) {
+                            firstInvalidElement.focus();
+                        } else {
+                            firstInvalidElement.find(':input:not([type=hidden])').first().focus();
+                        }
+                    });
+                }
+                return false;
+            }
+
+            // If valid, prepare files for submission
+            const fileInputForSubmission = $('#vehicle_images')[0];
+            const dataTransfer = new DataTransfer();
+            accumulatedFiles.forEach(file => dataTransfer.items.add(file));
+            fileInputForSubmission.files = dataTransfer.files;
+        });
+
+        $('#resetFormBtn').click(function() {
+            if (confirm('Are you sure you want to clear the form? All entered data will be lost.')) {
+                const form = $('#addVehicleForm');
+                form[0].reset();
+                
+                // Reset Select2 fields
+                form.find('.select2-init').val(null).trigger('change');
+                
+                // Reset Spectrum color picker
+                form.find('.color-picker').spectrum('set', null); 
+                
+                // Clear image previews and accumulated files
+                $('#imagePreviewContainer').html('');
+                accumulatedFiles = [];
+                $('#vehicle_images').val(''); // Clear original file input too
+                
+                // Clear custom features (if using a more complex tag system, adapt this)
+                // For simple comma-separated, resetting the input is enough:
+                // $('#additional_features').val(''); 
+                
+                // Clear dynamically added additional services
+                $('#additional-services-container').html('');
+                serviceCounter = 0; // Reset counter for services
+
+                // Remove validation classes
+                form.find('.is-invalid').removeClass('is-invalid');
+                $('.select2-selection--single.is-invalid').removeClass('is-invalid');
+                $('.sp-replacer.is-invalid').removeClass('is-invalid');
+                $('.file-upload-label.is-invalid').removeClass('is-invalid');
+                $('#fileValidationMessage').hide().text('');
+
+                // Reset manual entry flags and trigger recalculation for rates
+                $('#weekly_rate').data('manual-entry', false).val('');
+                $('#monthly_rate').data('manual-entry', false).val('');
+                if ($('#daily_rate').val().trim() !== '' && parseFloat($('#daily_rate').val()) > 0) {
+                    $('#daily_rate').trigger('input'); // Recalculate if daily has value
+                } else {
+                    $('#daily_rate').val(''); // Clear daily if it was also reset
+                }
+
+                $('html, body').animate({ scrollTop: form.offset().top - 100 }, 300);
+            }
+        });
+
+        // Initial trigger for rates if daily_rate has a value (e.g. from POSTback error)
+        if ($('#daily_rate').val() && parseFloat($('#daily_rate').val()) > 0) {
+           // Avoid triggering if weekly/monthly already have manual entries from POST
+           if (!$('#weekly_rate').data('manual-entry') && !$('#monthly_rate').data('manual-entry')) {
+                $('#daily_rate').trigger('input');
+           }
+        }
+        // Set manual entry flags if values are present from POSTback
+        if ($('#weekly_rate').val() && parseFloat($('#weekly_rate').val()) > 0) {
+            $('#weekly_rate').data('manual-entry', true);
+        }
+        if ($('#monthly_rate').val() && parseFloat($('#monthly_rate').val()) > 0) {
+            $('#monthly_rate').data('manual-entry', true);
+        }
+
+
+    });
+    </script>
+</body>
+</html>

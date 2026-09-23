@@ -1,0 +1,1001 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agency Profile - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet"> 
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+    <style>
+        /* Paste the combined CSS here (from your file and my review tab additions) */
+        .main-content { min-height: calc(100vh - 70px); padding: 40px 0; }
+        .profile-container { max-width: 1200px; margin: 0 auto; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--card-shadow); overflow: hidden; }
+        .profile-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 40px; position: relative; overflow: hidden; }
+        .circle-decoration { position: absolute; background-color: rgba(255, 255, 255, 0.1); border-radius: 50%; z-index: 1; pointer-events: none; }
+        .circle-1 { width: 180px; height: 180px; top: -40px; left: 10px; }
+        .circle-2 { width: 100px; height: 100px; bottom: -30px; right: 40px; }
+        .profile-header-content { position: relative; z-index: 2; display: flex; align-items: center; gap: 30px; }
+        .profile-avatar-container { position: relative; }
+        .profile-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.3); object-fit: cover; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
+        .profile-avatar-container div.profile-avatar { display: flex; align-items: center; justify-content: center; background-color: rgba(255,255,255,0.15); font-size: 4rem; } /* For icon placeholder */
+        .avatar-upload-btn { position: absolute; bottom: 5px; right: 5px; width: 36px; height: 36px; border-radius: 50%; background: var(--white); color: var(--primary); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); transition: var(--transition); }
+        .avatar-upload-btn:hover { transform: scale(1.1); }
+        .profile-info h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; }
+        .profile-info .email { opacity: 0.9; font-size: 1.1rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .verification-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; font-size: 0.875rem; font-weight: 600; margin-bottom: 15px; }
+        .verification-badge.approved { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid rgba(40, 167, 69, 0.3); }
+        .verification-badge.pending { background: rgba(255, 193, 7, 0.2); color: var(--warning); border: 1px solid rgba(255, 193, 7, 0.3); }
+        .verification-badge.rejected { background: rgba(220, 53, 69, 0.2); color: var(--danger); border: 1px solid rgba(220, 53, 69, 0.3); }
+        .completion-progress { margin-top: 20px; }
+        .completion-text { font-size: 0.9rem; margin-bottom: 8px; opacity: 0.9; }
+        .progress-bar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.2); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8)); border-radius: 4px; transition: width 0.5s ease; }
+        .tab-navigation { display: flex; border-bottom: 1px solid var(--border-color, #e9ecef); background: var(--white); overflow-x: auto; }
+        .tab-button { background: none; border: none; padding: 20px 24px; font-size: 1rem; font-weight: 500; color: var(--text-light); cursor: pointer; transition: var(--transition); border-bottom: 3px solid transparent; white-space: nowrap; display: flex; align-items: center; gap: 8px; }
+        .tab-button:hover { color: var(--primary); background: var(--accent-light); }
+        .tab-button.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--accent-light); }
+        .tab-content { display: none; padding: 30px 40px; }
+        .tab-content.active { display: block; }
+        .form-section { margin-bottom: 40px; }
+        .section-title { font-size: 1.4rem; font-weight: 600; color: var(--text-dark); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+        .section-title i { color: var(--primary); font-size: 1.2rem; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .form-group { position: relative; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { display: block; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; font-size: 0.95rem; }
+        .required-field::after { content: ' *'; color: var(--danger); }
+        .form-control { width: 100%; padding: 14px 16px; border: 1px solid var(--border-color, #e9ecef); border-radius: var(--border-radius); font-size: 1rem; transition: var(--transition); background-color: var(--input-bg, var(--white)); color: var(--text-dark); }
+        .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1); }
+        .file-upload-container { position: relative; border: 2px dashed var(--border-color, #e9ecef); border-radius: var(--border-radius); padding: 20px; text-align: center; transition: var(--transition); cursor: pointer; }
+        .file-upload-container:hover { border-color: var(--primary); background: var(--accent-light); }
+        .file-upload-input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; top: 0; left: 0; }
+        .upload-icon { font-size: 2.5rem; color: var(--text-light); margin-bottom: 10px; }
+        .upload-text { color: var(--text-dark); font-weight: 500; margin-bottom: 5px; }
+        .upload-subtext { color: var(--text-light); font-size: 0.875rem; }
+        .document-preview { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .document-item { border: 1px solid var(--border-color, #e9ecef); border-radius: var(--border-radius); padding: 10px; text-align: center; width: calc(33.333% - 10px); box-sizing: border-box; }
+        .document-item a { text-decoration: none; color: var(--primary); }
+        .document-item .pdf-icon { font-size: 2rem; color: var(--danger); margin-bottom: 5px; display: block; }
+        .document-item div { font-size: 0.9rem; }
+        .alerts-container { padding: 0 40px; }
+        .alert { padding: 16px 20px; margin-bottom: 20px; border-radius: var(--border-radius); display: flex; align-items: center; gap: 12px; border-left-width: 4px; border-left-style: solid; }
+        .alert-success { background-color: var(--success-light); color: var(--success-dark); border-left-color: var(--success); }
+        .alert-danger { background-color: var(--danger-light); color: var,--danger-dark); border-left-color: var,--danger); }
+        .alert-info { background-color: var(--info-light); color: var,--info-dark); border-left-color: var,--info); }
+        .form-actions { display: flex; gap: 15px; justify-content: flex-end; padding-top: 20px; border-top: 1px solid var(--border-color, #e9ecef); margin-top: 20px; }
+        .btn { padding: 12px 24px; border-radius: var(--border-radius); font-size: 1rem; font-weight: 500; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; border: none; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: var(--success-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--success-rgb), 0.3); }
+        .btn:disabled { background: var(--disabled-bg, #e9ecef); color: var(--disabled-text, #6c757d); opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
+        .character-count { font-size: 0.8em; color: var(--text-light); text-align: right; margin-top: 4px; }
+
+        /* Review Tab Specific Styles */
+        #review-tab .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px; }
+        #review-tab .review-section { background: var(--card-bg, var(--white)); border: 1px solid var(--border-color, #e9ecef); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--card-shadow-sm, 0 1px 3px rgba(0,0,0,0.05)); }
+        #review-tab .review-section h3 { font-size: 1.2rem; font-weight: 600; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        #review-tab .review-item { display: flex; flex-direction: column; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border-color-light, #f1f1f1); font-size: 0.95rem; }
+        #review-tab .review-item:last-child { border-bottom: none; }
+        #review-tab .review-item label { color: var(--text-light); font-weight: 500; margin-bottom: 4px; font-size: 0.85rem; }
+        #review-tab .review-item span { color: var(--text-dark); font-weight: normal; word-break: break-word; }
+        #review-tab .document-status { margin-top: 10px; }
+        #review-tab .doc-status { display: flex; align-items: center; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; padding: 8px 0; border-bottom: 1px solid var(--border-color-light, #f1f1f1); }
+        #review-tab .doc-status:last-child { border-bottom: none; }
+        #review-tab .doc-status > span:first-of-type { display: flex; align-items: center; gap: 8px; } /* Group icon and name */
+        #review-tab .doc-status .fa-file { color: var(--primary); font-size: 1.1rem; }
+        #review-tab .doc-status .status { padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; }
+        #review-tab .doc-status .status.uploaded, #review-tab .doc-status .status.selected { background: var(--success-light); color: var(--success-dark); border: 1px solid var(--success-transparent, rgba(40, 167, 69, 0.18)); }
+        #review-tab .doc-status .status.missing { background: var(--danger-light); color: var,--danger-dark); border: 1px solid var(--danger-transparent, rgba(220, 53, 69, 0.15)); }
+        #review-tab .terms-agreement { margin-top: 24px; padding: 16px 0; border-top: 1px solid var(--border-color, #e9ecef); }
+        #review-tab .checkbox-container { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; }
+        #review-tab .checkbox-container input[type="checkbox"] { accent-color: var(--primary); width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
+        #review-tab .checkbox-container label { color: var(--text-dark); font-weight: normal; cursor: pointer; line-height: 1.5; }
+        #review-tab .checkbox-container a { color: var(--primary); text-decoration: underline; font-weight: 500; }
+
+        @media (max-width: 768px) {
+             .profile-header-content { flex-direction: column; text-align: center; gap: 20px; }
+             .main-content { padding: 20px 10px; }
+             .alerts-container { padding: 0 20px; }
+             .tab-content { padding: 20px; }
+             .form-grid { grid-template-columns: 1fr; gap: 20px; }
+             .form-actions { flex-direction: column; }
+             .btn { width: 100%; justify-content: center;}
+             .profile-header { padding: 30px 20px; }
+             #review-tab .review-grid { grid-template-columns: 1fr; }
+        }
+        /* Add these dark theme styles to your existing <style> section */
+/* Tab Navigation Dark Mode Styles */
+[data-theme="dark"] .tab-button {
+    color: rgba(255, 255, 255, 0.7); /* Default state color in dark mode - slightly dimmed */
+}
+
+[data-theme="dark"] .tab-button:hover {
+    color: var(--primary-light); /* Brighter color on hover */
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+[data-theme="dark"] .tab-button.active {
+    color: var(--primary-light); /* Bright color for active state */
+    background: rgba(var(--primary-rgb), 0.15);
+    border-bottom-color: var(--primary-light);
+}
+/* Dark Theme Profile Container Styles */
+[data-theme="dark"] .profile-container {
+    background: var(--dark-bg-alt);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark Theme Profile Header */
+[data-theme="dark"] .profile-header {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--dark-bg) 100%);
+}
+
+[data-theme="dark"] .circle-decoration {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .profile-avatar {
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .avatar-upload-btn {
+    background: var(--dark-bg-alt);
+    color: var(--primary-light);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Dark Theme Tab Navigation */
+[data-theme="dark"] .tab-navigation {
+    background: var(--dark-bg);
+    border-bottom-color: var(--border-color-dark);
+}
+
+[data-theme="dark"] .tab-button {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .tab-button:hover {
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+[data-theme="dark"] .tab-button.active {
+    background: rgba(var(--primary-rgb), 0.15);
+    border-bottom-color: var(--primary-light);
+    color: var(--primary-light);
+}
+
+/* Dark Theme Form Elements */
+[data-theme="dark"] .form-section {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .section-title {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .form-group label {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .form-control {
+    background: var(--dark-bg);
+    border-color: var(--border-color-dark);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .form-control:focus {
+    border-color: var(--primary-light);
+    background: var(--dark-bg-alt);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
+}
+
+[data-theme="dark"] .form-control::placeholder {
+    color: var(--text-muted);
+}
+
+/* Dark Theme File Upload */
+[data-theme="dark"] .file-upload-container {
+    border-color: var(--border-color-dark);
+    background: var(--dark-bg);
+}
+
+[data-theme="dark"] .file-upload-container:hover {
+    border-color: var(--primary-light);
+    background: rgba(var(--primary-rgb), 0.1);
+}
+
+[data-theme="dark"] .upload-icon {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .upload-text {
+    color: var(--text-light);
+}
+
+/* Dark Theme Document Preview */
+[data-theme="dark"] .document-item {
+    background: var(--dark-bg);
+    border-color: var(--border-color-dark);
+}
+
+[data-theme="dark"] .document-item a {
+    color: var(--primary-light);
+}
+
+/* Dark Theme Alert Styles */
+[data-theme="dark"] .alert {
+    background-color: var(--dark-bg-alt);
+    border-color: var(--border-color-dark);
+}
+
+[data-theme="dark"] .alert-success {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left-color: var(--success);
+    color: var(--success-light);
+}
+
+[data-theme="dark"] .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--danger);
+    color: var(--danger-light);
+}
+
+[data-theme="dark"] .alert-info {
+    background-color: rgba(23, 162, 184, 0.1);
+    border-left-color: var(--info);
+    color: var(--info-light);
+}
+
+/* Dark Theme Button States */
+[data-theme="dark"] .btn:disabled {
+    background: var(--dark-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color-dark);
+}
+
+/* Dark Theme Verification Badge */
+[data-theme="dark"] .verification-badge {
+    background-color: var(--dark-bg-alt);
+}
+
+[data-theme="dark"] .verification-badge.approved {
+    background: rgba(40, 167, 69, 0.15);
+    border-color: rgba(40, 167, 69, 0.3);
+}
+
+[data-theme="dark"] .verification-badge.pending {
+    background: rgba(255, 193, 7, 0.15);
+    border-color: rgba(255, 193, 7, 0.3);
+}
+
+[data-theme="dark"] .verification-badge.rejected {
+    background: rgba(220, 53, 69, 0.15);
+    border-color: rgba(220, 53, 69, 0.3);
+}
+
+/* Dark Theme Progress Bar */
+[data-theme="dark"] .progress-bar {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .progress-fill {
+    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+}
+
+/* Verification and Rejection Styles */
+.verification-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; font-size: 0.875rem; font-weight: 600; margin-bottom: 15px; }
+.verification-badge.approved { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid rgba(40, 167, 69, 0.3); }
+.verification-badge.pending { background: rgba(255, 193, 7, 0.2); color: var(--warning); border: 1px solid rgba(255, 193, 7, 0.3); }
+.verification-badge.rejected { background: rgba(220, 53, 69, 0.2); color: var(--danger); border: 1px solid rgba(220, 53, 69, 0.3); }
+
+.rejection-container {
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: var(--border-radius);
+}
+
+.alert {
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-left-width: 4px;
+    border-left-style: solid;
+}
+
+.alert-danger {
+    background-color: rgba(220,53,69,0.1);
+    border-left-color: var(--danger);
+    color: var(--danger);
+}
+
+.alert-info {
+    background-color: rgba(23,162,184,0.1);
+    border-left-color: var(--info);
+    color: var,--info;
+}
+
+/* Dark mode styles */
+[data-theme="dark"] .alert-danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: var(--danger);
+    color: var(--danger-light);
+}
+
+[data-theme="dark"] .alert-info {
+    background-color: rgba(23, 162, 184, 0.1);
+    border-left-color: var(--info);
+    color: var,--info-light;
+}
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <button class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="circle-decoration circle-1"></div>
+                    <div class="circle-decoration circle-2"></div>
+                    <div class="profile-header-content">
+                        <div class="profile-avatar-container">
+                            <img src="" alt="Agency Logo" class="profile-avatar" id="headerAgencyLogo">
+                            <button class="avatar-upload-btn" title="Change Agency Logo" id="triggerAgencyLogoUpload">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                        <div class="profile-info">
+                            <h1 id="headerCompanyName"></h1>
+                            <div class="email"><i class="fas fa-envelope"></i> </div>
+                            <div class="verification-badge ">
+                                <i class="fas fa-"></i>
+                                <span> Account</span>
+                            </div>
+                             
+                                <div class="alert alert-danger fade-in" style="margin-top:10px; padding:10px 15px; font-size:0.9rem;">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <div>Your account verification was rejected. Please review your information and documents, then resubmit for verification via the Review tab.</div>
+                                </div>
+                            
+                            <div class="completion-progress">
+                                <div class="completion-text">Profile Completion: %</div>
+                                <div class="progress-bar"><div class="progress-fill" style="width: %"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-navigation">
+                    <button class="tab-button " data-tab="business"><i class="fas fa-building"></i> Business Info</button>
+                    <button class="tab-button " data-tab="contact"><i class="fas fa-address-card"></i> Contact</button>
+                    <button class="tab-button " data-tab="verification"><i class="fas fa-file-alt"></i> Verification Docs</button>
+                    <button class="tab-button " data-tab="review"><i class="fas fa-check-circle"></i> Review & Submit</button>
+                    <button class="tab-button " data-tab="security">
+                        <i class="fas fa-shield-alt"></i> Security
+                    </button>
+                    <button class="tab-button" data-tab="support">
+        <i class="fas fa-headset"></i> Support
+    </button>
+                </div>
+
+                
+
+                
+                <div class="tab-content " id="business-tab">
+                    <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="form_type" value="business_info">
+                        <div class="form-section">
+                            <h2 class="section-title"><i class="fas fa-briefcase"></i> Business Details</h2>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="company_name" class="required-field">Company Name</label><input type="text" id="company_name" name="company_name" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="business_type" class="required-field">Business Type</label><select id="business_type" name="business_type" class="form-control" required><option value="">Select Type...</option><option value="sole_proprietorship" >Sole Proprietorship</option><option value="partnership" >Partnership</option><option value="corporation" >Corporation</option><option value="llc" >LLC</option><option value="other" >Other</option></select></div>
+                                <div class="form-group"><label for="business_reg_number" class="required-field">Registration Number</label><input type="text" id="business_reg_number" name="business_reg_number" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="tax_id" class="required-field">Tax ID (e.g., TIN)</label><input type="text" id="tax_id" name="tax_id" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="year_established">Year Established</label><input type="number" id="year_established" name="year_established" class="form-control" value="" placeholder="YYYY" min="1900"></div>
+                                <div class="form-group full-width"><label for="description" class="required-field">Agency Description</label><textarea id="description" name="description" class="form-control" rows="4" maxlength="500" required></textarea><div class="character-count">0/500</div></div>
+                                <div class="form-group"><label for="agency_logo">Agency Logo</label><div class="file-upload-container"><input type="file" id="agency_logo" name="agency_logo" class="file-upload-input" accept="image/jpeg,image/png,image/gif,image/webp"><div class="upload-icon"><i class="fas fa-image"></i></div><div class="upload-text" id="agency_logo_text">Click to upload Logo</div><div class="upload-subtext">JPG, PNG, GIF, WebP (Max 5MB)</div></div></div>
+                            </div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Business Info</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="contact-tab">
+                    <form method="POST">
+                        <input type="hidden" name="form_type" value="contact_info">
+                        <div class="form-section"><h2 class="section-title"><i class="fas fa-address-card"></i> Contact Details</h2>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="contact_person_first_name" class="required-field">Contact Person First Name</label><input type="text" id="contact_person_first_name" name="contact_person_first_name" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="contact_person_last_name" class="required-field">Contact Person Last Name</label><input type="text" id="contact_person_last_name" name="contact_person_last_name" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="position" class="required-field">Position</label><input type="text" id="position" name="position" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="phone" class="required-field">Business Phone</label><input type="tel" id="phone" name="phone" class="form-control" value="" placeholder="e.g., +639123456789" required></div>
+                                <div class="form-group full-width"><label for="address" class="required-field">Street Address</label><textarea id="address" name="address" class="form-control" rows="3" required></textarea></div>
+                                <div class="form-group"><label for="city" class="required-field">City</label><input type="text" id="city" name="city" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="province" class="required-field">State/Province</label><input type="text" id="province" name="province" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="postal_code" class="required-field">Postal Code</label><input type="text" id="postal_code" name="postal_code" class="form-control" value="" required></div>
+                                <div class="form-group"><label for="country">Country</label><input type="text" id="country" name="country" class="form-control" value="" readonly></div>
+                                <div class="form-group"><label for="website">Website (Optional)</label><input type="url" id="website" name="website" class="form-control" value="" placeholder="https://www.youragency.com"></div>
+                            </div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Contact Info</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="verification-tab">
+                     <form method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="form_type" value="verification">
+                        <div class="form-section"><h2 class="section-title"><i class="fas fa-shield-alt"></i> Verification Documents</h2>
+                            <div class="alert alert-info"><i class="fas fa-info-circle"></i><div>Upload clear copies of your Business Registration, a Government ID of the contact person, and Proof of Business Address. (PDF, JPG, PNG - Max 5MB each)</div></div>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="business_registration" class="required-field">Business Registration Document</label><div class="file-upload-container"><input type="file" id="business_registration" name="business_registration" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png"><div class="upload-icon"><i class="fas fa-file-contract"></i></div><div class="upload-text" id="business_registration_text"></div></div></div>
+                                <div class="form-group"><label for="gov_id" class="required-field">Government ID (Contact Person)</label><div class="file-upload-container"><input type="file" id="gov_id" name="gov_id" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png"><div class="upload-icon"><i class="fas fa-id-card"></i></div><div class="upload-text" id="gov_id_text"></div></div></div>
+                                <div class="form-group"><label for="address_proof" class="required-field">Proof of Business Address</label><div class="file-upload-container"><input type="file" id="address_proof" name="address_proof" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png"><div class="upload-icon"><i class="fas fa-map-marked-alt"></i></div><div class="upload-text" id="address_proof_text"></div></div></div>
+                            </div>
+                            <h3 style="margin-top:30px; margin-bottom:15px; font-size: 1.1rem; color: var(--text-dark);">Current Uploaded Documents:</h3>
+                            <div class="document-preview">
+                                
+                                    <div class="document-item"><a href="../uploads/" target="_blank" title="View "><i class="fas fa-file-alt pdf-icon"></i><div></div></a></div>
+                                
+                                <p>No documents uploaded yet for these categories.</p>
+                                
+                            </div>
+                        </div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Upload/Update Documents</button></div>
+                    </form>
+                </div>
+
+                <div class="tab-content " id="review-tab">
+    <div class="form-section">
+        <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Review & Submit</h2>
+        
+        
+
+        
+            <div class="alert alert-success fade-in" style="margin-top: 20px;">
+                <i class="fas fa-check-circle"></i>
+                <div>Your agency profile is approved and verified. No further action is needed.</div>
+            </div>
+        
+            <div class="alert alert-info fade-in">
+                <i class="fas fa-clock"></i>
+                <div>Your verification request is currently pending review by our team. We will notify you once it's processed.</div>
+            </div>
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" class="btn btn-primary" disabled style="background-color: var(--warning); border-color: var(--warning); color: white; cursor: default;">
+                    <i class="fas fa-hourglass-half"></i> Waiting for Admin Approval
+                </button>
+            </div>
+        
+            
+                <div class="review-section" style="margin-bottom: 24px;">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Verification Update</h3>
+                    <div class="alert alert-danger" style="margin-top: 15px;">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Reason for Rejection:</strong><br>
+                            
+                        </div>
+                    </div>
+                    <div class="alert alert-info" style="margin-top: 15px;">
+                        <i class="fas fa-lightbulb"></i>
+                        <div>
+                            <strong>What to do next:</strong><br>
+                            Please review the reason above, make the necessary corrections to your profile and documents, 
+                            then resubmit for verification.
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="review-grid">
+                <div class="review-section">
+                    <h3><i class="fas fa-building"></i> Business Information</h3>
+                    <div class="review-item"><label>Company Name:</label> <span></span></div>
+                    <div class="review-item"><label>Business Type:</label> <span></span></div>
+                    <div class="review-item"><label>Reg. Number:</label> <span></span></div>
+                    <div class="review-item"><label>Tax ID:</label> <span></span></div>
+                    <div class="review-item"><label>Year Established:</label> <span></span></div>
+                    <div class="review-item"><label>Description:</label> <span style="white-space: pre-wrap;"></span></div>
+                </div>
+
+                <div class="review-section">
+                    <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                    <div class="review-item"><label>Contact Person:</label> <span></span></div>
+                    <div class="review-item"><label>Position:</label> <span></span></div>
+                    <div class="review-item"><label>Phone:</label> <span></span></div>
+                    <div class="review-item"><label>Address:</label> <span style="white-space: pre-wrap;"></span></div>
+                    <div class="review-item"><label>Website:</label> <span></span></div>
+                </div>
+
+                <div class="review-section">
+                    <h3><i class="fas fa-file-alt"></i> Verification Documents</h3>
+                    <div class="document-status">
+                        
+                        <div class="doc-status">
+                            <span><i class="fas fa-file"></i> :</span>
+                            <span class="status " data-doc-key="">
+                                
+                            </span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <form method="POST" id="reviewTabVerificationForm"> <input type="hidden" name="form_type" value="verification"> <div class="terms-agreement">
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="terms_agreement" name="terms_agreement" required>
+                        <label for="terms_agreement">
+                            I certify that all information provided is accurate and I agree to the
+                            <a href="../terms.html" target="_blank">Terms of Service</a> and 
+                            <a href="../privacy.html" target="_blank">Privacy Policy</a>.
+                        </label>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="submitVerificationBtn" class="btn btn-success" 
+                            >
+                        <i class="fas fa-paper-plane"></i> Submit for Verification
+                    </button>
+                </div>
+            </form>
+             
+                <div class="alert alert-warning fade-in" style="margin-top: 15px; justify-content: center;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>Your profile is only % complete. Please ensure all sections (Business Info, Contact, and Verification Documents) are fully updated to enable submission for verification.</div>
+                </div>
+            
+        
+    </div>
+</div>
+
+                <div class="tab-content " id="security-tab">
+    <div class="form-section">
+        <h2 class="section-title"><i class="fas fa-shield-alt"></i> Account Security</h2>
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Account Status:</strong>
+                
+            </div>
+        </div>
+        <div class="form-actions" style="justify-content: flex-start;">
+            <a href="../auth/agency_change_password.html" class="btn btn-secondary">
+                <i class="fas fa-key" style="margin-right: 10px;"></i> Change Password
+            </a>
+        </div>
+    </div>
+</div>
+
+                <div class="tab-content" id="support-tab">
+    <div class="form-section">
+        <h2 class="section-title"><i class="fas fa-headset"></i> Support & Complaints</h2>
+        
+            <div style="color: #888;">You have not submitted any complaints yet.</div>
+        
+            <div class="complaints-list">
+                
+                    <div class="complaint-card" style="border:1px solid #eee; border-radius:10px; margin-bottom:20px; padding:20px; background:#fafbfc;">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <span class="complaint-subject" style="font-weight:600; font-size:1.1rem; color:#333;">
+                                    
+                                </span>
+                                <span class="status-badge status-" style="margin-left:15px; padding:3px 10px; border-radius:12px; font-size:0.9em; background:; color:#222;">
+                                    
+                                </span>
+                            </div>
+                            <div style="font-size:0.95em; color:#888;">
+                                
+                            </div>
+                        </div>
+                        <div class="complaint-message" style="margin:12px 0 8px 0; color:#444;">
+                            
+                        </div>
+                        
+                            <div class="admin-notes" style="background:#e9f7ef; border-left:4px solid #28a745; padding:10px 15px; border-radius:6px; margin-top:10px;">
+                                <strong>Admin Notes:</strong><br>
+                                
+                            </div>
+                        
+                        
+                            <div style="font-size:0.9em; color:#28a745; margin-top:6px;">Resolved on: </div>
+                        
+                    </div>
+                
+            </div>
+        
+        <div style="margin-top:30px;">
+            <a href="contact_support.html" class="btn btn-primary"><i class="fas fa-plus"></i> Submit a New Complaint</a>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </main>
+
+<footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                                       <ul class="footer-menu">
+                        <li><a href="agency_dashboard.html">Home</a></li>
+                        <li><a href="my_cars.html">Fleet</a></li>
+                        <li><a href="view_bookings.html">Bookings</a></li>
+                        <li><a href="contact_support.html">Support</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Tab Functionality (from your latest file)
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetTab = this.dataset.tab;
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            this.classList.add('active');
+            const activeContent = document.getElementById(`${targetTab}-tab`);
+            if (activeContent) {
+                activeContent.classList.add('active', 'slide-up');
+                setTimeout(() => activeContent.classList.remove('slide-up'), 300);
+                if (history.pushState) {
+                    try { history.pushState(null, null, `?tab=${targetTab}`); }
+                    catch (e) { window.location.hash = `#${targetTab}`; }
+                } else { window.location.hash = `#${targetTab}`; }
+                
+                // Clear validation styles from all form fields within *all* tab forms
+                // This is okay for multi-form too, to reset any lingering styles if user navigates away from an error.
+                document.querySelectorAll('.tab-content form [required]').forEach(field => {
+                    field.style.borderColor = '';
+                    const fieldContainer = field.closest('.form-group') || field.closest('.checkbox-container');
+                    if (fieldContainer && field.type === 'checkbox') {
+                         fieldContainer.style.outline = '';
+                    }
+                });
+
+                if (targetTab === 'review') {
+                    updateReviewTabDocumentStatus(); 
+                }
+            }
+        });
+    });
+
+    // Theme Toggle (from your latest file)
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        const themeIcon = themeToggle.querySelector('i');
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            if (themeIcon) themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', theme);
+        }
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+        setTheme(localStorage.getItem('theme') || 'light');
+    }
+
+    // Profile Dropdown & Mobile Menu (from your latest file)
+    function setupToggle(toggleBtnId, menuId) {
+        const toggleBtn = document.getElementById(toggleBtnId);
+        const menu = document.getElementById(menuId);
+        if (toggleBtn && menu) {
+            toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('active'); });
+            menu.addEventListener('click', e => e.stopPropagation());
+        }
+        return menu;
+    }
+    const profileMenu = setupToggle('profileToggleBtn', 'profileMenu');
+    const navMenu = setupToggle('menuToggleBtn', 'mainNavMenu');
+    document.addEventListener('click', () => {
+        if (profileMenu) profileMenu.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
+    });
+
+    // --- Function to update the Review Tab's document statuses ---
+    function updateReviewTabDocumentStatus() {
+        const reviewTab = document.getElementById('review-tab');
+        if (!reviewTab) return;
+
+        const docInputIds = {
+            'business_registration': 'business_registration',
+            'gov_id': 'gov_id',
+            'address_proof': 'address_proof'
+        };
+        // THIS IS THE CRUCIAL JS PART TO UPDATE based on new DB structure
+const initialDocsData = ;
+
+        for (const docKey in docInputIds) {
+            const inputElement = document.getElementById(docInputIds[docKey]); // Input from Verification tab
+            const statusElement = reviewTab.querySelector(`.doc-status span[data-doc-key="${docKey}"]`); // Span in Review tab
+
+            if (statusElement) {
+                let isFileStaged = inputElement && inputElement.files && inputElement.files.length > 0;
+                let isFileInitiallyPresent = initialDocsData.hasOwnProperty(docKey) && initialDocsData[docKey] && initialDocsData[docKey].length > 0;
+
+                if (isFileStaged) {
+                    statusElement.textContent = 'Selected';
+                    statusElement.className = 'status uploaded selected';
+                } else if (isFileInitiallyPresent) {
+                    statusElement.textContent = 'Uploaded';
+                    statusElement.className = 'status uploaded';
+                } else {
+                    statusElement.textContent = 'Missing';
+                    statusElement.className = 'status missing';
+                }
+            }
+        }
+    }
+
+    // File Upload Handling for Verification Documents (updates filename and Review tab)
+    document.querySelectorAll('#verification-tab .file-upload-input').forEach(input => {
+        const container = input.closest('.file-upload-container');
+        if (container) {
+            const textDisplay = container.querySelector('.upload-text'); // The text element to update
+            const originalText = textDisplay ? textDisplay.textContent : 'Upload File';
+            input.addEventListener('change', function() {
+                const file = this.files[0];
+                if (textDisplay) {
+                    textDisplay.textContent = file ? file.name : originalText;
+                }
+                updateReviewTabDocumentStatus();
+            });
+        }
+    });
+    
+    // Live preview and update for Agency Logo
+    const agencyLogoInput = document.getElementById('agency_logo'); // In Business Info Tab
+    const headerAgencyLogo = document.getElementById('headerAgencyLogo'); // The <img> in the profile header
+    const triggerAgencyLogoUploadBtn = document.getElementById('triggerAgencyLogoUpload'); // Button on header avatar
+
+    if (agencyLogoInput && headerAgencyLogo) {
+        const logoUploadTextDisplay = document.getElementById('agency_logo_text'); // Text in Business Info tab
+        const originalLogoText = logoUploadTextDisplay ? logoUploadTextDisplay.textContent : "Click to upload Logo";
+
+        agencyLogoInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file && file.type.startsWith('image/')) {
+                if(logoUploadTextDisplay) logoUploadTextDisplay.textContent = file.name;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    headerAgencyLogo.src = e.target.result;
+                    const dropdownProfileImg = document.querySelector('#profileToggleBtn img');
+                    if (dropdownProfileImg) dropdownProfileImg.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                 if(logoUploadTextDisplay) logoUploadTextDisplay.textContent = originalLogoText;
+                 // Optionally revert image if a non-image is selected, or clear it
+            }
+        });
+    }
+    if(triggerAgencyLogoUploadBtn && agencyLogoInput){
+        triggerAgencyLogoUploadBtn.addEventListener('click', function(){
+            // If Business Info tab is not active, switch to it
+            const businessTabBtn = document.querySelector('.tab-button[data-tab="business"]');
+            if(businessTabBtn && !businessTabBtn.classList.contains('active')){
+                businessTabBtn.click();
+            }
+            // Allow tab switch animation before clicking input
+            setTimeout(() => { agencyLogoInput.click(); }, 100);
+        });
+    }
+
+
+    // Form Validation and Submission (MULTI-FORM Approach - from your latest file)
+    document.querySelectorAll('.tab-content form').forEach(formInTab => {
+        formInTab.addEventListener('submit', function(e) {
+            const currentForm = this;
+            let isValid = true;
+            currentForm.querySelectorAll('[required]').forEach(field => {
+                const fieldContainer = field.closest('.form-group') || field.closest('.checkbox-container');
+                let fieldError = false;
+                if (field.type === 'checkbox') { if (!field.checked) isValid = fieldError = true; }
+                else if (field.type === 'select-one') { if (!field.value) isValid = fieldError = true; }
+                else if (!field.value.trim()) { isValid = fieldError = true; }
+
+                if (fieldError) {
+                    if (fieldContainer && field.type === 'checkbox') fieldContainer.style.outline = '2px solid var(--danger)';
+                    else field.style.borderColor = 'var(--danger)';
+                } else {
+                    if (fieldContainer && field.type === 'checkbox') fieldContainer.style.outline = '';
+                    else field.style.borderColor = '';
+                }
+            });
+            if (!isValid) {
+                e.preventDefault();
+                showAlert('Please fill in all required fields in this section, or agree to terms.', 'danger');
+                const submitBtn = e.submitter || currentForm.querySelector('button[type="submit"]');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    if (submitBtn.dataset.originalText) submitBtn.innerHTML = submitBtn.dataset.originalText;
+                }
+                return;
+            }
+            const submitBtn = e.submitter || currentForm.querySelector('button[type="submit"]');
+            if (submitBtn) {
+                if (!submitBtn.dataset.originalText) submitBtn.dataset.originalText = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            }
+        });
+    });
+
+    // Alert System (from your latest file)
+    function showAlert(message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        let iconClass = 'fa-info-circle';
+        if (type === 'danger') iconClass = 'fa-exclamation-circle';
+        if (type === 'success') iconClass = 'fa-check-circle';
+        alertDiv.className = `alert alert-${type} fade-in`;
+        alertDiv.innerHTML = `<i class="fas ${iconClass}"></i><div>${message}</div>`;
+        const alertsContainer = document.querySelector('.alerts-container');
+        if (alertsContainer) {
+            alertsContainer.prepend(alertDiv);
+            setTimeout(() => {
+                alertDiv.style.opacity = '0';
+                setTimeout(() => alertDiv.remove(), 300);
+            }, 6000);
+        } else { window.alert(message); }
+    }
+    document.querySelectorAll('.alerts-container .alert.fade-in').forEach(alert => {
+        const displayTime = alert.classList.contains('alert-success') ? 7000 : 10000;
+        setTimeout(() => {
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        }, displayTime);
+    });
+
+    // Profile Completion Animation (from your latest file)
+    const progressFill = document.querySelector('.progress-fill');
+    if (progressFill) {
+        const targetWidth = progressFill.style.width;
+        progressFill.style.width = '0%';
+        setTimeout(() => { progressFill.style.width = targetWidth; }, 300);
+    }
+
+    // Date Input Constraints (from your latest file)
+    const yearEstablishedInput = document.getElementById('year_established');
+    if (yearEstablishedInput) {
+        const currentYear = new Date().getFullYear();
+        yearEstablishedInput.max = currentYear;
+        yearEstablishedInput.min = 1900;
+    }
+
+    // Character Counter (from your latest file)
+    const descriptionField = document.getElementById('description');
+    const charCountDisplay = document.querySelector('#business-tab .character-count');
+    if (descriptionField && charCountDisplay) {
+        const maxLength = 500;
+        function updateDescCharCount() {
+            const count = descriptionField.value.length;
+            charCountDisplay.textContent = `${count}/${maxLength}`;
+            charCountDisplay.style.color = count > maxLength ? 'var(--danger)' : 'var(--text-muted)';
+        }
+        descriptionField.addEventListener('input', updateDescCharCount);
+        updateDescCharCount();
+    }
+
+    // Terms Agreement Checkbox on Review Tab (from your latest file)
+    const termsCheckbox = document.getElementById('terms_agreement');
+    if (termsCheckbox) {
+        const reviewForm = termsCheckbox.closest('form');
+        const reviewSubmitBtn = reviewForm ? reviewForm.querySelector('button[type="submit"].btn-success') : null;
+        if (reviewSubmitBtn) {
+            const completionPercentage = ;
+            function updateReviewSubmitButtonState() {
+                const isDisabled = !termsCheckbox.checked || completionPercentage < 100;
+                reviewSubmitBtn.disabled = isDisabled;
+                if (isDisabled) {
+                    if (completionPercentage < 100) reviewSubmitBtn.title = "Please complete all profile sections and upload all required documents (100% completion) before submitting for verification.";
+                    else if (!termsCheckbox.checked) reviewSubmitBtn.title = "Please agree to the terms and conditions to submit for verification.";
+                } else { reviewSubmitBtn.title = "Submit your profile for verification."; }
+            }
+            termsCheckbox.addEventListener('change', updateReviewSubmitButtonState);
+            updateReviewSubmitButtonState();
+        }
+    }
+
+    // Live update company name (from your latest file)
+    const companyNameInput = document.getElementById('company_name');
+    const companyNameHeaderDisplay = document.getElementById('headerCompanyName'); // Use ID for header company name
+    const profileToggleText = document.querySelector('#profileToggleBtn span');
+    if (companyNameInput && companyNameHeaderDisplay && profileToggleText) {
+        companyNameInput.addEventListener('input', function() {
+            const newName = this.value.trim() || 'Agency';
+            companyNameHeaderDisplay.textContent = newName;
+            profileToggleText.textContent = newName;
+        });
+    }
+
+    // Initial call to set document statuses
+    updateReviewTabDocumentStatus();
+
+    // Prevent form resubmission (from your latest file)
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,938 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Vehicle Management | TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/admin-dashboard.css" rel="stylesheet">
+    <style>
+        /* Vehicle Page Specific Styles */
+        .vehicle-page {
+            padding: 40px 0;
+            min-height: 100vh;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .content-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .section-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 10px 15px 10px 40px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .filter-dropdown, .sort-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-button {
+            background: var(--white);
+            border: 1px solid #ddd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dropdown-button:hover {
+            border-color: #ccc;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 200px;
+            background-color: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px 0;
+            z-index: 10;
+            margin-top: 5px;
+        }
+
+        .filter-dropdown:hover .dropdown-content,
+        .sort-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .filter-option, .sort-option {
+            display: block;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+        .filter-option:hover, .sort-option:hover {
+            background-color: #f5f5f5;
+            color: var(--primary);
+        }
+
+        .filter-option.active, .sort-option.active {
+            color: var(--primary);
+            font-weight: 500;
+            background-color: #eef;
+        }
+
+        .filter-divider {
+            height: 1px;
+            background-color: #eee;
+            margin: 10px 0;
+        }
+
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .vehicle-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .vehicle-image {
+            height: 200px;
+            background-color: #f8f8f8;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .vehicle-card:hover .vehicle-image img {
+            transform: scale(1.05);
+        }
+
+        .vehicle-status {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 1;
+            text-transform: capitalize;
+        }
+
+        .status-available {
+            background-color: var(--success-light, #d4edda);
+            color: var(--success, #155724);
+        }
+
+        .status-booked {
+            background-color: var(--warning-light, #fff3cd);
+            color: var(--warning, #856404);
+        }
+
+        .status-maintenance {
+            background-color: var(--info-light, #d1ecf1);
+            color: var(--info, #0c5460);
+        }
+        .status-unavailable {
+             background-color: var(--danger-light, #f8d7da);
+             color: var(--danger, #721c24);
+        }
+
+        .vehicle-details {
+            padding: 20px;
+        }
+
+        .vehicle-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .vehicle-features {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            min-height: 20px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        .vehicle-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: var(--text-light);
+        }
+
+        .vehicle-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .price-period {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: normal;
+        }
+
+        .vehicle-type-badge {
+            background-color: var(--accent-light);
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .vehicle-stats {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .vehicle-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-icon i {
+            font-size: 16px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+            padding-bottom: 20px;
+        }
+
+        .page-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .page-link.active, .page-link:hover {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* No vehicles message */
+        .no-data-message {
+            text-align: center;
+            padding: 50px 20px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-top: 20px;
+        }
+
+        .no-data-message i {
+            font-size: 48px;
+            color: var(--text-light, #aaa);
+            margin-bottom: 20px;
+        }
+
+        .no-data-message h3 {
+            font-size: 22px;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .no-data-message p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 15px;
+        }
+
+        /* Table Styles for List View */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: middle;
+        }
+
+        .data-table th {
+            background-color: var(--accent-light, #f8f9fa);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .data-table td {
+            font-size: 14px;
+        }
+
+        .vehicle-img-small {
+            width: 60px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+        .vehicle-info-list {
+            display: flex;
+            align-items: center;
+        }
+        .vehicle-name-list {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        .vehicle-year-list {
+            font-size: 12px;
+            color: var(--text-light);
+            display: block;
+        }
+
+        .action-menu {
+            position: relative;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+            font-size: 18px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-btn:hover {
+            background-color: #f0f0f0;
+            color: var(--primary);
+        }
+
+        .action-dropdown {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 160px;
+            background-color: var(--white);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            z-index: 10;
+            display: none;
+            margin-top: 5px;
+        }
+
+        .action-menu:hover .action-dropdown {
+            display: block;
+        }
+
+        .action-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+        .action-item i {
+            width: 16px;
+            text-align: center;
+        }
+
+        .action-item:hover {
+            background-color: #f5f5f5;
+            color: var(--primary);
+        }
+        .action-item.delete:hover {
+            background-color: var(--danger-light, #f8d7da);
+            color: var(--danger, #721c24);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.status-available { background-color: var(--success, #28a745); }
+        .status-indicator.status-booked { background-color: var(--warning, #ffc107); }
+        .status-indicator.status-maintenance { background-color: var(--info, #17a2b8); }
+        .status-indicator.status-unavailable { background-color: var(--danger, #dc3545); }
+
+        /* Alert messages */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+        }
+
+        .alert-success {
+            background-color: var(--success-light, #d4edda);
+            color: var(--success-dark, #155724);
+            border-color: var(--success-border, #c3e6cb);
+        }
+
+        .alert-danger {
+            background-color: var(--danger-light, #f8d7da);
+            color: var(--danger-dark, #721c24);
+            border-color: var(--danger-border, #f5c6cb);
+        }
+        .alert-info {
+             background-color: var(--info-light, #d1ecf1);
+             color: var(--info-dark, #0c5460);
+             border-color: var(--info-border, #bee5eb);
+        }
+
+        .agency-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        /* Add this inside your existing <style> tag */
+
+/* Dark Theme Enhancements for Search & Filters */
+[data-theme="dark"] .search-input {
+    background: var(--bg-secondary, #374151);
+    border-color: var(--border-color, #4B5563);
+    color: var(--text-primary, #F9FAFB);
+}
+
+[data-theme="dark"] .search-input::placeholder {
+    color: var(--text-secondary, #9CA3AF);
+}
+
+[data-theme="dark"] .search-icon {
+    color: var(--text-secondary, #9CA3AF);
+}
+
+[data-theme="dark"] .dropdown-button {
+    background: var(--bg-secondary, #374151);
+    border-color: var(--border-color, #4B5563);
+    color: var(--text-primary, #F9FAFB);
+}
+
+[data-theme="dark"] .dropdown-button:hover {
+    border-color: var(--primary);
+    background: var(--bg-secondary-hover, #404B5F);
+}
+
+[data-theme="dark"] .dropdown-content {
+    background: var(--bg-secondary, #374151);
+    border: 1px solid var(--border-color, #4B5563);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .filter-option,
+[data-theme="dark"] .sort-option {
+    color: var(--text-primary, #F9FAFB);
+}
+
+[data-theme="dark"] .filter-option:hover,
+[data-theme="dark"] .sort-option:hover {
+    background: var(--bg-secondary-hover, #404B5F);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .filter-option.active,
+[data-theme="dark"] .sort-option.active {
+    background: rgba(var(--primary-rgb), 0.2);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .filter-divider {
+    background-color: var(--border-color, #4B5563);
+}
+
+[data-theme="dark"] select {
+    background-color: var(--bg-secondary, #374151);
+    color: var(--text-primary, #F9FAFB);
+    border-color: var(--border-color, #4B5563);
+}
+
+[data-theme="dark"] select option {
+    background-color: var(--bg-secondary, #374151);
+    color: var(--text-primary, #F9FAFB);
+}
+
+[data-theme="dark"] .btn-outline {
+    border-color: var(--border-color, #4B5563);
+    color: var(--text-primary, #F9FAFB);
+    background: var(--bg-secondary, #374151);
+}
+
+[data-theme="dark"] .btn-outline:hover {
+    background: var(--bg-secondary-hover, #404B5F);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Dark theme enhancements for no results */
+[data-theme="dark"] .no-data-message {
+    background-color: var(--bg-secondary, #374151);
+    border-color: var(--border-color, #4B5563);
+}
+
+[data-theme="dark"] .no-data-message i {
+    color: var(--text-secondary, #9CA3AF);
+}
+
+[data-theme="dark"] .no-data-message h3 {
+    color: var(--text-primary, #F9FAFB);
+}
+
+[data-theme="dark"] .no-data-message p {
+    color: var(--text-secondary, #9CA3AF);
+}
+
+/* Improved focus states for dark theme */
+[data-theme="dark"] .search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+[data-theme="dark"] select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb), 0.2);
+}
+
+/* Enhanced dark theme select dropdown arrow */
+[data-theme="dark"] select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%239CA3AF' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px;
+    padding-right: 2.5rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <div class="logo-area">
+                    <div class="logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <div class="profile-toggle">
+                            <img src="https://avatar.iran.liara.run/public/boy?username=Admin" alt="Admin">
+                            <span>Admin</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="profile-menu">
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar">
+                <div class="sidebar-nav">
+                    <div class="sidebar-header">MAIN MENU</div>
+                    <a href="admin_dashboard.html" class="sidebar-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="manage_users.html" class="sidebar-item">
+                        <i class="fas fa-users"></i>
+                        <span>Users</span>
+                    </a>
+                    <a href="admin_vehicles.html" class="sidebar-item active">
+                        <i class="fas fa-car"></i>
+                        <span>Vehicles</span>
+                    </a>
+                    <a href="admin_bookings.html" class="sidebar-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Bookings</span>
+                    </a>
+                    <a href="reports.html" class="sidebar-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Reports</span>
+                    </a>
+                    <div class="sidebar-header">SYSTEM</div>
+                    <a href="../auth/logout.html" class="sidebar-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard Header -->
+                <div class="section-title-wrapper">
+                    <span class="section-subtitle">Vehicle Management</span>
+                    <h1 class="section-title">All Vehicles</h1>
+                    <p class="section-description">View and manage all vehicles registered on the platform.</p>
+                </div>
+<div class="alert alert-success">Vehicle has been deleted successfully!</div>
+                    
+                        <div class="alert alert-danger">Error deleting vehicle. It might have active bookings.</div>
+                    
+                
+
+                <div class="content-card">
+                    <div class="section-header">
+                        <div class="section-title">
+                             Vehicles Found
+                            
+                                <span style="font-size: 14px; color: #666; font-weight: normal;">for ""</span>
+                            
+                        </div>
+                        <div class="section-controls">
+                            <form action="admin_vehicles.html" method="GET" id="searchFilterSortForm" style="display: flex; gap: 15px; align-items: center;">
+                                <div class="search-container">
+                                    <input type="text" name="search" class="search-input" placeholder="Search make, model, agency..." value="">
+                                    <i class="fas fa-search search-icon"></i>
+                                </div>
+                                <select name="filter" class="dropdown-button" style="min-width:120px;">
+                                    <option value="all" >All Vehicles</option>
+                                    <option value="available" >Available</option>
+                                    <option value="unavailable" >Unavailable</option>
+                                </select>
+                                <select name="sort" class="dropdown-button" style="min-width:150px;">
+                                    <option value="newest" >Newest First</option>
+                                    <option value="price_low" >Price: Low to High</option>
+                                    <option value="price_high" >Price: High to Low</option>
+                                    <option value="popular" >Most Popular</option>
+                                </select>
+                                <button type="submit" class="btn btn-outline">Apply</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="grid-view">
+                        
+                        <div class="vehicles-grid">
+                            
+                            <div class="vehicle-card">
+                                <div class="vehicle-image">
+                                    <img src="" alt="">
+                                    <div class="vehicle-status status-">
+                                        
+                                    </div>
+                                </div>
+                                <div class="vehicle-details">
+                                    <h3 class="vehicle-title"></h3>
+                                    <div class="agency-info">
+                                        <i class="fas fa-building"></i> 
+                                    </div>
+                                    <div class="vehicle-features">
+                                        
+                                            <span class="feature"><i class="fas fa-users"></i>  Seats</span>
+                                        
+                                        
+                                            <span class="feature"><i class="fas fa-cogs"></i> </span>
+                                        
+                                        
+                                            <span class="feature"><i class="fas fa-gas-pump"></i> </span>
+                                        
+                                    </div>
+                                    <div class="vehicle-meta">
+                                        <span class="vehicle-price">
+                                            ₱
+                                            <span class="price-period">/day</span>
+                                        </span>
+                                        <span class="vehicle-type-badge"></span>
+                                    </div>
+                                    <div class="vehicle-stats">
+                                        <div class="stat">
+                                            <span class="stat-value">%</span>
+                                            <span class="stat-label">Popularity</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value"> <i class="fas fa-star" style="color: #fdcc0d;"></i></span>
+                                            <span class="stat-label">Rating</span>
+                                        </div>
+                                        <div class="stat">
+                                            <span class="stat-value"></span>
+                                            <span class="stat-label">Bookings</span>
+                                        </div>
+                                    </div>
+                                    <div class="vehicle-actions">
+                                        <a href="view_vehicle.html?id=" class="btn btn-outline btn-icon">
+                                            <i class="fas fa-eye"></i>
+                                            View
+                                        </a>
+                                        <a href="delete_vehicle.html?id=" class="btn btn-danger-outline btn-icon delete-vehicle-btn" onclick="return confirm('Are you sure you want to delete this vehicle? This cannot be undone.');">
+                                            <i class="fas fa-trash-alt"></i>
+                                            Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="no-data-message">
+                            <i class="fas fa-car-side"></i>
+                            <h3>No vehicles found</h3>
+                            <p>No vehicles match your current filter or search criteria.</p>
+                        </div>
+                        
+                    </div>
+
+                    
+                    <div class="pagination">
+                        
+                        <a href="?page=&search=&filter=&sort=" class="page-link">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                        
+
+                        
+                        <a href="?page=&search=&filter=&sort=" class="page-link ">
+                            
+                        </a>
+                        
+
+                         
+
+                        
+                        <a href="?page=&search=&filter=&sort=" class="page-link">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Toggle Sidebar
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('sidebar-collapsed');
+            
+            // For mobile view
+            document.querySelector('.admin-sidebar').classList.toggle('active');
+            
+            // Create or toggle backdrop for mobile
+            let backdrop = document.querySelector('.sidebar-backdrop');
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.className = 'sidebar-backdrop';
+                document.body.appendChild(backdrop);
+            }
+            backdrop.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.admin-sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            const backdrop = document.querySelector('.sidebar-backdrop');
+            
+            if (sidebar && sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+                if (backdrop) backdrop.classList.remove('active');
+            }
+        });
+
+        // Toggle Theme (Dark/Light)
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', themeMode);
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            if (themeMode === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            
+            localStorage.setItem('theme', themeMode);
+        });
+
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (savedTheme === 'dark') {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        }
+
+        // Toggle Profile Menu
+        document.querySelector('.profile-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelector('.profile-menu').classList.toggle('active');
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelector('.profile-menu').classList.remove('active');
+        });
+
+        // Delete vehicle confirmation
+        document.querySelectorAll('.delete-vehicle-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                if (!confirm('Are you sure you want to delete this vehicle? This cannot be undone.')) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

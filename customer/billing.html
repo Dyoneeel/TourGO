@@ -1,0 +1,1450 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Booking - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+
+    <style>
+        /* --- IMPROVED BILLING PAGE CSS --- */
+        :root {
+            --primary: #2a6edb;
+            --primary-dark: #1b4e96;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --text-dark: #222;
+            --text-light: #888;
+            --bg-light: #f4f8fc;
+            --white: #fff;
+            --accent-light: #e9f3ff;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 24px rgba(42, 110, 219, 0.07);
+            --card-border-radius: 18px;
+            --card-shadow: 0 8px 32px rgba(42, 110, 219, 0.09), 0 2px 8px rgba(0,0,0,0.04);
+            --gradient-primary: linear-gradient(135deg, #2a6edb 0%, #1b4e96 100%);
+            --gradient-light: linear-gradient(135deg, #fff 0%, #f4f8fc 100%);
+            --transition: all 0.3s ease-in-out; /* Added definition for --transition */
+        }
+
+        body {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            font-family: 'Segoe UI', 'SF Pro Display', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 10px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(42, 110, 219, 0.06);
+            padding: 22px 0 10px 0;
+            margin-bottom: 32px;
+            border-bottom: 1px solid #e9f3ff;
+        }
+
+        .header h1 {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 2.1rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 0.01em;
+        }
+
+        .header h1 i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        /* Progress Steps */
+        .progress-container {
+            background: var(--white);
+            border-radius: var(--card-border-radius);
+            padding: 32px 24px;
+            margin-bottom: 36px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            right: 50px;
+            height: 4px;
+            background: #e9ecef;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .progress-steps::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            height: 4px;
+            background: var(--primary);
+            transform: translateY(-50%);
+            z-index: 1;
+            width: calc((100% - 100px) * 0.5); /* Adjust for 2 completed steps out of 3 */
+            transition: width 0.4s ease;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s ease;
+            width: 120px;
+        }
+
+        .step-number {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 10px;
+            transition: all 0.4s ease;
+            background: var(--white);
+            border: 3px solid #e9ecef;
+            color: var(--text-light);
+            position: relative;
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        .step.completed .step-number::after {
+            content: '✓';
+            font-size: 24px;
+        }
+
+        .step.active .step-number {
+            background: var(--white);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 110, 219, 0.1);
+            transform: scale(1.1);
+        }
+
+        .step-label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .step.completed .step-label,
+        .step.active .step-label {
+            color: var(--text-dark);
+        }
+
+        /* Dark mode support for progress steps */
+        [data-theme="dark"] .progress-container {
+            background: var(--dark);
+        }
+
+        [data-theme="dark"] .progress-steps::before {
+            background: #2d3439;
+        }
+
+        [data-theme="dark"] .step-number {
+            background: var(--dark);
+            border-color: #2d3439;
+        }
+
+        [data-theme="dark"] .step-label {
+            color: #8b949e;
+        }
+
+        [data-theme="dark"] .step.completed .step-label,
+        [data-theme="dark"] .step.active .step-label {
+            color: #e6edf3;
+        }
+
+        /* Main Content Grid */
+        .billing-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Default for larger screens */
+            gap: 36px;
+            margin-bottom: 40px;
+        }
+         @media (max-width: 992px) { /* Adjusted breakpoint */
+            .billing-grid {
+                grid-template-columns: 1fr; /* Stack on medium and smaller screens */
+            }
+        }
+
+
+        /* Cards */
+        .card {
+            background: var(--gradient-light);
+            border-radius: var(--card-border-radius);
+            padding: 32px 28px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid #e9f3ff;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 12px 35px rgba(42, 110, 219, 0.13), 0 6px 15px rgba(0,0,0,0.07);
+        }
+
+        .card h2 {
+            color: var(--primary-dark);
+            margin-bottom: 22px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: 0.01em;
+        }
+
+        .card h2 i {
+            color: var(--primary);
+        }
+
+        /* Vehicle Summary */
+        .vehicle-summary {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 22px;
+            padding: 18px;
+            background: var(--white);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 3px 10px rgba(42, 110, 219, 0.06);
+        }
+
+        .vehicle-image {
+            width: 110px;
+            height: 74px;
+            border-radius: 8px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(42, 110, 219, 0.09);
+            border: 1px solid #e9f3ff;
+            background: #f8fafc;
+        }
+
+        .vehicle-info h3 {
+            color: var(--primary-dark);
+            font-size: 1.13rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .vehicle-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin: 10px 0 12px 0;
+        }
+
+        .detail-chip {
+            background: var(--accent-light);
+            color: var(--primary);
+            padding: 5px 13px;
+            border-radius: 18px;
+            font-size: 0.93rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .rental-period {
+            background: rgba(40, 167, 69, 0.07);
+            padding: 13px 16px;
+            border-radius: 10px;
+            margin: 12px 0 0 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .period-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 6px 0;
+            font-weight: 500;
+            font-size: 0.98em;
+        }
+
+        .period-item i {
+            color: var(--success);
+            margin-right: 7px;
+        }
+
+        /* Features List */
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 18px 0 0 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 13px;
+            background: var(--white);
+            border-radius: 8px;
+            font-size: 0.93rem;
+            color: var(--primary-dark);
+            border: 1px solid #e9f3ff;
+            transition: var(--transition);
+        }
+
+        .feature-item:hover {
+            background: var(--accent-light);
+        }
+
+        .feature-item i {
+            color: var(--success);
+        }
+
+        /* Cost Breakdown */
+        .cost-breakdown {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 18px 18px 10px 18px;
+            margin-top: 18px;
+            box-shadow: 0 3px 10px rgba(42, 110, 219, 0.04);
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 1.01em;
+        }
+
+        .cost-item:last-child {
+            border-bottom: none;
+        }
+
+        .cost-label {
+            font-weight: 500;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cost-label i {
+            color: var(--primary);
+        }
+
+        .cost-value {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .total-cost .cost-item { /* Specific styling for total cost item */
+            padding: 10px 0; /* Adjust padding as needed */
+            border-bottom: none; /* No border for the items inside total-cost div */
+        }
+
+        .total-cost {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 18px 20px;
+            border-radius: 12px;
+            margin-top: 18px;
+            font-size: 1.13rem;
+            font-weight: 700;
+            /* display: flex; */ /* Removed to allow internal items to be block */
+            /* justify-content: space-between; */
+            /* align-items: center; */
+            letter-spacing: 0.01em;
+        }
+         .total-cost .cost-item span { /* Make spans white */
+            color: white;
+        }
+
+
+        /* Security Features */
+        .security-features {
+            background: rgba(40, 167, 69, 0.09);
+            padding: 15px 18px;
+            border-radius: 10px;
+            margin: 18px 0 0 0;
+            border-left: 4px solid var(--success);
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 7px 0;
+            font-size: 0.97rem;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .input-container {
+            position: relative;
+        }
+
+        .input-container i.fa-user,
+        .input-container i.fa-envelope,
+        .input-container i.fa-credit-card,
+        .input-container i.fa-calendar,
+        .input-container i.fa-lock,
+        .input-container i.fa-wallet,
+        .input-container i.fa-mobile-alt,
+        .input-container i.fa-phone {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            z-index: 2;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 13px 13px 13px 42px; /* Ensure padding accommodates icon */
+            border: 2px solid #e9f3ff;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--primary-dark);
+            box-sizing: border-box; /* Added for better padding control */
+        }
+        select.form-control { /* Specific styling for select to show arrow */
+             padding-right: 30px; /* Space for dropdown arrow */
+             appearance: none; /* Remove default arrow */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(42, 110, 219, 0.09);
+            transform: translateY(-1px);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            display: flex;
+            gap: 10px;
+            margin: 18px 0 18px 0;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+        }
+
+        .payment-method {
+            padding: 13px 10px; /* Adjusted padding for responsiveness */
+            border: 2px solid #e9f3ff;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--white);
+            flex: 1 1 auto; /* Allow shrinking and growing, auto basis */
+            min-width: 100px; /* Minimum width for each button */
+            color: var(--primary-dark);
+            font-weight: 500;
+            display: flex; /* For vertical alignment if needed */
+            flex-direction: column; /* Stack icon and text */
+            align-items: center; /* Center content */
+            justify-content: center; /* Center content */
+        }
+
+
+        .payment-method:hover {
+            border-color: var(--primary);
+            background: var(--accent-light);
+            color: var(--primary);
+            transform: translateY(-2px) scale(1.03);
+        }
+
+        .payment-method.active {
+            border-color: var(--primary);
+            background: var(--accent-light);
+            color: var(--primary);
+            box-shadow: 0 3px 10px rgba(42,110,219,0.1);
+        }
+
+        .payment-method i {
+            font-size: 1.4rem;
+            margin-bottom: 5px; /* Increased margin */
+            display: block;
+        }
+        .payment-method div {
+            font-size: 0.9rem; /* Slightly smaller text for method name */
+        }
+
+
+        /* Buttons */
+        .btn {
+            padding: 14px 20px; /* Adjusted padding */
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.08rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+            background: var(--gradient-primary);
+            color: white;
+            margin-top: 18px;
+            box-shadow: 0 2px 8px rgba(42, 110, 219, 0.08);
+            box-sizing: border-box;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 25px rgba(42, 110, 219, 0.13);
+            background: var(--primary-dark); /* Fallback for gradient hover */
+        }
+         .btn:disabled {
+            background: var(--secondary);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+        .btn:disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 8px rgba(42, 110, 219, 0.08); /* Keep original shadow */
+            background: var(--secondary); /* Keep disabled background */
+        }
+
+
+        /* Error Message */
+        .error-message, .success-message-placeholder {
+            background: rgba(220, 53, 69, 0.09);
+            color: var(--danger);
+            padding: 13px 18px;
+            border-radius: var(--border-radius);
+            margin: 13px 0;
+            border-left: 4px solid var(--danger);
+            display: none; /* Hidden by default */
+            font-size: 1.01em;
+            text-align: left;
+        }
+        .success-message-placeholder { /* For layout purposes if needed before JS adds actual success */
+            background: rgba(40, 167, 69, 0.09);
+            color: var(--success);
+            border-left-color: var(--success);
+        }
+
+
+        /* Loading State */
+        .loading {
+            display: none; /* Hidden by default */
+            text-align: center;
+            padding: 32px 0;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid var(--primary); /* Blue */
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1100px) {
+            /* .billing-grid already handled above for stacking */
+            .progress-steps {
+                flex-direction: row; /* Keep horizontal on tablets */
+                gap: 10px; /* Reduce gap */
+                max-width: 100%; /* Allow full width */
+            }
+            .progress-steps::before {
+                 /* Adjust if needed for smaller screens, or hide if it breaks layout */
+                left: 5%;
+                right: 5%;
+            }
+             .step {
+                min-width: 90px; /* Further reduce step width */
+                padding: 8px;
+            }
+            .step-label {
+                font-size: 12px; /* Smaller label */
+            }
+            .step-number {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+        }
+
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 0 5px; /* Reduce padding for very small screens */
+            }
+            .header h1 {
+                font-size: 1.8rem; /* Smaller header title */
+                 justify-content: center; /* Center title */
+            }
+             .progress-container {
+                padding: 15px 10px;
+            }
+            .progress-steps { /* Stack progress steps on mobile */
+                flex-direction: column;
+                gap: 15px;
+                align-items: center; /* Center items when stacked */
+            }
+            .progress-steps::before {
+                display: none; /* Hide connector line when stacked */
+            }
+            .step {
+                width: 100%; /* Full width for stacked steps */
+                max-width: 250px; /* Max width for better appearance */
+            }
+
+            .card {
+                padding: 20px 15px; /* Adjust card padding */
+            }
+            .form-row {
+                grid-template-columns: 1fr; /* Stack form row items */
+                gap: 0; /* Remove gap if stacking, rely on form-group margin */
+            }
+            .vehicle-summary {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            .vehicle-image {
+                align-self: center;
+                margin-bottom: 7px;
+                width: 150px; /* Adjust image size */
+                height: 100px;
+            }
+            .payment-methods {
+                /* flex-direction: column; // Kept as row with wrap earlier */
+                gap: 7px;
+            }
+            .payment-method {
+                min-width: 80px; /* Adjust min-width for smaller payment buttons */
+                padding: 10px 5px;
+            }
+            .payment-method i {
+                font-size: 1.2rem;
+            }
+            .payment-method div {
+                font-size: 0.8rem;
+            }
+            .btn {
+                font-size: 1rem; /* Adjust button font size */
+            }
+
+        }
+         @media (max-width: 480px) {
+            .payment-methods { /* Make payment methods stack nicely on very small screens */
+                display: grid;
+                grid-template-columns: 1fr 1fr; /* Two columns */
+                gap: 8px;
+            }
+            .payment-method {
+                width: 100%; /* Full width within grid cell */
+            }
+        }
+    </style>
+</head>
+<body>
+<header id="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="customer_dashboard.html"> <i class="fas fa-car-side"></i>
+                    <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="mainNavMenu">
+                <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="my_bookings.html" class="nav-link active">My Bookings</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <div class="profile-dropdown">
+                    <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                     <div class="profile-menu" id="profileMenu">
+                            <a href="profile.html" class="profile-menu-item">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="favorite_cars.html" class="profile-menu-item">
+                                <i class="fas fa-heart"></i>
+                                <span>Favorites</span>
+                            </a>
+                            <a href="contact.html" class="profile-menu-item">
+                                <i class="fas fa-address-card"></i> <span>About Us</span>
+                            </a>
+                            <hr>
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                </div>
+                <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div class="header"> <div class="container">
+            <h1><i class="fas fa-file-invoice-dollar"></i> Complete Your Booking</h1>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="step completed">
+                    <div class="step-number"></div>
+                    <div class="step-label">Vehicle Selection</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Payment Details</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Confirmation</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="billing-grid">
+            <div class="card">
+                <h2><i class="fas fa-receipt"></i> Booking Summary</h2>
+                <div class="vehicle-summary">
+                    <img src=""
+                         alt=""
+                         class="vehicle-image"
+                         onerror="this.onerror=null; this.src='../public/assets/images/default-car.jpg';">
+                    <div class="vehicle-info">
+                        <h3> ()</h3>
+                        <div class="vehicle-details">
+                            
+                                <div class="detail-chip"><i class="fas fa-users"></i>  Seats</div>
+                            
+                            
+                                <div class="detail-chip"><i class="fas fa-door-closed"></i>  Doors</div>
+                            
+                            
+                                <div class="detail-chip"><i class="fas fa-cog"></i> </div>
+                            
+                            
+                                <div class="detail-chip"><i class="fas fa-gas-pump"></i> </div>
+                            
+                        </div>
+                        <div class="rental-period">
+                            <div class="period-item">
+                                <span><i class="fas fa-calendar-check"></i> Pickup:</span>
+                                <strong></strong>
+                            </div>
+                            <div class="period-item">
+                                <span><i class="fas fa-calendar-times"></i> Return:</span>
+                                <strong></strong>
+                            </div>
+                            <div class="period-item">
+                                <span><i class="fas fa-clock"></i> Duration:</span>
+                                <strong> day</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <h4 style="margin-top:20px; margin-bottom:10px; color: var(--primary-dark); font-weight:600;">Vehicle Features:</h4>
+                <div class="features-list">
+                    
+                        <div class="feature-item">
+                            <i class="fas fa-check"></i>
+                            <span></span>
+                        </div>
+                    
+                </div>
+                
+
+                <div class="cost-breakdown">
+                    <div class="cost-item">
+                        <span class="cost-label">Base Rate (₱/day ×  day)</span>
+                        <span class="cost-value">₱</span>
+                    </div>
+
+                    
+                        
+                        <div class="cost-item">
+                            <span class="cost-label">
+                                <i class="fas fa-plus-circle"></i>
+                                
+                                
+                                    (₱/day × )
+                                
+                                    (₱ fixed)
+                                
+                            </span>
+                            <span class="cost-value">₱</span>
+                        </div>
+                        
+                    
+
+                    <div class="cost-item" style="font-weight: bold; font-size: 1.05em;">
+                        <span class="cost-label">Subtotal</span>
+                        <span class="cost-value">₱</span>
+                    </div>
+                </div>
+                <div class="total-cost">
+                     <div class="cost-item"> <span>Total Amount:</span>
+                        <span>₱</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h2><i class="fas fa-credit-card"></i> Payment Information</h2>
+                <div class="error-message" id="errorMessage"></div>
+                <div class="success-message-placeholder" id="successMessage"></div> <form id="paymentForm" action="process_payment.html" method="post">
+                    <input type="hidden" name="booking_id" value="">
+                    <input type="hidden" name="payment_method" id="paymentMethodInput" value="card"> <input type="hidden" name="total_amount" value="">
+                    <input type="hidden" name="csrf_token" value="">
+
+                    <div class="payment-methods">
+                        <div class="payment-method active" data-method="card">
+                            <i class="fas fa-credit-card"></i>
+                            <div>Credit Card</div>
+                        </div>
+                        <div class="payment-method" data-method="debit">
+                            <i class="fas fa-money-check-alt"></i>
+                            <div>Debit Card</div>
+                        </div>
+                        <div class="payment-method" data-method="ewallet">
+                            <i class="fas fa-wallet"></i>
+                            <div>eWallet</div>
+                        </div>
+                        <div class="payment-method" data-method="cash">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div>Cash</div>
+                        </div>
+                    </div>
+
+                    <h3 style="color: var(--primary-dark); margin: 24px 0 16px; font-weight: 600;">Customer Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <div class="input-container">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="firstName" name="first_name" class="form-control"
+                                       value="" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <div class="input-container">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="lastName" name="last_name" class="form-control"
+                                       value="" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-container">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" class="form-control"
+                                   value="" readonly>
+                        </div>
+                    </div>
+                     <div class="form-group" id="phoneForCashDiv" style="display:none;"> <label for="phone">Phone Number (for Cash Payment)</label>
+                        <div class="input-container">
+                            <i class="fas fa-phone"></i>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                   value="" placeholder="Enter your contact number">
+                        </div>
+                    </div>
+
+
+                    <div id="cardForm">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number</label>
+                            <div class="input-container">
+                                <i class="fas fa-credit-card"></i>
+                                <input type="text" id="cardNumber" name="card_number" class="form-control"
+                                       placeholder="1234 5678 9012 3456" maxlength="19" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <div class="input-container">
+                                    <i class="fas fa-calendar"></i>
+                                    <input type="text" id="expiryDate" name="expiry_date" class="form-control"
+                                           placeholder="MM/YY" maxlength="5" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="cvc">CVC</label>
+                                <div class="input-container">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="text" id="cvc" name="cvc" class="form-control"
+                                           placeholder="123" maxlength="4" pattern="\d{3,4}" title="3 or 4 digit CVC" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardholderName">Cardholder Name</label>
+                            <div class="input-container">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="cardholderName" name="cardholder_name" class="form-control"
+                                       value="" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="ewalletForm" style="display:none;">
+                        <div class="form-group">
+                            <label for="ewalletType">Select eWallet</label>
+                            <div class="input-container">
+                                <i class="fas fa-wallet"></i>
+                                <select id="ewalletType" name="ewallet_type" class="form-control">
+                                    <option value="">-- Choose eWallet --</option>
+                                    <option value="gcash">GCash</option>
+                                    <option value="paymaya">Maya</option>
+                                    <option value="coinsph">Coins.ph</option>
+                                    <option value="grabpay">GrabPay</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ewalletNumber">eWallet Mobile Number</label>
+                            <div class="input-container">
+                                <i class="fas fa-mobile-alt"></i>
+                                <input type="text" id="ewalletNumber" name="ewallet_number" class="form-control"
+                                       placeholder="09XXXXXXXXX" maxlength="15" pattern="09[0-9]{9}" title="e.g., 09171234567">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="cashForm" style="display:none;">
+                         <div class="form-group" style="background: var(--accent-light); padding: 15px; border-radius: var(--border-radius);">
+                            <p style="margin: 0; font-size: 0.95em; color: var(--primary-dark); line-height:1.5;">
+                                <i class="fas fa-info-circle"></i>
+                                For cash payments, your booking will be confirmed, and payment will be collected by the agency staff upon vehicle pickup or return. Please ensure you have the exact amount.
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Cash Payment Time</label>
+                            <div style="display: flex; gap: 20px; align-items: center; flex-wrap: wrap;">
+                                <label style="font-weight: normal; display:flex; align-items:center; gap: 5px; cursor:pointer;">
+                                    <input type="radio" name="cash_option" value="pickup" style="width:auto; margin-right:5px; accent-color: var(--primary);" checked>
+                                    Pay at Pickup
+                                </label>
+                                <label style="font-weight: normal; display:flex; align-items:center; gap: 5px; cursor:pointer;">
+                                    <input type="radio" name="cash_option" value="return" style="width:auto; margin-right:5px; accent-color: var(--primary);">
+                                    Pay at Return
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 32px;">
+                        <label style="display: flex; align-items: center; gap: 12px; cursor: pointer; font-weight:normal;">
+                            <input type="checkbox" id="agreeToTerms" name="agree_to_terms" required
+                                   style="width: 20px; height: 20px; accent-color: var(--primary); flex-shrink: 0;">
+                            <span>I agree to the <a href="terms.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight:600;">Terms and Conditions</a> and <a href="privacy.html" target="_blank" style="color: var(--primary); text-decoration: none; font-weight:600;">Privacy Policy</a>.</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="payButton">
+                        <i class="fas fa-lock"></i>
+                        <span id="payButtonText">Pay ₱</span>
+                    </button>
+                </form>
+                <div class="loading" id="loadingDiv">
+                    <div class="spinner"></div>
+                    <p>Processing your payment...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="customer_dashboard.html">Home</a></li>
+                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="faq.html">FAQs</a></li>
+                        <li><a href="terms.html">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Payment method selection
+            const paymentMethodInput = document.getElementById('paymentMethodInput');
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    // Update active class for visual feedback
+                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                    // Update hidden input value
+                    paymentMethodInput.value = this.dataset.method;
+                    // Call function to manage form visibility and requirements
+                    togglePaymentFormSections(this.dataset.method);
+                });
+            });
+
+            // Card number formatting
+            const cardNumberInput = document.getElementById('cardNumber');
+            if (cardNumberInput) {
+                cardNumberInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                    let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                    e.target.value = formattedValue;
+                });
+            }
+
+            // Expiry date formatting MM/YY
+            const expiryInput = document.getElementById('expiryDate');
+            if (expiryInput) {
+                expiryInput.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+                    if (value.length > 2) {
+                        value = value.slice(0,2) + '/' + value.slice(2,4);
+                    } else if (value.length === 2 && e.inputType !== 'deleteContentBackward' && expiryInput.value.indexOf('/') === -1) {
+                         // Add slash automatically after two digits if not deleting and no slash present
+                        // value += '/'; // This can be tricky, manual input of / is often better
+                    }
+                    e.target.value = value.slice(0,5); // Max length MM/YY
+                });
+            }
+
+            // CVC validation (only digits)
+            const cvcInput = document.getElementById('cvc');
+            if (cvcInput) {
+                cvcInput.addEventListener('input', function(e) {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                });
+            }
+
+            // Form validation and submission
+            const paymentForm = document.getElementById('paymentForm');
+            const payButton = document.getElementById('payButton');
+            const payButtonText = document.getElementById('payButtonText');
+            const loadingDiv = document.getElementById('loadingDiv');
+            const errorMessageDiv = document.getElementById('errorMessage');
+            const successMessageDiv = document.getElementById('successMessage');
+
+
+            if (paymentForm) {
+                paymentForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    errorMessageDiv.style.display = 'none';
+                    errorMessageDiv.textContent = '';
+                    successMessageDiv.style.display = 'none';
+                    successMessageDiv.textContent = '';
+
+                    if (!document.getElementById('agreeToTerms').checked) {
+                        showError('You must agree to the Terms and Conditions and Privacy Policy.');
+                        return;
+                    }
+                    
+                    if (!validateForm()) { // validateForm will call showError internally
+                        return;
+                    }
+
+                    payButton.disabled = true;
+                    payButtonText.textContent = 'Processing...';
+                    loadingDiv.style.display = 'block';
+
+                    try {
+                        const formData = new FormData(this);
+                        const response = await fetch('process_payment.html', {
+                            method: 'POST',
+                            body: formData
+                        });
+
+                        // Check if response is JSON
+                        const contentType = response.headers.get("content-type");
+                        if (contentType && contentType.indexOf("application/json") !== -1) {
+                            const data = await response.json();
+                            if (data.success) {
+                                showSuccessMessage('Payment processed successfully! Redirecting...');
+                                setTimeout(() => {
+                                    window.location.href = 'booking_confirmation.html?id=' + data.booking_id;
+                                }, 1500);
+                            } else {
+                                showError(data.message || 'Payment processing failed. Please try again.');
+                                payButton.disabled = false;
+                                payButtonText.textContent = 'Pay ₱';
+                                loadingDiv.style.display = 'none';
+                            }
+                        } else {
+                             const textData = await response.text();
+                             console.error('Non-JSON response:', textData);
+                             showError('An unexpected server response occurred. Please check console or try again. Response: ' + textData.substring(0,100));
+                             payButton.disabled = false;
+                             payButtonText.textContent = 'Pay ₱';
+                             loadingDiv.style.display = 'none';
+                        }
+
+                    } catch (error) {
+                        console.error('Error:', error);
+                        showError('An unexpected error occurred: ' + error.message + '. Please try again.');
+                        payButton.disabled = false;
+                        payButtonText.textContent = 'Pay ₱';
+                        loadingDiv.style.display = 'none';
+                    }
+                });
+            }
+
+            function showSuccessMessage(message) {
+                successMessageDiv.textContent = message;
+                successMessageDiv.className = 'success-message-placeholder'; // Re-apply class if needed
+                successMessageDiv.style.cssText = `
+                    background: rgba(40, 167, 69, 0.1);
+                    color: var(--success);
+                    padding: 15px 20px;
+                    border-radius: var(--border-radius);
+                    margin: 15px 0;
+                    border-left: 4px solid var(--success);
+                    text-align: center;
+                    font-weight: 500;
+                    display: block; 
+                `;
+                successMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function showError(message) {
+                errorMessageDiv.textContent = message;
+                errorMessageDiv.style.display = 'block';
+                errorMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+             // Initial call to set form state based on default active payment method
+            togglePaymentFormSections(paymentMethodInput.value);
+
+
+            // Add input animations (optional, can be removed if causing issues)
+            // document.querySelectorAll('.form-control').forEach(input => {
+            //     input.addEventListener('focus', function() {
+            //         // Check if parentElement and its parentElement exist to avoid errors
+            //         if (this.parentElement && this.parentElement.parentElement) {
+            //             this.parentElement.parentElement.style.transform = 'translateY(-2px)';
+            //         }
+            //     });
+            //     input.addEventListener('blur', function() {
+            //         if (this.parentElement && this.parentElement.parentElement) {
+            //             this.parentElement.parentElement.style.transform = 'translateY(0)';
+            //         }
+            //     });
+            // });
+        }); // End DOMContentLoaded
+
+        // Hamburger menu, Theme Toggle, Profile Menu (Copied from original, assuming they work)
+        // Hamburger menu for nav
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('mainNavMenu');
+        if (menuToggleBtn && navMenu) {
+            menuToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent click from bubbling up to document
+                navMenu.classList.toggle('active');
+                menuToggleBtn.classList.toggle('active');
+            });
+        }
+         // Toggle Theme (Dark/Light)
+        const themeToggle = document.querySelector('.theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const themeMode = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', themeMode);
+                const icon = this.querySelector('i');
+                if (themeMode === 'dark') {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                } else {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+                localStorage.setItem('theme', themeMode);
+            });
+        }
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (themeToggleIcon) {
+                if (savedTheme === 'dark') {
+                    themeToggleIcon.classList.remove('fa-moon');
+                    themeToggleIcon.classList.add('fa-sun');
+                } else {
+                    themeToggleIcon.classList.remove('fa-sun');
+                    themeToggleIcon.classList.add('fa-moon');
+                }
+            }
+        }
+        // Toggle Profile Menu
+        const profileToggleBtn = document.getElementById('profileToggleBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        if (profileToggleBtn && profileMenu) {
+            profileToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation(); // Prevent click from bubbling up to document
+                profileMenu.classList.toggle('active');
+            });
+        }
+        // Close menus when clicking outside
+        document.addEventListener('click', function(e) {
+            if (navMenu && navMenu.classList.contains('active') && !navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                navMenu.classList.remove('active');
+                menuToggleBtn.classList.remove('active');
+            }
+            if (profileMenu && profileMenu.classList.contains('active') && !profileMenu.contains(e.target) && !profileToggleBtn.contains(e.target)) {
+                profileMenu.classList.remove('active');
+            }
+        });
+        // Prevent closing when clicking inside menus
+        document.querySelectorAll('.nav-menu, .profile-menu').forEach(menu => {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+
+        // Payment method switching logic
+        const cardForm = document.getElementById('cardForm');
+        const ewalletForm = document.getElementById('ewalletForm');
+        const cashForm = document.getElementById('cashForm');
+        const phoneForCashDiv = document.getElementById('phoneForCashDiv');
+
+
+        function togglePaymentFormSections(method) {
+            // Hide all payment-specific forms initially
+            if(cardForm) cardForm.style.display = 'none';
+            if(ewalletForm) ewalletForm.style.display = 'none';
+            if(cashForm) cashForm.style.display = 'none';
+            if(phoneForCashDiv) phoneForCashDiv.style.display = 'none';
+
+
+            // Disable 'required' for all specific fields
+            // Card fields
+            ['cardNumber', 'expiryDate', 'cvc', 'cardholderName'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.required = false;
+            });
+            // eWallet fields
+            ['ewalletType', 'ewalletNumber'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.required = false;
+            });
+            // Cash fields (radio buttons handled by validateForm)
+            document.querySelectorAll('input[name="cash_option"]').forEach(el => el.required = false);
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) phoneInput.required = false;
+
+
+            // Show the selected form and set its fields to required
+            if (method === 'card' || method === 'debit') {
+                if(cardForm) cardForm.style.display = 'block';
+                ['cardNumber', 'expiryDate', 'cvc', 'cardholderName'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.required = true;
+                });
+            } else if (method === 'ewallet') {
+                if(ewalletForm) ewalletForm.style.display = 'block';
+                ['ewalletType', 'ewalletNumber'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.required = true;
+                });
+            } else if (method === 'cash') {
+                if(cashForm) cashForm.style.display = 'block';
+                if(phoneForCashDiv) phoneForCashDiv.style.display = 'block'; // Show phone for cash
+                document.querySelectorAll('input[name="cash_option"]').forEach(el => el.required = true);
+                 if (phoneInput && (!phoneInput.value || phoneInput.value.trim() === '')) { // Only require if empty
+                    phoneInput.required = true;
+                }
+            }
+        }
+
+        // Update form validation to support different payment methods
+        function validateForm() {
+            const activeMethod = document.getElementById('paymentMethodInput').value;
+            const errorMessageDiv = document.getElementById('errorMessage'); // Defined earlier
+            
+            // Helper to show error and return false
+            const validationError = (message) => {
+                errorMessageDiv.textContent = message;
+                errorMessageDiv.style.display = 'block';
+                errorMessageDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return false;
+            };
+
+            if (activeMethod === 'card' || activeMethod === 'debit') {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const expiryDate = document.getElementById('expiryDate').value;
+                const cvc = document.getElementById('cvc').value;
+                const cardholderName = document.getElementById('cardholderName').value;
+
+                if (cardNumber.length < 13 || cardNumber.length > 19 || !/^\d+$/.test(cardNumber)) {
+                    return validationError('Please enter a valid card number (13-19 digits).');
+                }
+                if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
+                    return validationError('Please enter a valid expiry date in MM/YY format.');
+                } else {
+                    const [month, year] = expiryDate.split('/');
+                    const currentYear = new Date().getFullYear() % 100; // Get last two digits of current year
+                    const currentMonth = new Date().getMonth() + 1; // JS months are 0-indexed
+                    if (parseInt(year) < currentYear || (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+                        return validationError('Card has expired.');
+                    }
+                }
+                if (!/^\d{3,4}$/.test(cvc)) {
+                    return validationError('Please enter a valid CVC (3 or 4 digits).');
+                }
+                if (cardholderName.trim().length < 2) {
+                    return validationError('Please enter the cardholder\'s full name.');
+                }
+            } else if (activeMethod === 'ewallet') {
+                const ewalletType = document.getElementById('ewalletType').value;
+                const ewalletNumber = document.getElementById('ewalletNumber').value;
+                if (!ewalletType) {
+                    return validationError('Please select an eWallet type.');
+                }
+                if (!/^09\d{9}$/.test(ewalletNumber.trim())) { // Common PH mobile format 09xxxxxxxxx
+                    return validationError('Please enter a valid 11-digit eWallet mobile number (e.g., 09171234567).');
+                }
+            } else if (activeMethod === 'cash') {
+                const cashOption = document.querySelector('input[name="cash_option"]:checked');
+                if (!cashOption) {
+                    return validationError('Please select when you prefer to pay in cash.');
+                }
+                const phoneInput = document.getElementById('phone');
+                if (phoneInput.required && (!phoneInput.value || !/^09\d{9}$/.test(phoneInput.value.trim()))) {
+                     return validationError('Please enter a valid 11-digit phone number for cash payment (e.g., 09171234567).');
+                }
+            }
+            errorMessageDiv.style.display = 'none'; // Clear error if validation passes
+            return true;
+        }
+
+    </script>
+</body>
+</html>

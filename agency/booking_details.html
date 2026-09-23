@@ -1,0 +1,1270 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Details - TourGo Agency</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link href="../public/assets/css/style.css" rel="stylesheet">
+    <style>
+              .booking-details-container {
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--card-shadow);
+            margin: 2rem 0;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-confirmed { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        .status-completed { background: #cce5ff; color: #004085; }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .vehicle-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .vehicle-image {
+            width: 100%;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .vehicle-image img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .vehicle-info {
+            display: grid;
+       
+        }
+
+        .info-group {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .agency-info {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 2rem 0;
+        }
+
+        .agency-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .agency-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .status-timeline {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            border-left: 2px solid var(--primary);
+            margin-left: 1rem;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            position: absolute;
+            left: -7px;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .feature-tag {
+            background: var(--bg-light);
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .booking-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .info-group {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Add to your existing <style> section */
+.car-gallery {
+    margin-bottom: 1.5rem;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gallery-main {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.gallery-main img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-main img:hover {
+    transform: scale(1.05);
+}
+
+.gallery-thumbnails {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.gallery-thumbnail {
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.gallery-thumbnail.active {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.gallery-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vehicle-specs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--bg-light);
+    border-radius: 12px;
+}
+
+.spec-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    transition: transform 0.2s ease;
+}
+
+.spec-item:hover {
+    transform: translateY(-2px);
+}
+
+.spec-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
+
+.car-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin-bottom: 1.5rem;
+        line-height: 1.2;
+    }
+
+    .car-description-box {
+        margin: 12px 0 16px 0;
+        padding: 15px;
+        background: linear-gradient(120deg, #f8fafc 80%, #e9f3ff 100%);
+        border-radius: 12px;
+        border: 1px solid #e3eaf3;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        color: var(--text-dark);
+    }
+
+    .car-description-box h3 {
+        margin-top: 0;
+        margin-bottom: 8px;
+        font-size: 1.15em;
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .car-description-box p {
+        margin: 0;
+        font-size: 1em;
+        line-height: 1.6;
+        color: #444;
+    }
+
+    @media (max-width: 600px) {
+        .car-title {
+            font-size: 1.5rem;
+        }
+        
+        .car-description-box {
+            padding: 12px 10px;
+            font-size: 0.97em;
+        }
+    }
+
+    .gallery-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+    }
+
+    .gallery-nav:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .gallery-prev {
+        left: 10px;
+    }
+
+    .gallery-next {
+        right: 10px;
+    }
+
+    .image-counter {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.9em;
+    }
+
+[data-theme="dark"] .booking-details-container {
+    background: var(--white);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .car-description-box {
+    background: linear-gradient(120deg, var(--accent-light) 80%, var(--bg-light) 100%);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .vehicle-specs {
+    background: var(--accent-light);
+}
+
+[data-theme="dark"] .spec-item {
+    background: var(--white);
+}
+
+[data-theme="dark"] .feature-tag {
+    background: var(--accent-light);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .status-timeline {
+    background: var(--accent-light);
+}
+
+[data-theme="dark"] .agency-info {
+    background: var(--accent-light);
+}
+
+[data-theme="dark"] .btn-outline {
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .timeline-item::before {
+    background: var(--primary);
+}
+    
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .customer-profile {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .customer-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .status-update-form {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+        }
+
+        .payment-info {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+        }
+
+        .payment-status {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .payment-pending { background: #fff3cd; color: #856404; }
+        .payment-completed { background: #d4edda; color: #155724; }
+        .payment-failed { background: #f8d7da; color: #721c24; }
+
+        /* Add to your existing <style> section */
+.btn-success {
+    background-color: var(--primary);
+    border: none;
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-success:hover {
+    background-color: var(--primary-dark);
+}
+
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+/* Add to your existing <style> section */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+}
+
+.confirmation-icon {
+    text-align: center;
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.pickup-confirmation,
+.return-confirmation {
+    text-align: center;
+    padding: 1rem;
+}
+
+.pickup-confirmation ul,
+.return-confirmation ul {
+    text-align: left;
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.pickup-confirmation li,
+.return-confirmation li {
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.form-group {
+    margin-top: 1.5rem;
+    text-align: left;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 0.5rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* Dark theme support */
+[data-theme="dark"] .modal-content {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .form-control {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    border-color: var(--border-color);
+}
+
+/* Dark Theme Enhancements */
+[data-theme="dark"] .booking-details-container {
+    background: var(--dark-bg-alt);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .car-title,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4 {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .info-label {
+    color: var(--dark-text-light) !important;
+}
+
+[data-theme="dark"] .info-value,
+[data-theme="dark"] .timeline-content h4 {
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .booking-header {
+    border-bottom-color: var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .customer-profile,
+[data-theme="dark"] .rental-details,
+[data-theme="dark"] .payment-info,
+[data-theme="dark"] .status-timeline {
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .vehicle-specs .spec-item {
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .spec-icon {
+    background: rgba(var(--primary-rgb), 0.2);
+    color: var(--primary-light);
+}
+
+[data-theme="dark"] .car-description-box {
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .feature-tag {
+    background: var(--dark-bg);
+    color: var(--text-light);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .timeline-item {
+    border-left-color: var(--primary);
+}
+
+[data-theme="dark"] .timeline-date {
+    color: var(--dark-text-light);
+}
+
+/* Dark mode modal styles */
+[data-theme="dark"] .modal-content {
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom-color: var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .modal-footer {
+    border-top-color: var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .form-control {
+    background: var(--dark-bg-alt);
+    border-color: var(--border-color-dark, rgba(255, 255, 255, 0.1));
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-rgb), 0.25);
+}
+
+[data-theme="dark"] .gallery-thumbnails {
+    background: var(--dark-bg);
+    border-color: var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .gallery-thumbnail.active {
+    border-color: var(--primary);
+}
+
+[data-theme="dark"] .image-counter {
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .gallery-nav {
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--text-light);
+}
+
+[data-theme="dark"] .gallery-nav:hover {
+    background: rgba(var(--primary-rgb), 0.8);
+}
+
+[data-theme="dark"] .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Status badges in dark mode */
+[data-theme="dark"] .status-badge,
+[data-theme="dark"] .payment-status {
+    background: var(--dark-bg-alt);
+    border: 1px solid var(--border-color-dark, rgba(255, 255, 255, 0.1));
+}
+
+[data-theme="dark"] .status-pending { 
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+[data-theme="dark"] .status-confirmed {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+}
+
+[data-theme="dark"] .status-cancelled {
+    background: rgba(220, 53, 69, 0.2);
+    color: #dc3545;
+}
+
+[data-theme="dark"] .status-completed {
+    background: rgba(23, 162, 184, 0.2);
+    color: #17a2b8;
+}
+    </style>
+</head>
+<body>
+   <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item active"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <h1 class="section-title">Booking Details</h1>
+            <p class="section-description">Complete information about this booking</p>
+        </div>
+
+        
+            
+        
+
+        <div class="booking-details-container">
+            <!-- Booking Header -->
+            <div class="booking-header">
+                <div>
+                    <h2>Booking #</h2>
+                    <p class="text-muted">Booked on </p>
+                </div>
+                <div class="status-badge status-">
+                    <i class="fas fa-"></i>
+                    
+                </div>
+            </div>
+
+            <!-- Customer Profile Section -->
+            <div class="customer-profile">
+                <img src="" alt="Customer" class="customer-avatar">
+                <div class="customer-info">
+                    <h3></h3>
+                    <p><i class="fas fa-envelope"></i> </p>
+                    <p><i class="fas fa-phone"></i> </p>
+                </div>
+            </div>
+
+           <div class="vehicle-details">
+<div class="car-gallery">
+    <div class="gallery-main">
+        
+            <img id="mainImage" src="../uploads/vehicles/" 
+                 alt="">
+        
+            <img id="mainImage" src="../public/assets/images/default-car.jpg" 
+                 alt="Default vehicle image">
+        
+        
+        <!-- Add navigation controls -->
+        <div class="gallery-nav gallery-prev" onclick="changeGalleryImage(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="gallery-nav gallery-next" onclick="changeGalleryImage(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <!-- Add image counter -->
+        <div class="image-counter">
+            <span id="currentImageIndex">1</span> / <span id="totalImages"></span>
+        </div>
+    </div>
+    
+    
+        <div class="gallery-thumbnails">
+            
+                <div class="gallery-thumbnail " 
+                     onclick="changeImage('', this)"
+                     data-index="">
+                    <img src="../uploads/vehicles/" 
+                         alt="Vehicle view ">
+                </div>
+            
+        </div>
+    
+</div>
+
+                <div class="vehicle-info">
+                    <!-- Add this section for the title -->
+                    <h2 class="car-title">
+                        
+                    </h2>
+                    
+                    <!-- Add this section for the description -->
+                    <div class="car-description-box">
+                        <h3>About this vehicle</h3>
+                        <p></p>
+                    </div>
+
+                    <div class="vehicle-specs">
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-door-closed"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> Doors</div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-cog"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-gas-pump"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> Seats</div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> km</div>
+        </div>
+    </div>
+
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-car"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+</div>
+
+                    
+                    <div class="features-list">
+                        
+                            <span class="feature-tag">
+                                <i class="fas fa-check"></i>
+                                
+                            </span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            <!-- Rental Details -->
+            <div class="rental-details">
+                <h3>Rental Information</h3>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="info-label">Pickup Date</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Return Date</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value"> days</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Amount</span>
+                        <span class="info-value">₱</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="payment-info">
+                <h3>Payment Information</h3>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="info-label">Payment Status</span>
+                        <span class="payment-status payment-">
+                            
+                        </span>
+                        
+                            <button onclick="updatePaymentStatus()" class="btn btn-success btn-sm mt-2">
+                                <i class="fas fa-check"></i> Mark as Paid
+                            </button>
+                        
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-label">Payment Method</span>
+                        <span class="info-value"></span>
+                    </div>
+                    
+                    
+                    <div class="info-item">
+                        <span class="info-label">Transaction ID</span>
+                        <span class="info-value"></span>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Status Timeline -->
+            
+            <div class="status-timeline">
+                <h3>Booking Timeline</h3>
+                
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">
+                                
+                            </div>
+                            <h4></h4>
+                            
+                                <p></p>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+            
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                
+                    <button onclick="updateBookingStatus('confirmed')" class="btn btn-success">
+                        <i class="fas fa-check" style="margin-right: 10px;"></i> Confirm Booking
+                    </button>
+                    <button onclick="updateBookingStatus('cancelled')" class="btn btn-danger">
+                        <i class="fas fa-times" style="margin-right: 10px;"></i> Cancel Booking
+                    </button>
+                
+                    <button onclick="showPickupModal()" class="btn btn-primary">
+                        <i class="fas fa-car" style="margin-right: 10px;"></i> Mark as Picked Up
+                    </button>
+                
+                    <button onclick="showReturnModal()" class="btn btn-info">
+                        <i class="fas fa-undo" style="margin-right: 10px;"></i> Mark as Returned
+                    </button>
+                
+                <a href="view_bookings.html" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Bookings
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add these modals before </main> -->
+<!-- Pickup Modal -->
+<div class="modal fade" id="pickupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Vehicle Pickup</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pickup-confirmation">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h4>Vehicle Pickup Confirmation</h4>
+                    <p>Please confirm that the customer has picked up the vehicle:</p>
+                    <ul>
+                        <li>Customer has provided valid ID</li>
+                        <li>Payment has been verified</li>
+                        <li>Vehicle condition has been checked</li>
+                        <li>Customer has signed necessary documents</li>
+                    </ul>
+                    <div class="form-group">
+                        <label for="pickupNotes">Additional Notes (optional):</label>
+                        <textarea id="pickupNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmPickup()">
+                    Confirm Pickup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Return Modal -->
+<div class="modal fade" id="returnModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Vehicle Return</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="return-confirmation">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4>Vehicle Return Confirmation</h4>
+                    <p>Please confirm that the vehicle has been returned:</p>
+                    <ul>
+                        <li>Vehicle condition has been inspected</li>
+                        <li>All documents have been processed</li>
+                        <li>Keys have been returned</li>
+                        <li>Final payment has been settled (if applicable)</li>
+                    </ul>
+                    <div class="form-group">
+                        <label for="returnNotes">Additional Notes (optional):</label>
+                        <textarea id="returnNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmReturn()">
+                    Confirm Return
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="agency-vehicle.html">Vehicles</a></li>
+                        <li><a href="agency-bookings.html">Bookings</a></li>
+                        <li><a href="agency-reports.html">Reports</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+// Theme Toggle (from your latest file)
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        const themeIcon = themeToggle.querySelector('i');
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            if (themeIcon) themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', theme);
+        }
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+        setTheme(localStorage.getItem('theme') || 'light');
+    }
+
+    // Profile Dropdown & Mobile Menu (from your latest file)
+    function setupToggle(toggleBtnId, menuId) {
+        const toggleBtn = document.getElementById(toggleBtnId);
+        const menu = document.getElementById(menuId);
+        if (toggleBtn && menu) {
+            toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('active'); });
+            menu.addEventListener('click', e => e.stopPropagation());
+        }
+        return menu;
+    }
+    const profileMenu = setupToggle('profileToggleBtn', 'profileMenu');
+    const navMenu = setupToggle('menuToggleBtn', 'mainNavMenu');
+    document.addEventListener('click', () => {
+        if (profileMenu) profileMenu.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
+    });
+        
+        // Add this new function for updating booking status
+        function updateBookingStatus(status, notes = '') {
+            if (confirm('Are you sure you want to mark this booking as ' + status + '?')) {
+                fetch('update_booking_status.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        booking_id: ,
+                        status: status,
+                        notes: notes
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating booking status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating booking status');
+                });
+            }
+        }
+
+        function updatePaymentStatus(bookingId) {
+            if (confirm('Mark this booking as paid?')) {
+                fetch('update_payment_status.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ booking_id: bookingId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating payment status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating payment status');
+                });
+            }
+        }
+
+        let currentImageIndex = 0;
+let vehicleImages = ;
+
+// Function to change gallery image
+function changeGalleryImage(direction) {
+    if (vehicleImages.length === 0) return;
+    
+    currentImageIndex += direction;
+    
+    if (currentImageIndex < 0) {
+        currentImageIndex = vehicleImages.length - 1;
+    } else if (currentImageIndex >= vehicleImages.length) {
+        currentImageIndex = 0;
+    }
+    
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = '../uploads/vehicles/' + vehicleImages[currentImageIndex].image_path;
+    
+    // Update thumbnail active state
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    const activeThumbnail = document.querySelector(`.gallery-thumbnail[data-index="${currentImageIndex}"]`);
+    if (activeThumbnail) {
+        activeThumbnail.classList.add('active');
+    }
+    
+    updateImageCounter();
+}
+
+// Function to update image counter
+function updateImageCounter() {
+    const currentCounter = document.getElementById('currentImageIndex');
+    const totalCounter = document.getElementById('totalImages');
+    
+    if (currentCounter && totalCounter) {
+        currentCounter.textContent = currentImageIndex + 1;
+        totalCounter.textContent = vehicleImages.length || 1;
+    }
+}
+
+// Function to change main image when clicking thumbnails
+function changeMainImage(imagePath, thumbnailElement) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = '../uploads/vehicles/' + imagePath;
+    
+    // Update active thumbnail
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    thumbnailElement.classList.add('active');
+    
+    // Update current index
+    currentImageIndex = parseInt(thumbnailElement.dataset.index) || 0;
+    updateImageCounter();
+}
+
+// Initialize gallery on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize image counter
+    updateImageCounter();
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            changeGalleryImage(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeGalleryImage(1);
+        }
+    });
+});
+
+// Add to your existing <script> section
+let pickupModal;
+let returnModal;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap modals
+    pickupModal = new bootstrap.Modal(document.getElementById('pickupModal'));
+    returnModal = new bootstrap.Modal(document.getElementById('returnModal'));
+});
+
+function showPickupModal() {
+    pickupModal.show();
+}
+
+function showReturnModal() {
+    returnModal.show();
+}
+
+function confirmPickup() {
+    const notes = document.getElementById('pickupNotes').value;
+    updateBookingStatus('pickup', notes);
+    pickupModal.hide();
+}
+
+function confirmReturn() {
+    const notes = document.getElementById('returnNotes').value;
+    updateBookingStatus('returned', notes);
+    returnModal.hide();
+}
+    </script>
+</body>
+</html>
+

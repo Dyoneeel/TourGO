@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Write a Review - TourGo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+    <style>
+        .review-container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        .vehicle-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .vehicle-image {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--border-radius);
+            object-fit: cover;
+        }
+        .vehicle-info h3 {
+            margin: 0;
+            color: var(--text-dark);
+        }
+        .rating-input {
+            display: flex;
+            flex-direction: row-reverse;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        .rating-input input {
+            display: none;
+        }
+        .rating-input label {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #ddd;
+            transition: color 0.2s ease;
+        }
+        .rating-input label:hover,
+        .rating-input label:hover ~ label,
+        .rating-input input:checked ~ label {
+            color: var(--primary);
+        }
+        .comment-input {
+            margin: 1rem 0;
+        }
+        .comment-input textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            resize: vertical;
+            min-height: 120px;
+            margin-top: 0.5rem;
+        }
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        .submit-btn:hover {
+            background: var(--primary-dark);
+        }
+        .error-message {
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+        [data-theme="dark"] .review-container {
+            background: var(--accent-light);
+        }
+        [data-theme="dark"] .vehicle-info h3 {
+            color: var(--text-dark);
+        }
+        [data-theme="dark"] textarea {
+            background: var(--white);
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="customer_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="customer_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                    <li><a href="my_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                            <img src="" alt="Profile">
+                            <span></span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="profile.html" class="profile-menu-item"><i class="fas fa-user"></i><span>My Profile</span></a>
+                            <a href="favorite_cars.html" class="profile-menu-item"><i class="fas fa-heart"></i><span>Favorites</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
+                            <hr>
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <button class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="review-container">
+        <div class="vehicle-preview">
+            <img src="../uploads/vehicles/" 
+                 alt=""
+                 class="vehicle-image">
+            <div class="vehicle-info">
+                <h3></h3>
+                <p></p>
+            </div>
+        </div>
+
+        
+            <div class="error-message">
+                
+                
+            </div>
+        
+
+        <form method="POST">
+            <div class="rating-input">
+                
+                    <input type="radio" name="rating" value="" id="star" required>
+                    <label for="star"><i class="fas fa-star"></i></label>
+                
+            </div>
+
+            <div class="comment-input">
+                <label for="comment">Your Review</label>
+                <textarea name="comment" id="comment" required 
+                          placeholder="Share your experience with this vehicle..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Submit Review
+            </button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo"> <i class="fas fa-car-side"></i> <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span> </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links"> <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a> <a href="#" class="social-link"><i class="fab fa-twitter"></i></a> <a href="#" class="social-link"><i class="fab fa-instagram"></i></a> <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a> </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu"> <li><a href="../index.html">Home</a></li> <li><a href="cars.html">Our Fleet</a></li> <li><a href="about.html">About Us</a></li> <li><a href="contact.html">Contact Us</a></li> <li><a href="contact.html#faq">FAQs</a></li> <li><a href="../terms.html">Terms & Conditions</a></li> </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form"> <input type="email" class="newsletter-input" placeholder="Enter your email"> <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button> </form>
+                </div>
+            </div>
+            <div class="footer-bottom"> <p>&copy; <span id="currentYearFooter"></span> TourGo Premium Car Rental. All Rights Reserved.</p> </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu for nav
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navMenu = document.getElementById('mainNavMenu');
+        if (menuToggleBtn && navMenu) {
+            menuToggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                navMenu.classList.toggle('active');
+                menuToggleBtn.classList.toggle('active');
+            });
+            document.addEventListener('click', function(e) {
+                if (!navMenu.contains(e.target) && !menuToggleBtn.contains(e.target)) {
+                    navMenu.classList.remove('active');
+                    menuToggleBtn.classList.remove('active');
+                }
+            });
+        }
+
+        // Toggle Theme (Dark/Light)
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', themeMode);
+
+            // Change icon
+            const icon = this.querySelector('i');
+            if (themeMode === 'dark') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+
+            localStorage.setItem('theme', themeMode);
+        });
+
+        // Set initial theme from local storage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (savedTheme === 'dark') {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        }
+
+        // Toggle Profile Menu
+        document.querySelector('.profile-toggle').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.querySelector('.profile-menu').classList.toggle('active');
+        });
+
+        // Close menus when clicking outside
+        document.addEventListener('click', function() {
+            document.querySelector('.profile-menu').classList.remove('active');
+        });
+
+        // Prevent closing when clicking inside menus
+        document.querySelectorAll('.notification-menu, .profile-menu').forEach(menu => {
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        });
+
+        // Add animation to stars on hover
+        const stars = document.querySelectorAll('.rating-input label');
+        stars.forEach(star => {
+            star.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.2)';
+            });
+            star.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+
+        // Update year dynamically
+        const yearSpan = document.getElementById('currentYearFooter');
+        if (yearSpan) {
+            yearSpan.textContent = new Date().getFullYear();
+        }
+    </script>
+</body>
+</html>

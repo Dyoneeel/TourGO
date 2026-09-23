@@ -1,0 +1,682 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TourGo Premium Car Rental Service</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4D94FF;
+            --primary-dark: #3a7ace;
+            --primary-rgb: 77, 148, 255;
+            --primary-dark-rgb: 58, 122, 206;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+            --light-bg: #f8f9fa;
+            --border-color: #e6e6e6;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --success: #28a745;
+            --danger: #dc3545;
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .login-section {
+            padding: 40px 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        .login-container {
+            display: flex;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            max-width: 1100px;
+            width: 100%;
+            margin: 20px;
+            background-color: var(--white);
+            transition: transform 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .login-image {
+            flex: 1.2;
+            background-image: url('/api/placeholder/600/800');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .login-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(77, 148, 255, 0.85), rgba(58, 122, 206, 0.9));
+            z-index: 1;
+        }
+
+        .image-content {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            max-width: 450px;
+        }
+
+        .image-logo {
+            font-size: 36px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-logo i {
+            margin-right: 15px;
+            font-size: 40px;
+        }
+
+        .image-title {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-text {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .image-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .image-stat {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .image-stat:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-value {
+            font-size: 40px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .login-form-container {
+            flex: 1;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            margin-bottom: 40px;
+        }
+
+        .login-title {
+            font-size: 36px;
+            color: var(--text-dark);
+            font-weight: 700;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .login-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            margin-top: 12px;
+            border-radius: 2px;
+        }
+
+        .login-subtitle {
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .form-group {
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #fbfbfb;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(77, 148, 255, 0.15);
+            background-color: var(--white);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        .toggle-password:hover {
+            color: var(--primary);
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Custom checkbox */
+        .remember-me input[type="checkbox"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+        .checkmark {
+            display: inline-block;
+            position: relative;
+            height: 22px;
+            width: 22px;
+            background-color: #f1f1f1;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+        }
+
+        .remember-me:hover input ~ .checkmark {
+            background-color: #e9e9e9;
+        }
+
+        .remember-me input:checked ~ .checkmark {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        .remember-me input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .remember-me span {
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 15px;
+            position: relative;
+        }
+
+        .forgot-password:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .forgot-password:hover:after {
+            width: 100%;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px 25px;
+            margin: 5px 0 30px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 10px 20px rgba(77, 148, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(77, 148, 255, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(77, 148, 255, 0.2);
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .register-link a {
+            color: var(--primary);
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .register-link a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .register-link a:hover:after {
+            width: 100%;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1100px) {
+            .login-container {
+                max-width: 900px;
+            }
+            .login-form-container {
+                padding: 50px 40px;
+            }
+        }
+
+        .demo-message {
+            display: block;
+            padding: 12px 14px;
+            margin: 0 0 22px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.45;
+            border: 1px solid transparent;
+        }
+        .demo-message.success {
+            background: #eefaf1;
+            color: #176b2c;
+            border-color: #b9e6c4;
+        }
+        .demo-message.error {
+            background: #fff1f1;
+            color: #a61b1b;
+            border-color: #f3b7b7;
+        }
+        .demo-message.info {
+            background: #eef5ff;
+            color: #245a9b;
+            border-color: #bfd7f7;
+        }
+
+        @media (max-width: 900px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 600px;
+            }
+            .login-image {
+                min-height: 300px;
+            }
+            .image-stats {
+                display:none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-section {
+                padding: 20px 0;
+            }
+            .login-form-container {
+                padding: 40px 25px;
+            }
+            .login-title {
+                font-size: 28px;
+            }
+            .login-subtitle {
+                font-size: 16px;
+            }
+            .form-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .image-logo {
+                font-size: 28px;
+            }
+            .image-title {
+                font-size: 30px;
+            }
+            .image-text {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
+            .btn-login {
+                padding: 14px 20px;
+            }
+                        .image-stats {
+                display:none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="login-section">
+        <div class="container">
+            <div class="login-container animate__animated animate__fadeIn">
+                <div class="login-image">
+                    <div class="image-content">
+                        <div class="image-logo">
+                            <i class="fas fa-car-side"></i>
+                            TourGo
+                        </div>
+                        <h2 class="image-title">Your Premium Car Rental Experience</h2>
+                        <p class="image-text">Join thousands of satisfied customers who choose TourGo for their travel needs. Premium cars, exceptional service.</p>
+                        <div class="image-stats">
+                            <div class="image-stat">
+                                <span class="stat-value">150+</span>
+                                <span class="stat-label">Premium Cars</span>
+                            </div>
+                            <div class="image-stat">
+                                <span class="stat-value">50K+</span>
+                                <span class="stat-label">Happy Customers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="login-form-container">
+                    <div class="login-header">
+                        <h1 class="login-title">Welcome Back</h1>
+                        <p class="login-subtitle">Please enter your credentials to continue</p>
+                    </div>
+<form id="login-form" novalidate>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="name@example.com" required value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                                <button type="button" class="toggle-password" aria-label="Show password">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-footer">
+                            <label class="remember-me">
+                                <input type="checkbox" id="remember" name="remember" >
+                                <span class="checkmark"></span>
+                                <span>Remember me</span>
+                            </label>
+                            <a href="forgot_password.html" class="forgot-password">Forgot Password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login">
+                            Sign In <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                        </button>
+
+                        <div class="register-link">
+                            Don't have an account? <a href="register.html">Register Now</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../public/assets/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('login-form');
+            const message = document.getElementById('demo-message');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const rememberInput = document.getElementById('remember');
+
+            function showMessage(text, type) {
+                if (!message) return;
+                message.hidden = false;
+                message.className = 'demo-message ' + type;
+                message.textContent = text;
+            }
+
+            // Menu toggle functionality (kept for consistency with the original page).
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    const icon = menuToggle.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-bars');
+                        icon.classList.toggle('fa-times');
+                    }
+                });
+            }
+
+            // Password visibility toggle.
+            const togglePassword = document.querySelector('.toggle-password');
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    const icon = togglePassword.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('fa-eye');
+                        icon.classList.toggle('fa-eye-slash');
+                    }
+                });
+            }
+
+            // Static GitHub Pages demo authentication using localStorage.
+            // No real account or password is sent anywhere.
+            const demoAccounts = {
+                'admin@tourgo.demo': { password: 'TourGOAdmin@2026!', role: 'admin', name: 'TourGO Administrator' },
+                'agency@tourgo.demo': { password: 'Demo1234!', role: 'agency', name: 'DriveHub Rentals' },
+                'customer@tourgo.demo': { password: 'Demo1234!', role: 'customer', name: 'Demo Customer' }
+            };
+
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const email = emailInput.value.trim().toLowerCase();
+                    const password = passwordInput.value;
+
+                    if (!email || !emailInput.checkValidity()) {
+                        showMessage('Please enter a valid email address.', 'error');
+                        emailInput.focus();
+                        return;
+                    }
+                    if (!password) {
+                        showMessage('Please enter your password.', 'error');
+                        passwordInput.focus();
+                        return;
+                    }
+
+                    let account = demoAccounts[email];
+                    const stored = JSON.parse(localStorage.getItem('tourgo_demo_accounts') || '{}');
+                    if (!account && stored[email]) account = stored[email];
+
+                    if (!account || account.password !== password) {
+                        showMessage('Invalid demo credentials. Register a new account first, or use one of the demo accounts.', 'error');
+                        return;
+                    }
+
+                    const session = {
+                        email: email,
+                        role: account.role || 'customer',
+                        name: account.name || email.split('@')[0],
+                        signedInAt: new Date().toISOString()
+                    };
+                    localStorage.setItem('tourgo_demo_session', JSON.stringify(session));
+                    if (rememberInput && rememberInput.checked) {
+                        localStorage.setItem('tourgo_demo_remember', '1');
+                    } else {
+                        localStorage.removeItem('tourgo_demo_remember');
+                    }
+
+                    showMessage('Sign in successful. Opening your dashboard…', 'success');
+                    const destinations = {
+                        admin: '../admin/admin_dashboard.html',
+                        agency: '../agency/agency_dashboard.html',
+                        customer: '../customer/customer_dashboard.html'
+                    };
+                    setTimeout(function() {
+                        window.location.href = destinations[session.role] || destinations.customer;
+                    }, 650);
+                });
+            }
+
+            // Footer year update.
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan && !yearSpan.textContent) yearSpan.textContent = new Date().getFullYear();
+
+            // Add focus effect for form fields.
+            document.querySelectorAll('.form-control').forEach(function(input) {
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
