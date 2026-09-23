@@ -237,7 +237,7 @@
                         <i class="fas fa-moon"></i>
                     </button>
                     <div class="profile-dropdown">
-                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
                             <img src="../public/assets/images/guest-avatar.svg" alt="Guest Profile">
                             <span>Guest</span>
                             <i class="fas fa-chevron-down"></i>
@@ -263,7 +263,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="menu-toggle" aria-label="Toggle Menu">
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
                         <i class="fas fa-bars"></i>
                     </div>
                 </div>
@@ -285,16 +285,16 @@
                             </button>
                         </div>
                         <div class="profile-info">
-                            <h1></h1>
-                            <p class="email"></p>
+                            <h1>Guest</h1>
+                            <p class="email">customer@tourgo.demo</p>
                             <div class="verification-badge ">
                                 <i class="fas fa-"></i>
                                 <span> Account</span>
                             </div>
                             <div class="completion-progress">
-                                <div class="completion-text">Profile Completion: %</div>
+                                <div class="completion-text">Profile Completion: 0%</div>
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: %"></div>
+                                    <div class="progress-fill" style="width: 0%"></div>
                                 </div>
                             </div>
                         </div>
@@ -660,16 +660,31 @@
         }
 
         function setupToggle(btn, menuElem) {
-            if (btn && menuElem) {
-                btn.addEventListener('click', e => { e.stopPropagation(); menuElem.classList.toggle('active'); });
-                menuElem.addEventListener('click', e => e.stopPropagation());
-            }
+            if (!btn || !menuElem) return;
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = menuElem.classList.toggle('active');
+                btn.classList.toggle('active', isOpen);
+                btn.setAttribute('aria-expanded', String(isOpen));
+            });
+            menuElem.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
         }
         setupToggle(profileToggleBtn, profileMenu);
-        setupToggle(menuToggleBtn, navMenu);
-        document.addEventListener('click', () => {
-            if(profileMenu) profileMenu.classList.remove('active');
-            if (navMenu) navMenu.classList.remove('active');
+        if (menuToggleBtn && navMenu) setupToggle(menuToggleBtn, navMenu);
+        document.addEventListener('click', function(e) {
+            if (profileMenu && !profileMenu.contains(e.target) && !profileToggleBtn?.contains(e.target)) {
+                profileMenu.classList.remove('active');
+                profileToggleBtn?.classList.remove('active');
+                profileToggleBtn?.setAttribute('aria-expanded', 'false');
+            }
+            if (navMenu && !navMenu.contains(e.target) && !menuToggleBtn?.contains(e.target)) {
+                navMenu.classList.remove('active');
+                menuToggleBtn?.classList.remove('active');
+                menuToggleBtn?.setAttribute('aria-expanded', 'false');
+            }
         });
 
         function setupFileInput(inputId, textDisplayId, previewTargets = []) {
@@ -791,22 +806,22 @@
         }
 
         const progressFill = document.querySelector('.progress-fill');
-        if (progressFill) { setTimeout(() => { progressFill.style.width = '%'; }, 300); }    
+        if (progressFill) { setTimeout(() => { progressFill.style.width = '0%'; }, 300); }    
 
         const termsCheckbox = document.getElementById('terms_agreement');
         const requestVerificationBtn = document.getElementById('requestVerificationBtn');
         const verificationBlockerMsg = document.getElementById('verificationBlockerMsg');
-        const completionPercentage = ;
-        const verificationStatus = '';
+        const completionPercentage = 0;
+        const verificationStatus = 'unverified';
 
         function updateReviewTabDocumentStatus() {
             const profileImgStatusEl = document.getElementById('review_profile_image_status');
             const licenseFrontStatusEl = document.getElementById('review_license_front_status');
             const licenseBackStatusEl = document.getElementById('review_license_back_status');
 
-            const profileImgUploaded = ;
-            const licenseFrontUploaded = ;
-            const licenseBackUploaded = ;
+            const profileImgUploaded = false;
+            const licenseFrontUploaded = false;
+            const licenseBackUploaded = false;
 
             if(profileImgStatusEl){
                 profileImgStatusEl.textContent = profileImgUploaded ? 'Uploaded' : 'Missing';
