@@ -828,8 +828,8 @@
                 </button>
                 <div class="profile-dropdown">
                     <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
-                        <img src="" alt="Profile">
-                        <span></span>
+                        <img src="../public/assets/images/guest-avatar.svg" alt="Guest Profile">
+                        <span>Guest</span>
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <div class="profile-menu" id="profileMenu">
@@ -879,23 +879,23 @@
         <div class="filter-tabs">
             <a href="?filter=all&sort=" class="filter-tab ">
                 <i class="fas fa-th-list"></i> All
-                <span class="filter-tab-count"></span>
+                <span class="filter-tab-count">0</span>
             </a>
             <a href="?filter=upcoming&sort=" class="filter-tab ">
                 <i class="fas fa-calendar-alt"></i> Upcoming
-                <span class="filter-tab-count"></span>
+                <span class="filter-tab-count">0</span>
             </a>
             <a href="?filter=active&sort=" class="filter-tab ">
                 <i class="fas fa-car"></i> Active
-                <span class="filter-tab-count"></span>
+                <span class="filter-tab-count">0</span>
             </a>
             <a href="?filter=completed&sort=" class="filter-tab ">
                 <i class="fas fa-check-circle"></i> Completed
-                <span class="filter-tab-count"></span>
+                <span class="filter-tab-count">0</span>
             </a>
             <a href="?filter=cancelled&sort=" class="filter-tab ">
                 <i class="fas fa-times-circle"></i> Cancelled
-                <span class="filter-tab-count"></span>
+                <span class="filter-tab-count">0</span>
             </a>
         </div>
 
@@ -904,7 +904,8 @@
             <label for="sort">Sort by:</label>
             <select name="sort" id="sort" onchange="this.form.submit()">
                 
-                    <option value="" ></option>
+                    <option value="newest" selected>Newest First</option>
+                <option value="oldest">Oldest First</option>
                 
             </select>
         </form>
@@ -925,132 +926,7 @@
                 </a>
             </div>
         
-            <div class="bookings-list">
-                
-                    <div class="booking-card" id="booking-">
-                        <div class="booking-header">
-                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;"> <span class="status-badge status-"> <i class="fas fa-"></i>
-                                    
-                                </span>
-                                <span class="license-plate">
-                                    <i class="fas fa-id-badge"></i> 
-                                </span>
-                            </div>
-                            <small class="text-muted">
-                                Ref: #TG- </small>
-                        </div>
-
-                        <div class="booking-timeline">
-                            <div>
-                                <i class="fas fa-calendar-plus"></i>&nbsp;<small>Booked: </small>
-                            </div>
-                            <div>
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
-                            <div>
-                                 <i class="fas fa-arrow-circle-up"></i>&nbsp;<small>Pickup: </small>
-                            </div>
-                            <div>
-                                <i class="fas fa-arrow-right"></i>
-                            </div>
-                            <div>
-                                <i class="fas fa-arrow-circle-down"></i>&nbsp;<small>Return: </small>
-                            </div>
-                        </div>
-
-                        <div class="booking-body">
-                            <div class="booking-image-container">
-                                <img src=""
-                                     alt=""
-                                     class="booking-image">
-                            </div>
-
-                            <div class="booking-details">
-                                <h3 class="vehicle-name">  <span class="vehicle-year">()</span> <span class="vehicle-type"></span></h3>
-
-                                <div class="booking-meta">
-                                    <div class="meta-item">
-                                        <span class="meta-label"><i class="fas fa-tag"></i> Daily Rate</span>
-                                        <span class="meta-value">
-                                            ₱
-                                        </span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <span class="meta-label"><i class="fas fa-calendar-day"></i> Total Days</span>
-                                        <span class="meta-value">
-                                             day </span>
-                                    </div>
-                                    <div class="meta-item">
-                                        <span class="meta-label"><i class="fas fa-coins"></i> Total Cost</span>
-                                        <span class="meta-value">
-                                            ₱
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="booking-footer">
-                            <div class="price-tag">
-                                <i class="fas fa-money-bill-wave"></i> ₱
-                                
-                                <span class="daily-rate">
-                                    (₱/day)
-                                </span>
-                                
-                            </div>
-
-                            <div class="booking-actions">
-                                <a href="booking_details.html?id=" class="btn btn-outline" aria-label="View booking details for booking #">
-                                    <i class="fas fa-info-circle"></i> Details
-                                </a>                                
-                                
-                                    <button type="button" class="btn btn-danger"
-                                            onclick="openCancelModal()" aria-label="Cancel booking #">
-                                        <i class="fas fa-times"></i> Cancel
-                                    </button>
-
-                                    <a href="modify_booking.html?id=" class="btn btn-primary" aria-label="Modify booking #">
-                                        <i class="fas fa-edit"></i> Modify
-                                    </a>
-                                
-
-                                
-                                    <a href="review.html?booking_id=" class="btn btn-primary" aria-label="Leave a review for booking #">
-                                        <i class="fas fa-star"></i> Leave Review
-                                    </a>
-                                
-                            </div>
-                        </div>
-                    </div>
-                
-            </div>
-
-            
-            <div class="pagination">
-                
-                    <a href="&page=" class="btn btn-outline" aria-label="Previous page">
-                        <i class="fas fa-chevron-left"></i> Previous
-                    </a>
-                
-                    <span class="btn btn-outline disabled"><i class="fas fa-chevron-left"></i> Previous</span>
-                
-
-                <span class="page-info">Page  of </span>
-
-                
-                    <a href="&page=" class="btn btn-outline" aria-label="Next page">
-                        Next <i class="fas fa-chevron-right"></i>
-                    </a>
-                
-                    <span class="btn btn-outline disabled">Next <i class="fas fa-chevron-right"></i></span>
-                
-            </div>
-            
-        
-    </main>
-
-    <div id="cancelModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle" aria-hidden="true">
+            <div id="cancelModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="cancelModalTitle" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="cancelModalTitle">Cancel Booking</h4>
@@ -1248,5 +1124,6 @@
             });
         }
     </script>
+    <script src="../public/assets/js/demo-session.js"></script>
 </body>
 </html>

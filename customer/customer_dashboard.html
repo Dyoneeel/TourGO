@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TourGo - Welcome Back, !</title>
+    <title>TourGo - Welcome Back, <span id="customerNameGreeting">Guest</span>!</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="../public/assets/css/styles.css" rel="stylesheet">
@@ -204,8 +204,8 @@
                     </button>
                     <div class="profile-dropdown">
                         <button class="profile-toggle" id="profileToggleBtn" type="button">
-                            <img src="" alt="Profile">
-                            <span></span>
+                            <img src="../public/assets/images/guest-avatar.svg" alt="Guest Profile">
+                            <span>Guest</span>
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="profile-menu" id="profileMenu">
@@ -241,7 +241,7 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text animate__animated animate__fadeInLeft">
-                    <div class="hero-subtitle">Welcome Back, !</div>
+                    <div class="hero-subtitle">Welcome Back, <span id="customerNameGreeting">Guest</span>!</div>
                     <h1 class="hero-title">Ready for Your Next <span>Adventure?</span></h1>
                     <p class="hero-description">Manage your profile, view your bookings, and explore our fleet to plan your next journey with TourGo.</p>
                     <div class="hero-buttons">
@@ -249,7 +249,7 @@
                             <i class="fas fa-car-side" style="margin-right: 10px;"></i>
                             Browse Cars
                         </a>
-                        <a href="my_bookings" class="btn btn-outline">
+                        <a href="my_bookings.html" class="btn btn-outline">
                             <i class="fas fa-book" style="margin-right: 10px;"></i>
                             My Bookings
                         </a>
@@ -272,74 +272,12 @@
                 <p class="section-description">View your past, current, and upcoming car rentals.</p>
             </div>
             <div class="bookings-content">
-                
-                    <div class="bookings-grid">
-                        
-                            <div class="booking-card">
-                                <div class="booking-image">
-                                    
-                                        <img src="../uploads/vehicles/" 
-                                             alt=" ">
-                                    
-                                        <img src="../uploads/vehicles/default-car.jpg" alt="Vehicle">
-                                    
-                                    <span class="booking-status ">
-                                        
-                                    </span>
-                                </div>
-                                <div class="booking-details">
-                                    <h3 class="booking-title">
-                                          
-                                        ()
-                                    </h3>
-                                    <div class="booking-info">
-                                        <div class="info-item">
-                                            <i class="fas fa-calendar-check"></i>
-                                            <span>Pickup: </span>
-                                        </div>
-                                        <div class="info-item">
-                                            <i class="fas fa-calendar-times"></i>
-                                            <span>Return: </span>
-                                        </div>
-                                        <div class="info-item">
-                                            <i class="fas fa-building"></i>
-                                            <span>Agency: </span>
-                                        </div>
-                                        <div class="info-item">
-                                            <i class="fas fa-money-bill-wave"></i>
-                                            <span>Total: ₱</span>
-                                        </div>
-                                    </div>
-                                    <div class="booking-actions">
-                                        <a href="booking_details.html?id=" 
-                                           class="btn btn-outline btn-sm">
-                                            <i class="fas fa-info-circle" style="padding:5px;"></i> View Details
-                                        </a>
-                                        
-                                            <a href="cancel_booking.html?id=" 
-                                               class="btn btn-danger btn-sm"
-                                               onclick="return confirm('Are you sure you want to cancel this booking?')">
-                                                <i class="fas fa-times" style="padding:5px;"></i> Cancel
-                                            </a>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        
-                    </div>
-                    <div class="text-center" style="margin-top: 20px;">
-                        <a href="my_bookings.html" class="btn btn-primary">
-                            <i class="fas fa-list" style="padding:5px;"></i> View All Bookings
-                        </a>
-                    </div>
-                
-                    <div class="booking-placeholder">
-                        <i class="fas fa-calendar-alt fa-3x" style="color: #ccc; margin-bottom: 15px;"></i>
-                        <p>Your booking history will appear here.</p>
-                        <p>You currently have no bookings recorded.</p>
-                        <a href="cars.html" class="btn btn-primary" style="margin-top: 20px;">Find a Car</a>
-                    </div>
-                
+                <div class="booking-placeholder">
+                    <i class="fas fa-calendar-alt fa-3x" style="color: #ccc; margin-bottom: 15px;"></i>
+                    <p>Your booking history will appear here.</p>
+                    <p>You currently have no bookings recorded.</p>
+                    <a href="cars.html" class="btn btn-primary" style="margin-top: 20px;">Find a Car</a>
+                </div>
             </div>
         </div>
     </section>
@@ -382,40 +320,11 @@
                 <p class="section-description">Explore our curated selection of premium vehicles for every travel need.</p>
             </div>
             <div class="cars-grid">
-                
-                    
-                        <div class="car-card">
-                            <div class="car-image">
-                                <span class="car-type"></span>
-                                
-                                    <img src="../uploads/vehicles/" 
-                                         alt=" ">
-                                
-                                    <img src="/api/placeholder/350/220" alt="Car Image">
-                                
-                            </div>
-                            <div class="car-details">
-                                <h3 class="car-title"> </h3>
-                                <div class="car-features">
-                                    <span class="car-feature"><i class="fas fa-cog"></i> </span>
-                                    <span class="car-feature"><i class="fas fa-gas-pump"></i> </span>
-                                    <span class="car-feature"><i class="fas fa-users"></i>  Seats</span>
-                                </div>
-                                <div class="car-price-row">
-                                    <span class="car-price">₱<span>/day</span></span>
-                                    <a href="car_details.html?id=" class="btn btn-primary">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    
-                
-                    <div class="no-results">
-                        <i class="fas fa-car fa-2x"></i>
-                        <p>No vehicles available at the moment</p>
-                    </div>
-                
-            </div>
-            <div class="container text-center" style="margin-top: 40px;">
+                <div class="no-results">
+                    <i class="fas fa-car fa-2x"></i>
+                    <p>No vehicles available at the moment</p>
+                </div>
+            </div>lass="container text-center" style="margin-top: 40px;">
                 <a href="cars.html" class="btn btn-primary btn-large">
                     <i class="fas fa-car" style="margin-right: 10px;"></i>
                     View All Vehicles
@@ -433,39 +342,10 @@
                 <p class="section-description">Hear from our satisfied customers about their experiences with TourGo.</p>
             </div>
             <div class="testimonials">
-                
-                    
-                        <div class="testimonial-card">
-                            <div class="quote">"</div>
-                            <p class="testimonial-text"></p>
-                            <div class="testimonial-rating">
-                                
-                                    <i class="fas fa-star"></i>
-                                
-                            </div>
-                            <div class="testimonial-author">
-                                <div class="author-avatar">
-                                    
-                                        <img src="../uploads/profiles/" alt="User Avatar">
-                                    
-                                        <div class="avatar-placeholder">
-                                            
-                                        </div>
-                                    
-                                </div>
-                                <div class="author-info">
-                                    <h4> </h4>
-                                    <p></p>
-                                </div>
-                            </div>
-                        </div>
-                    
-                
-                    <div class="no-reviews">
-                        <i class="fas fa-comment fa-2x"></i>
-                        <p>Be the first to leave a review!</p>
-                    </div>
-                
+                <div class="no-reviews">
+                    <i class="fas fa-comment fa-2x"></i>
+                    <p>Be the first to leave a review!</p>
+                </div>
             </div>
         </div>
     </section>
@@ -615,5 +495,6 @@
             yearSpan.textContent = new Date().getFullYear();
         }
     </script>
+    <script src="../public/assets/js/demo-session.js"></script>
 </body>
 </html>

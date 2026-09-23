@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Guest avatar</title>
+  <desc id="desc">Default TourGo guest profile avatar</desc>
+  <circle cx="32" cy="32" r="31" fill="#4d94ff"/>
+  <circle cx="32" cy="24" r="10" fill="#ffffff"/>
+  <path d="M15 51c2.8-9.5 9.2-14 17-14s14.2 4.5 17 14" fill="#ffffff"/>
+</svg>
