@@ -1,15 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agency Profile - TourGo">
     <title>Agency Profile - TourGo</title>
+
     <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-<link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link href="../public/assets/css/styles.css" rel="stylesheet"> 
+    <link href="../public/assets/css/styles.css" rel="stylesheet">
     <link href="../public/assets/css/style.css" rel="stylesheet">
+
     <style>
-        /* Paste the combined CSS here (from your file and my review tab additions) */
         .main-content { min-height: calc(100vh - 70px); padding: 40px 0; }
         .profile-container { max-width: 1200px; margin: 0 auto; background: var(--white); border-radius: var(--border-radius); box-shadow: var(--card-shadow); overflow: hidden; }
         .profile-header { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; padding: 40px; position: relative; overflow: hidden; }
@@ -19,7 +24,7 @@
         .profile-header-content { position: relative; z-index: 2; display: flex; align-items: center; gap: 30px; }
         .profile-avatar-container { position: relative; }
         .profile-avatar { width: 120px; height: 120px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, 0.3); object-fit: cover; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2); }
-        .profile-avatar-container div.profile-avatar { display: flex; align-items: center; justify-content: center; background-color: rgba(255,255,255,0.15); font-size: 4rem; } /* For icon placeholder */
+        .profile-avatar.placeholder { display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); color: #fff; font-size: 4rem; }
         .avatar-upload-btn { position: absolute; bottom: 5px; right: 5px; width: 36px; height: 36px; border-radius: 50%; background: var(--white); color: var(--primary); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); transition: var(--transition); }
         .avatar-upload-btn:hover { transform: scale(1.1); }
         .profile-info h1 { font-size: 2.2rem; font-weight: 700; margin-bottom: 8px; }
@@ -28,7 +33,7 @@
         .verification-badge.approved { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid rgba(40, 167, 69, 0.3); }
         .verification-badge.pending { background: rgba(255, 193, 7, 0.2); color: var(--warning); border: 1px solid rgba(255, 193, 7, 0.3); }
         .verification-badge.rejected { background: rgba(220, 53, 69, 0.2); color: var(--danger); border: 1px solid rgba(220, 53, 69, 0.3); }
-        .completion-progress { margin-top: 20px; }
+        .completion-progress { margin-top: 20px; max-width: 520px; }
         .completion-text { font-size: 0.9rem; margin-bottom: 8px; opacity: 0.9; }
         .progress-bar { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.2); border-radius: 4px; overflow: hidden; }
         .progress-fill { height: 100%; background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8)); border-radius: 4px; transition: width 0.5s ease; }
@@ -59,21 +64,21 @@
         .document-item a { text-decoration: none; color: var(--primary); }
         .document-item .pdf-icon { font-size: 2rem; color: var(--danger); margin-bottom: 5px; display: block; }
         .document-item div { font-size: 0.9rem; }
-        .alerts-container { padding: 0 40px; }
-        .alert { padding: 16px 20px; margin-bottom: 20px; border-radius: var(--border-radius); display: flex; align-items: center; gap: 12px; border-left-width: 4px; border-left-style: solid; }
-        .alert-success { background-color: var(--success-light); color: var(--success-dark); border-left-color: var(--success); }
-        .alert-danger { background-color: var(--danger-light); color: var,--danger-dark); border-left-color: var,--danger); }
-        .alert-info { background-color: var(--info-light); color: var,--info-dark); border-left-color: var,--info); }
         .form-actions { display: flex; gap: 15px; justify-content: flex-end; padding-top: 20px; border-top: 1px solid var(--border-color, #e9ecef); margin-top: 20px; }
         .btn { padding: 12px 24px; border-radius: var(--border-radius); font-size: 1rem; font-weight: 500; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; border: none; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3); }
         .btn-success { background: var(--success); color: white; }
         .btn-success:hover { background: var(--success-dark); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--success-rgb), 0.3); }
+        .btn-secondary { background: var(--secondary, #6c757d); color: white; }
+        .btn-secondary:hover { filter: brightness(0.95); transform: translateY(-1px); }
         .btn:disabled { background: var(--disabled-bg, #e9ecef); color: var(--disabled-text, #6c757d); opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
         .character-count { font-size: 0.8em; color: var(--text-light); text-align: right; margin-top: 4px; }
-
-        /* Review Tab Specific Styles */
+        .alert { padding: 16px 20px; margin-bottom: 20px; border-radius: var(--border-radius); display: flex; align-items: flex-start; gap: 12px; border-left-width: 4px; border-left-style: solid; }
+        .alert-success { background-color: var(--success-light); color: var(--success-dark); border-left-color: var(--success); }
+        .alert-danger { background-color: var(--danger-light); color: var(--danger-dark); border-left-color: var(--danger); }
+        .alert-info { background-color: var(--info-light); color: var(--info-dark); border-left-color: var(--info); }
+        .alert-warning { background-color: var(--warning-light, #fff3cd); color: var(--warning-dark, #856404); border-left-color: var(--warning); }
         #review-tab .review-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px; }
         #review-tab .review-section { background: var(--card-bg, var(--white)); border: 1px solid var(--border-color, #e9ecef); border-radius: var(--border-radius); padding: 20px; box-shadow: var(--card-shadow-sm, 0 1px 3px rgba(0,0,0,0.05)); }
         #review-tab .review-section h3 { font-size: 1.2rem; font-weight: 600; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
@@ -84,306 +89,617 @@
         #review-tab .document-status { margin-top: 10px; }
         #review-tab .doc-status { display: flex; align-items: center; justify-content: space-between; font-size: 0.95rem; margin-bottom: 8px; padding: 8px 0; border-bottom: 1px solid var(--border-color-light, #f1f1f1); }
         #review-tab .doc-status:last-child { border-bottom: none; }
-        #review-tab .doc-status > span:first-of-type { display: flex; align-items: center; gap: 8px; } /* Group icon and name */
+        #review-tab .doc-status > span:first-of-type { display: flex; align-items: center; gap: 8px; }
         #review-tab .doc-status .fa-file { color: var(--primary); font-size: 1.1rem; }
         #review-tab .doc-status .status { padding: 3px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; }
         #review-tab .doc-status .status.uploaded, #review-tab .doc-status .status.selected { background: var(--success-light); color: var(--success-dark); border: 1px solid var(--success-transparent, rgba(40, 167, 69, 0.18)); }
-        #review-tab .doc-status .status.missing { background: var(--danger-light); color: var,--danger-dark); border: 1px solid var(--danger-transparent, rgba(220, 53, 69, 0.15)); }
+        #review-tab .doc-status .status.missing { background: var(--danger-light); color: var(--danger-dark); border: 1px solid var(--danger-transparent, rgba(220, 53, 69, 0.15)); }
         #review-tab .terms-agreement { margin-top: 24px; padding: 16px 0; border-top: 1px solid var(--border-color, #e9ecef); }
         #review-tab .checkbox-container { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; }
         #review-tab .checkbox-container input[type="checkbox"] { accent-color: var(--primary); width: 18px; height: 18px; margin-top: 3px; flex-shrink: 0; }
         #review-tab .checkbox-container label { color: var(--text-dark); font-weight: normal; cursor: pointer; line-height: 1.5; }
         #review-tab .checkbox-container a { color: var(--primary); text-decoration: underline; font-weight: 500; }
-
+        .toast { position: fixed; top: 90px; right: 24px; z-index: 9999; min-width: 300px; max-width: 420px; padding: 14px 16px; border-radius: 12px; background: var(--white); color: var(--text-dark); border-left: 4px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,.12); display: flex; gap: 10px; align-items: flex-start; transform: translateX(120%); transition: transform .25s ease, opacity .25s ease; opacity: 0; }
+        .toast.show { transform: translateX(0); opacity: 1; }
+        .toast.success { border-left-color: var(--success); }
+        .toast.error { border-left-color: var(--danger); }
+        .toast.warning { border-left-color: var(--warning); }
+        .demo-doc-link { cursor: default; }
+        [data-theme="dark"] .profile-container { background: var(--dark-bg-alt); box-shadow: 0 4px 20px rgba(0,0,0,.3); }
+        [data-theme="dark"] .profile-header { background: linear-gradient(135deg, var(--primary-dark) 0%, var(--dark-bg) 100%); }
+        [data-theme="dark"] .circle-decoration { background-color: rgba(255,255,255,.05); }
+        [data-theme="dark"] .profile-avatar { border-color: rgba(255,255,255,.1); box-shadow: 0 8px 32px rgba(0,0,0,.4); }
+        [data-theme="dark"] .avatar-upload-btn { background: var(--dark-bg-alt); color: var(--primary-light); box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+        [data-theme="dark"] .tab-navigation { background: var(--dark-bg); border-bottom-color: var(--border-color-dark); }
+        [data-theme="dark"] .tab-button { color: rgba(255,255,255,.7); }
+        [data-theme="dark"] .tab-button:hover { background: rgba(var(--primary-rgb), .1); color: var(--primary-light); }
+        [data-theme="dark"] .tab-button.active { background: rgba(var(--primary-rgb), .15); border-bottom-color: var(--primary-light); color: var(--primary-light); }
+        [data-theme="dark"] .form-section,
+        [data-theme="dark"] .section-title,
+        [data-theme="dark"] .form-group label { color: var(--text-light); }
+        [data-theme="dark"] .form-control { background: var(--dark-bg); border-color: var(--border-color-dark); color: var(--text-light); }
+        [data-theme="dark"] .form-control:focus { border-color: var(--primary-light); background: var(--dark-bg-alt); box-shadow: 0 0 0 3px rgba(var(--primary-rgb), .2); }
+        [data-theme="dark"] .form-control::placeholder { color: var(--text-muted); }
+        [data-theme="dark"] .file-upload-container { border-color: var(--border-color-dark); background: var(--dark-bg); }
+        [data-theme="dark"] .file-upload-container:hover { border-color: var(--primary-light); background: rgba(var(--primary-rgb), .1); }
+        [data-theme="dark"] .upload-text { color: var(--text-light); }
+        [data-theme="dark"] .document-item { background: var(--dark-bg); border-color: var(--border-color-dark); }
+        [data-theme="dark"] #review-tab .review-section { background: var(--dark-bg); border-color: var(--border-color-dark); box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+        [data-theme="dark"] #review-tab .review-item { border-bottom-color: var(--border-color-dark); }
+        [data-theme="dark"] #review-tab .review-item span { color: var(--text-light); }
+        [data-theme="dark"] #review-tab .checkbox-container label { color: var(--text-light); }
+        [data-theme="dark"] .alert-info { background: rgba(23,162,184,.1); color: var(--info-light); border-left-color: var(--info); }
+        [data-theme="dark"] .alert-success { background: rgba(40,167,69,.1); color: var(--success-light); border-left-color: var(--success); }
+        [data-theme="dark"] .alert-danger { background: rgba(220,53,69,.1); color: var(--danger-light); border-left-color: var(--danger); }
+        [data-theme="dark"] .alert-warning { background: rgba(255,193,7,.1); color: var(--warning-light); border-left-color: var(--warning); }
+        [data-theme="dark"] .toast { background: var(--dark-bg-alt); color: var(--text-light); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
         @media (max-width: 768px) {
-             .profile-header-content { flex-direction: column; text-align: center; gap: 20px; }
-             .main-content { padding: 20px 10px; }
-             .alerts-container { padding: 0 20px; }
-             .tab-content { padding: 20px; }
-             .form-grid { grid-template-columns: 1fr; gap: 20px; }
-             .form-actions { flex-direction: column; }
-             .btn { width: 100%; justify-content: center;}
-             .profile-header { padding: 30px 20px; }
-             #review-tab .review-grid { grid-template-columns: 1fr; }
+            .profile-header-content { flex-direction: column; text-align: center; gap: 20px; }
+            .main-content { padding: 20px 10px; }
+            .tab-content { padding: 20px; }
+            .form-grid { grid-template-columns: 1fr; gap: 20px; }
+            .form-actions { flex-direction: column; }
+            .btn { width: 100%; justify-content: center; }
+            .profile-header { padding: 30px 20px; }
+            #review-tab .review-grid { grid-template-columns: 1fr; }
+            .document-item { width: 100%; }
+            .toast { right: 12px; left: 12px; min-width: 0; max-width: none; }
         }
-        /* Add these dark theme styles to your existing <style> section */
-/* Tab Navigation Dark Mode Styles */
-[data-theme="dark"] .tab-button {
-    color: rgba(255, 255, 255, 0.7); /* Default state color in dark mode - slightly dimmed */
-}
-
-[data-theme="dark"] .tab-button:hover {
-    color: var(--primary-light); /* Brighter color on hover */
-    background: rgba(var(--primary-rgb), 0.1);
-}
-
-[data-theme="dark"] .tab-button.active {
-    color: var(--primary-light); /* Bright color for active state */
-    background: rgba(var(--primary-rgb), 0.15);
-    border-bottom-color: var(--primary-light);
-}
-/* Dark Theme Profile Container Styles */
-[data-theme="dark"] .profile-container {
-    background: var(--dark-bg-alt);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Dark Theme Profile Header */
-[data-theme="dark"] .profile-header {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--dark-bg) 100%);
-}
-
-[data-theme="dark"] .circle-decoration {
-    background-color: rgba(255, 255, 255, 0.05);
-}
-
-[data-theme="dark"] .profile-avatar {
-    border-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-[data-theme="dark"] .avatar-upload-btn {
-    background: var(--dark-bg-alt);
-    color: var(--primary-light);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-/* Dark Theme Tab Navigation */
-[data-theme="dark"] .tab-navigation {
-    background: var(--dark-bg);
-    border-bottom-color: var(--border-color-dark);
-}
-
-[data-theme="dark"] .tab-button {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-[data-theme="dark"] .tab-button:hover {
-    background: rgba(var(--primary-rgb), 0.1);
-}
-
-[data-theme="dark"] .tab-button.active {
-    background: rgba(var(--primary-rgb), 0.15);
-    border-bottom-color: var(--primary-light);
-    color: var(--primary-light);
-}
-
-/* Dark Theme Form Elements */
-[data-theme="dark"] .form-section {
-    color: var(--text-light);
-}
-
-[data-theme="dark"] .section-title {
-    color: var(--text-light);
-}
-
-[data-theme="dark"] .form-group label {
-    color: var(--text-light);
-}
-
-[data-theme="dark"] .form-control {
-    background: var(--dark-bg);
-    border-color: var(--border-color-dark);
-    color: var(--text-light);
-}
-
-[data-theme="dark"] .form-control:focus {
-    border-color: var(--primary-light);
-    background: var(--dark-bg-alt);
-    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.2);
-}
-
-[data-theme="dark"] .form-control::placeholder {
-    color: var(--text-muted);
-}
-
-/* Dark Theme File Upload */
-[data-theme="dark"] .file-upload-container {
-    border-color: var(--border-color-dark);
-    background: var(--dark-bg);
-}
-
-[data-theme="dark"] .file-upload-container:hover {
-    border-color: var(--primary-light);
-    background: rgba(var(--primary-rgb), 0.1);
-}
-
-[data-theme="dark"] .upload-icon {
-    color: var(--text-muted);
-}
-
-[data-theme="dark"] .upload-text {
-    color: var(--text-light);
-}
-
-/* Dark Theme Document Preview */
-[data-theme="dark"] .document-item {
-    background: var(--dark-bg);
-    border-color: var(--border-color-dark);
-}
-
-[data-theme="dark"] .document-item a {
-    color: var(--primary-light);
-}
-
-/* Dark Theme Alert Styles */
-[data-theme="dark"] .alert {
-    background-color: var(--dark-bg-alt);
-    border-color: var(--border-color-dark);
-}
-
-[data-theme="dark"] .alert-success {
-    background-color: rgba(40, 167, 69, 0.1);
-    border-left-color: var(--success);
-    color: var(--success-light);
-}
-
-[data-theme="dark"] .alert-danger {
-    background-color: rgba(220, 53, 69, 0.1);
-    border-left-color: var(--danger);
-    color: var(--danger-light);
-}
-
-[data-theme="dark"] .alert-info {
-    background-color: rgba(23, 162, 184, 0.1);
-    border-left-color: var(--info);
-    color: var(--info-light);
-}
-
-/* Dark Theme Button States */
-[data-theme="dark"] .btn:disabled {
-    background: var(--dark-bg);
-    color: var(--text-muted);
-    border: 1px solid var(--border-color-dark);
-}
-
-/* Dark Theme Verification Badge */
-[data-theme="dark"] .verification-badge {
-    background-color: var(--dark-bg-alt);
-}
-
-[data-theme="dark"] .verification-badge.approved {
-    background: rgba(40, 167, 69, 0.15);
-    border-color: rgba(40, 167, 69, 0.3);
-}
-
-[data-theme="dark"] .verification-badge.pending {
-    background: rgba(255, 193, 7, 0.15);
-    border-color: rgba(255, 193, 7, 0.3);
-}
-
-[data-theme="dark"] .verification-badge.rejected {
-    background: rgba(220, 53, 69, 0.15);
-    border-color: rgba(220, 53, 69, 0.3);
-}
-
-/* Dark Theme Progress Bar */
-[data-theme="dark"] .progress-bar {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="dark"] .progress-fill {
-    background: linear-gradient(90deg, var(--primary), var(--primary-dark));
-}
-
-/* Verification and Rejection Styles */
-.verification-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 20px; font-size: 0.875rem; font-weight: 600; margin-bottom: 15px; }
-.verification-badge.approved { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid rgba(40, 167, 69, 0.3); }
-.verification-badge.pending { background: rgba(255, 193, 7, 0.2); color: var(--warning); border: 1px solid rgba(255, 193, 7, 0.3); }
-.verification-badge.rejected { background: rgba(220, 53, 69, 0.2); color: var(--danger); border: 1px solid rgba(220, 53, 69, 0.3); }
-
-.rejection-container {
-    padding: 15px;
-    margin-top: 15px;
-    border-radius: var(--border-radius);
-}
-
-.alert {
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    border-radius: var(--border-radius);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-left-width: 4px;
-    border-left-style: solid;
-}
-
-.alert-danger {
-    background-color: rgba(220,53,69,0.1);
-    border-left-color: var(--danger);
-    color: var(--danger);
-}
-
-.alert-info {
-    background-color: rgba(23,162,184,0.1);
-    border-left-color: var(--info);
-    color: var,--info;
-}
-
-/* Dark mode styles */
-[data-theme="dark"] .alert-danger {
-    background-color: rgba(220, 53, 69, 0.1);
-    border-left-color: var(--danger);
-    color: var(--danger-light);
-}
-
-[data-theme="dark"] .alert-info {
-    background-color: rgba(23, 162, 184, 0.1);
-    border-left-color: var(--info);
-    color: var,--info-light;
-}
     </style>
-    <link rel="stylesheet" href="../public/assets/css/agency-demo.css">
-</head><body class="agency-page-bg">
+</head>
+<body>
 <header id="header">
-  <div class="container"><div class="header-content">
-    <div class="logo"><a href="agency_dashboard.html"><i class="fas fa-car-side"></i><span><span style="color:var(--text-dark);">Tour</span><span style="color:var(--text-light);">Go</span></span></a></div>
-    <ul class="nav-menu" id="mainNavMenu"><li><a href="agency_dashboard.html" class="nav-link">Home</a></li><li><a href="my_cars.html" class="nav-link">My Fleet</a></li><li><a href="view_bookings.html" class="nav-link">My Bookings</a></li><li><a href="contact_support.html" class="nav-link">Support</a></li></ul>
-    <div class="header-actions">
-      <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
-      <div class="profile-dropdown">
-        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
-          <img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo">
-          <span class="profile-name">DriveHub Rentals</span><i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="profile-menu" id="profileMenu">
-          <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
-          <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
-          <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
-          <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
-          <a href="../auth/agency_change_password.html" class="profile-menu-item"><i class="fas fa-key"></i><span>Change Password</span></a>
-          <hr>
-          <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="agency_dashboard.html">
+                    <i class="fas fa-car-side"></i>
+                    <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                </a>
+            </div>
+            <ul class="nav-menu" id="mainNavMenu">
+                <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                <li><a href="contact_support.html" class="nav-link">Support</a></li>
+            </ul>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle Dark Mode" type="button"><i class="fas fa-moon"></i></button>
+                <div class="profile-dropdown">
+                    <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img id="navAgencyLogo" src="../public/assets/images/car.png" alt="Profile">
+                        <span id="navCompanyName">DriveHub Rentals</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                        <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                        <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                        <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
+                        <hr style="margin:5px 0; border-color:var(--border-color-light,#eee);">
+                        <a href="../auth/login.html" class="profile-menu-item" id="logoutLink"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                    </div>
+                </div>
+                <button class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu" type="button"><i class="fas fa-bars"></i></button>
+            </div>
         </div>
-      </div>
-      <button class="menu-toggle" id="menuToggleBtn" type="button" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
     </div>
-  </div></div>
 </header>
-<main class="main-content"><div class="container"><div class="profile-container"><div class="profile-header"><div class="profile-header-content"><div class="profile-avatar-container"><div class="profile-avatar"><img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo" style="width:100%;height:100%;border-radius:50%;object-fit:cover"></div></div><div class="profile-info"><h1 id="headerCompanyName">DriveHub Rentals</h1><div class="email"><i class="fas fa-envelope"></i> agency@tourgo.demo</div><span class="agency-badge"><i class="fas fa-check-circle"></i> Demo Agency</span></div></div></div>
-<div style="padding:30px"><div id="profileMessage" class="agency-message"></div><div class="tab-controls" style="margin-bottom:20px"><button class="tab-btn active" data-tab="business">Business Information</button><button class="tab-btn" data-tab="contact">Contact Information</button><button class="tab-btn" data-tab="verification">Verification</button><button class="tab-btn" data-tab="security">Security</button></div>
-<div class="tab-content active" id="business"><form id="businessForm"><div class="agency-form-grid"><div class="agency-field"><label for="company_name">Company Name</label><input id="company_name"></div><div class="agency-field"><label for="business_type">Business Type</label><select id="business_type"><option>Corporation</option><option>Sole Proprietorship</option><option>Partnership</option><option>Other</option></select></div><div class="agency-field"><label for="business_reg_number">Registration Number</label><input id="business_reg_number"></div><div class="agency-field"><label for="tax_id">Tax ID</label><input id="tax_id"></div><div class="agency-field"><label for="year_established">Year Established</label><input id="year_established" type="number"></div><div class="agency-field full"><label for="description">Agency Description</label><textarea id="description"></textarea></div></div><button class="btn btn-primary" type="submit">Save Business Information</button></form></div>
-<div class="tab-content" id="contact"><form id="contactForm"><div class="agency-form-grid"><div class="agency-field"><label for="contact_person_first_name">First Name</label><input id="contact_person_first_name"></div><div class="agency-field"><label for="contact_person_last_name">Last Name</label><input id="contact_person_last_name"></div><div class="agency-field"><label for="position">Position</label><input id="position"></div><div class="agency-field"><label for="phone">Business Phone</label><input id="phone"></div><div class="agency-field full"><label for="address">Street Address</label><textarea id="address"></textarea></div><div class="agency-field"><label for="city">City</label><input id="city"></div><div class="agency-field"><label for="province">State/Province</label><input id="province"></div><div class="agency-field"><label for="postal_code">Postal Code</label><input id="postal_code"></div><div class="agency-field"><label for="country">Country</label><input id="country" readonly></div><div class="agency-field full"><label for="website">Website</label><input id="website"></div></div><button class="btn btn-primary" type="submit">Save Contact Information</button></form></div>
-<div class="tab-content" id="verification"><div class="agency-card" style="padding:22px"><h3 style="color:var(--text-dark);margin-bottom:10px">Demo Verification</h3><p class="agency-muted">This GitHub Pages version uses fictional demo information. No real government IDs, licenses, or business documents are uploaded.</p><div class="agency-grid" style="margin-top:20px"><div class="agency-card" style="padding:18px"><strong>Business Registration</strong><p class="agency-muted">Demo placeholder only</p></div><div class="agency-card" style="padding:18px"><strong>Government ID</strong><p class="agency-muted">Demo placeholder only</p></div><div class="agency-card" style="padding:18px"><strong>Address Proof</strong><p class="agency-muted">Demo placeholder only</p></div></div></div></div>
-<div class="tab-content" id="security"><div class="agency-card" style="padding:22px"><h3 style="color:var(--text-dark);margin-bottom:8px">Account Security</h3><p class="agency-muted">Change the demo agency password from the dedicated security page.</p><a class="btn btn-primary" href="../auth/agency_change_password.html">Change Password</a></div></div>
-</div></div></div></main>
+
+<main class="main-content">
+    <div class="container">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="circle-decoration circle-1"></div>
+                <div class="circle-decoration circle-2"></div>
+                <div class="profile-header-content">
+                    <div class="profile-avatar-container">
+                        <img src="../public/assets/images/car.png" alt="Agency Logo" class="profile-avatar" id="headerAgencyLogo" style="display:none;">
+                        <div class="profile-avatar placeholder" id="headerAgencyLogoPlaceholder"><i class="fas fa-building"></i></div>
+                        <button class="avatar-upload-btn" title="Change Agency Logo" id="triggerAgencyLogoUpload" type="button">
+                            <i class="fas fa-camera"></i>
+                        </button>
+                    </div>
+                    <div class="profile-info">
+                        <h1 id="headerCompanyName">DriveHub Rentals</h1>
+                        <div class="email"><i class="fas fa-envelope"></i> <span id="businessEmail">agency@tourgo.demo</span></div>
+                        <div class="verification-badge pending" id="verificationBadge">
+                            <i class="fas fa-clock"></i>
+                            <span id="verificationLabel">Pending Account</span>
+                        </div>
+                        <div class="completion-progress">
+                            <div class="completion-text">Profile Completion: <span id="completionPercentage">82</span>%</div>
+                            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:82%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-navigation">
+                <button class="tab-button active" data-tab="business" type="button"><i class="fas fa-building"></i> Business Info</button>
+                <button class="tab-button" data-tab="contact" type="button"><i class="fas fa-address-card"></i> Contact</button>
+                <button class="tab-button" data-tab="verification" type="button"><i class="fas fa-file-alt"></i> Verification Docs</button>
+                <button class="tab-button" data-tab="review" type="button"><i class="fas fa-check-circle"></i> Review &amp; Submit</button>
+                <button class="tab-button" data-tab="security" type="button"><i class="fas fa-shield-alt"></i> Security</button>
+                <button class="tab-button" data-tab="support" type="button"><i class="fas fa-headset"></i> Support</button>
+            </div>
+
+            <div class="tab-content active" id="business-tab">
+                <form id="businessForm" novalidate>
+                    <div class="form-section">
+                        <h2 class="section-title"><i class="fas fa-briefcase"></i> Business Details</h2>
+                        <div class="form-grid">
+                            <div class="form-group"><label for="company_name" class="required-field">Company Name</label><input type="text" id="company_name" class="form-control" required></div>
+                            <div class="form-group"><label for="business_type" class="required-field">Business Type</label><select id="business_type" class="form-control" required><option value="">Select Type...</option><option value="sole_proprietorship">Sole Proprietorship</option><option value="partnership">Partnership</option><option value="corporation">Corporation</option><option value="llc">LLC</option><option value="other">Other</option></select></div>
+                            <div class="form-group"><label for="business_reg_number" class="required-field">Registration Number</label><input type="text" id="business_reg_number" class="form-control" required></div>
+                            <div class="form-group"><label for="tax_id" class="required-field">Tax ID (e.g., TIN)</label><input type="text" id="tax_id" class="form-control" required></div>
+                            <div class="form-group"><label for="year_established">Year Established</label><input type="number" id="year_established" class="form-control" placeholder="YYYY" min="1900"></div>
+                            <div class="form-group full-width"><label for="description" class="required-field">Agency Description</label><textarea id="description" class="form-control" rows="4" maxlength="500" required></textarea><div class="character-count" id="characterCount">0/500</div></div>
+                            <div class="form-group"><label for="agency_logo">Agency Logo</label><div class="file-upload-container"><input type="file" id="agency_logo" class="file-upload-input" accept="image/jpeg,image/png,image/gif,image/webp"><div class="upload-icon"><i class="fas fa-image"></i></div><div class="upload-text" id="agency_logo_text">Click to upload Logo</div><div class="upload-subtext">JPG, PNG, GIF, WebP (Max 5MB)</div></div></div>
+                        </div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Business Info</button></div>
+                </form>
+            </div>
+
+            <div class="tab-content" id="contact-tab">
+                <form id="contactForm" novalidate>
+                    <div class="form-section">
+                        <h2 class="section-title"><i class="fas fa-address-card"></i> Contact Details</h2>
+                        <div class="form-grid">
+                            <div class="form-group"><label for="contact_person_first_name" class="required-field">Contact Person First Name</label><input type="text" id="contact_person_first_name" class="form-control" required></div>
+                            <div class="form-group"><label for="contact_person_last_name" class="required-field">Contact Person Last Name</label><input type="text" id="contact_person_last_name" class="form-control" required></div>
+                            <div class="form-group"><label for="position" class="required-field">Position</label><input type="text" id="position" class="form-control" required></div>
+                            <div class="form-group"><label for="phone" class="required-field">Business Phone</label><input type="tel" id="phone" class="form-control" placeholder="e.g., +639123456789" required></div>
+                            <div class="form-group full-width"><label for="address" class="required-field">Street Address</label><textarea id="address" class="form-control" rows="3" required></textarea></div>
+                            <div class="form-group"><label for="city" class="required-field">City</label><input type="text" id="city" class="form-control" required></div>
+                            <div class="form-group"><label for="province" class="required-field">State/Province</label><input type="text" id="province" class="form-control" required></div>
+                            <div class="form-group"><label for="postal_code" class="required-field">Postal Code</label><input type="text" id="postal_code" class="form-control" required></div>
+                            <div class="form-group"><label for="country">Country</label><input type="text" id="country" class="form-control" value="Philippines" readonly></div>
+                            <div class="form-group"><label for="website">Website (Optional)</label><input type="url" id="website" class="form-control" placeholder="https://www.youragency.com"></div>
+                        </div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Save Contact Info</button></div>
+                </form>
+            </div>
+
+            <div class="tab-content" id="verification-tab">
+                <form id="verificationForm" novalidate>
+                    <div class="form-section">
+                        <h2 class="section-title"><i class="fas fa-shield-alt"></i> Verification Documents</h2>
+                        <div class="alert alert-info"><i class="fas fa-info-circle"></i><div>Upload clear copies of your Business Registration, a Government ID of the contact person, and Proof of Business Address. (PDF, JPG, PNG - Max 5MB each)</div></div>
+                        <div class="form-grid">
+                            <div class="form-group"><label for="business_registration" class="required-field">Business Registration Document</label><div class="file-upload-container"><input type="file" id="business_registration" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png"><div class="upload-icon"><i class="fas fa-file-contract"></i></div><div class="upload-text" id="business_registration_text">Upload Business Permit/Registration</div></div></div>
+                            <div class="form-group"><label for="gov_id" class="required-field">Government ID (Contact Person)</label><div class="file-upload-container"><input type="file" id="gov_id" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png"><div class="upload-icon"><i class="fas fa-id-card"></i></div><div class="upload-text" id="gov_id_text">Upload Government ID</div></div></div>
+                            <div class="form-group"><label for="address_proof" class="required-field">Proof of Business Address</label><div class="file-upload-container"><input type="file" id="address_proof" class="file-upload-input" accept=".pdf,.jpg,.jpeg,.png"><div class="upload-icon"><i class="fas fa-map-marked-alt"></i></div><div class="upload-text" id="address_proof_text">Upload Proof of Address (e.g., Utility Bill)</div></div></div>
+                        </div>
+                        <h3 style="margin-top:30px;margin-bottom:15px;font-size:1.1rem;color:var(--text-dark);">Current Uploaded Documents:</h3>
+                        <div class="document-preview" id="documentPreview"><p id="noDocumentsText">No documents uploaded yet for these categories.</p></div>
+                    </div>
+                    <div class="form-actions"><button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> Upload/Update Documents</button></div>
+                </form>
+            </div>
+
+            <div class="tab-content" id="review-tab">
+                <div class="form-section">
+                    <h2 class="section-title"><i class="fas fa-clipboard-check"></i> Review &amp; Submit</h2>
+                    <div id="reviewPendingState">
+                        <div class="alert alert-info"><i class="fas fa-clock"></i><div>Your verification request is currently pending review by our team. We will notify you once it's processed.</div></div>
+                        <div class="form-actions" style="margin-top:20px;"><button type="button" class="btn btn-primary" disabled style="background-color:var(--warning);border-color:var(--warning);color:white;cursor:default;"><i class="fas fa-hourglass-half"></i> Waiting for Admin Approval</button></div>
+                    </div>
+                    <div id="reviewEditableState" style="display:none;">
+                        <div class="review-grid">
+                            <div class="review-section">
+                                <h3><i class="fas fa-building"></i> Business Information</h3>
+                                <div class="review-item"><label>Company Name:</label><span id="reviewCompany">N/A</span></div>
+                                <div class="review-item"><label>Business Type:</label><span id="reviewBusinessType">N/A</span></div>
+                                <div class="review-item"><label>Reg. Number:</label><span id="reviewReg">N/A</span></div>
+                                <div class="review-item"><label>Tax ID:</label><span id="reviewTax">N/A</span></div>
+                                <div class="review-item"><label>Year Established:</label><span id="reviewYear">N/A</span></div>
+                                <div class="review-item"><label>Description:</label><span id="reviewDescription" style="white-space:pre-wrap;">N/A</span></div>
+                            </div>
+                            <div class="review-section">
+                                <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                                <div class="review-item"><label>Contact Person:</label><span id="reviewContact">N/A</span></div>
+                                <div class="review-item"><label>Position:</label><span id="reviewPosition">N/A</span></div>
+                                <div class="review-item"><label>Phone:</label><span id="reviewPhone">N/A</span></div>
+                                <div class="review-item"><label>Address:</label><span id="reviewAddress" style="white-space:pre-wrap;">N/A</span></div>
+                                <div class="review-item"><label>Website:</label><span id="reviewWebsite">N/A</span></div>
+                            </div>
+                            <div class="review-section">
+                                <h3><i class="fas fa-file-alt"></i> Verification Documents</h3>
+                                <div class="document-status">
+                                    <div class="doc-status"><span><i class="fas fa-file"></i> Business Registration:</span><span class="status missing" data-review-doc="business_registration">Missing</span></div>
+                                    <div class="doc-status"><span><i class="fas fa-file"></i> Government ID:</span><span class="status missing" data-review-doc="gov_id">Missing</span></div>
+                                    <div class="doc-status"><span><i class="fas fa-file"></i> Address Proof:</span><span class="status missing" data-review-doc="address_proof">Missing</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <form id="reviewForm" novalidate>
+                            <div class="terms-agreement">
+                                <div class="checkbox-container"><input type="checkbox" id="terms_agreement"><label for="terms_agreement">I certify that all information provided is accurate and I agree to the <a href="../terms.html" target="_blank">Terms of Service</a> and <a href="../privacy.html" target="_blank">Privacy Policy</a>.</label></div>
+                            </div>
+                            <div class="form-actions"><button type="submit" id="submitVerificationBtn" class="btn btn-success" disabled><i class="fas fa-paper-plane"></i> Submit for Verification</button></div>
+                        </form>
+                        <div class="alert alert-warning" id="completionWarning" style="margin-top:15px;justify-content:center;"><i class="fas fa-exclamation-triangle"></i><div id="completionWarningText">Your profile is not yet complete. Please update all required sections and verification documents before submitting.</div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="security-tab">
+                <div class="form-section">
+                    <h2 class="section-title"><i class="fas fa-shield-alt"></i> Account Security</h2>
+                    <div class="alert alert-info"><i class="fas fa-info-circle"></i><div><strong>Account Status:</strong> <span id="securityStatusText">Your verification request is pending review. We'll notify you once it's processed.</span></div></div>
+                    <div class="form-actions" style="justify-content:flex-start;"><a href="../auth/agency_change_password.html" class="btn btn-secondary"><i class="fas fa-key" style="margin-right:10px;"></i> Change Password</a></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="support-tab">
+                <div class="form-section">
+                    <h2 class="section-title"><i class="fas fa-headset"></i> Support &amp; Complaints</h2>
+                    <div id="complaintsEmpty" style="color:#888;">You have not submitted any complaints yet.</div>
+                    <div style="margin-top:30px;"><a href="contact_support.html" class="btn btn-primary"><i class="fas fa-plus"></i> Submit a New Complaint</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
 <footer>
-  <div class="container"><div class="footer-content">
-    <div class="footer-about"><div class="footer-logo"><i class="fas fa-car-side"></i><span><span style="color:#fff;">Tour</span><span style="color:#aaa;">Go</span></span></div>
-      <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
-      <div class="social-links"><a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></div>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo"><i class="fas fa-car-side"></i>TourGo</div>
+                <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-menu">
+                    <li><a href="agency_dashboard.html">Home</a></li>
+                    <li><a href="my_cars.html">Fleet</a></li>
+                    <li><a href="view_bookings.html">Bookings</a></li>
+                    <li><a href="contact_support.html">Support</a></li>
+                    <li><a href="../privacy.html">Privacy Policy</a></li>
+                    <li><a href="../terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h4 class="footer-title">Newsletter</h4>
+                <p class="footer-text">Subscribe to get special offers and updates</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <input type="email" id="newsletterEmail" class="newsletter-input" placeholder="Enter your email" required>
+                    <button type="submit" class="newsletter-btn">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+        </div>
     </div>
-    <div class="footer-links"><h4 class="footer-title">Quick Links</h4><ul class="footer-menu">
-      <li><a href="agency_dashboard.html">Home</a></li><li><a href="my_cars.html">Fleet</a></li><li><a href="view_bookings.html">Bookings</a></li><li><a href="contact_support.html">Support</a></li><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../terms.html">Terms of Service</a></li>
-    </ul></div>
-    <div class="footer-newsletter"><h4 class="footer-title">Newsletter</h4><p class="footer-text">Subscribe to get special offers and updates</p>
-      <form class="newsletter-form"><input type="email" class="newsletter-input" placeholder="Enter your email" required><button type="submit" class="newsletter-btn">Subscribe</button></form>
-    </div>
-  </div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p></div></div>
 </footer>
-<script src="../public/assets/js/agency-demo.js"></script><script>
-document.addEventListener('DOMContentLoaded',function(){const p=TourGoAgencyDemo.getProfile();const set=(id,val)=>{const e=document.getElementById(id);if(e)e.value=val??''};set('company_name',p.companyName);set('business_type',p.businessType);set('business_reg_number',p.registrationNumber);set('tax_id',p.taxId);set('year_established',p.yearEstablished);set('description',p.description);set('contact_person_first_name',p.firstName);set('contact_person_last_name',p.lastName);set('position','Agency Manager');set('phone',p.phone);set('address',p.address);set('city',p.city);set('province',p.province);set('postal_code',p.postalCode);set('country',p.country);set('website',p.website);function save(fields,message){const data={};fields.forEach(id=>data[id]=document.getElementById(id)?.value||'');TourGoAgencyDemo.saveProfile(Object.assign({companyName:data.company_name, businessType:data.business_type, registrationNumber:data.business_reg_number, taxId:data.tax_id, yearEstablished:data.year_established, description:data.description, firstName:data.contact_person_first_name,lastName:data.contact_person_last_name,phone:data.phone,address:data.address,city:data.city,province:data.province,postalCode:data.postal_code,country:data.country,website:data.website}));document.getElementById('headerCompanyName').textContent=TourGoAgencyDemo.getProfile().companyName;document.querySelectorAll('.profile-name').forEach(e=>e.textContent=TourGoAgencyDemo.getProfile().companyName);const m=document.getElementById('profileMessage');m.className='agency-message success show';m.innerHTML='<i class="fas fa-check-circle"></i>'+message;}
-document.getElementById('businessForm').addEventListener('submit',e=>{e.preventDefault();save(['company_name','business_type','business_reg_number','tax_id','year_established','description'],'Business information saved.');});document.getElementById('contactForm').addEventListener('submit',e=>{e.preventDefault();save(['company_name','business_type','business_reg_number','tax_id','year_established','description','contact_person_first_name','contact_person_last_name','phone','address','city','province','postal_code','country','website'],'Contact information saved.');});document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');}));});
+
+<div class="toast" id="toast" role="status" aria-live="polite"><i class="fas fa-info-circle" id="toastIcon"></i><div id="toastText"></div></div>
+
+<script>
+(function() {
+    'use strict';
+
+    const defaultProfile = {
+        company_name: 'DriveHub Rentals',
+        business_type: 'corporation',
+        business_registration_number: 'DEMO-AGENCY-0001',
+        tax_id: 'DEMO-TIN-0001',
+        year_established: '2024',
+        description: 'DriveHub Rentals is a demo car rental partner on TourGo, offering reliable vehicles and convenient rental services for customers.',
+        contact_person_first_name: 'Maria',
+        contact_person_last_name: 'Santos',
+        position: 'General Manager',
+        business_phone: '+63 900 000 0000',
+        business_address: '123 Travel Street',
+        city: 'Adventure City',
+        state: 'Cavite',
+        postal_code: '12345',
+        country: 'Philippines',
+        website: '',
+        verification_status: 'pending',
+        docs: {},
+        logo_data: ''
+    };
+
+    const storageKey = 'tourgoAgencyProfile';
+    let profile;
+    try {
+        profile = { ...defaultProfile, ...(JSON.parse(localStorage.getItem(storageKey) || '{}')) };
+    } catch (e) {
+        profile = { ...defaultProfile };
+    }
+    profile.docs = { ...(defaultProfile.docs || {}), ...(profile.docs || {}) };
+
+    const $ = id => document.getElementById(id);
+    const tabs = [...document.querySelectorAll('.tab-button')];
+    const contents = [...document.querySelectorAll('.tab-content')];
+
+    function saveProfile() {
+        localStorage.setItem(storageKey, JSON.stringify(profile));
+    }
+
+    function showToast(message, type='info') {
+        const toast = $('toast');
+        const icon = $('toastIcon');
+        $('toastText').textContent = message;
+        toast.className = 'toast ' + (type === 'success' ? 'success' : type === 'error' ? 'error' : type === 'warning' ? 'warning' : '');
+        icon.className = 'fas ' + (type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle');
+        requestAnimationFrame(() => toast.classList.add('show'));
+        clearTimeout(showToast.timer);
+        showToast.timer = setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        const icon = document.querySelector('.theme-toggle i');
+        if (icon) icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        localStorage.setItem('theme', theme);
+    }
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+    document.querySelector('.theme-toggle')?.addEventListener('click', () => {
+        applyTheme((document.documentElement.getAttribute('data-theme') || 'light') === 'dark' ? 'light' : 'dark');
+    });
+
+    const profileToggleBtn = $('profileToggleBtn');
+    const profileMenu = $('profileMenu');
+    profileToggleBtn?.addEventListener('click', e => { e.stopPropagation(); profileMenu?.classList.toggle('active'); });
+    profileMenu?.addEventListener('click', e => e.stopPropagation());
+    document.addEventListener('click', () => profileMenu?.classList.remove('active'));
+
+    const menuToggleBtn = $('menuToggleBtn');
+    const mainNavMenu = $('mainNavMenu');
+    menuToggleBtn?.addEventListener('click', e => { e.stopPropagation(); mainNavMenu?.classList.toggle('active'); });
+
+    function setTab(tabName, updateUrl=true) {
+        tabs.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabName));
+        contents.forEach(content => content.classList.toggle('active', content.id === tabName + '-tab'));
+        if (updateUrl) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('tab', tabName);
+            history.replaceState(null, '', url);
+        }
+        if (tabName === 'review') updateReview();
+    }
+    tabs.forEach(btn => btn.addEventListener('click', () => setTab(btn.dataset.tab)));
+    const initialTab = new URLSearchParams(window.location.search).get('tab');
+    if (initialTab && tabs.some(btn => btn.dataset.tab === initialTab)) setTab(initialTab, false);
+
+    function fillForms() {
+        const values = {
+            company_name: profile.company_name,
+            business_type: profile.business_type,
+            business_reg_number: profile.business_registration_number,
+            tax_id: profile.tax_id,
+            year_established: profile.year_established,
+            description: profile.description,
+            contact_person_first_name: profile.contact_person_first_name,
+            contact_person_last_name: profile.contact_person_last_name,
+            position: profile.position,
+            phone: profile.business_phone,
+            address: profile.business_address,
+            city: profile.city,
+            province: profile.state,
+            postal_code: profile.postal_code,
+            country: profile.country,
+            website: profile.website
+        };
+        Object.entries(values).forEach(([id, value]) => { if ($(id)) $(id).value = value || ''; });
+        updateCharacterCount();
+        updateHeader();
+        updateDocUI();
+        updateReview();
+    }
+
+    function updateHeader() {
+        $('headerCompanyName').textContent = profile.company_name || 'Your Agency Name';
+        $('navCompanyName').textContent = profile.company_name || 'Agency';
+        $('businessEmail').textContent = 'agency@tourgo.demo';
+        const status = (profile.verification_status || 'pending').toLowerCase();
+        const badge = $('verificationBadge');
+        badge.className = 'verification-badge ' + (['approved','pending','rejected'].includes(status) ? status : 'pending');
+        const iconMap = { approved: 'check-circle', pending: 'clock', rejected: 'times-circle' };
+        badge.querySelector('i').className = 'fas fa-' + (iconMap[status] || 'exclamation-triangle');
+        $('verificationLabel').textContent = (status.charAt(0).toUpperCase() + status.slice(1)) + ' Account';
+        const pct = computeCompletion();
+        $('completionPercentage').textContent = pct;
+        $('progressFill').style.width = pct + '%';
+        $('securityStatusText').textContent = status === 'approved'
+            ? 'Your agency account is fully verified.'
+            : status === 'rejected'
+                ? 'Your agency verification was not approved. Please review your information and resubmit.'
+                : 'Your verification request is pending review. We will notify you once it\'s processed.';
+        if (profile.logo_data) {
+            $('headerAgencyLogo').src = profile.logo_data;
+            $('headerAgencyLogo').style.display = 'block';
+            $('headerAgencyLogoPlaceholder').style.display = 'none';
+            $('navAgencyLogo').src = profile.logo_data;
+        } else {
+            $('headerAgencyLogo').style.display = 'none';
+            $('headerAgencyLogoPlaceholder').style.display = 'flex';
+            $('navAgencyLogo').src = '../public/assets/images/car.png';
+        }
+    }
+
+    function computeCompletion() {
+        const fields = [
+            'company_name','business_type','business_registration_number','tax_id','description','year_established',
+            'contact_person_first_name','contact_person_last_name','position','business_phone','business_address','city','state','postal_code',
+        ];
+        let count = fields.reduce((sum, key) => sum + (profile[key] ? 1 : 0), 0);
+        count += profile.docs.business_registration ? 1 : 0;
+        count += profile.docs.gov_id ? 1 : 0;
+        count += profile.docs.address_proof ? 1 : 0;
+        return Math.round((count / 18) * 100);
+    }
+
+    function updateCharacterCount() {
+        const len = ($('description')?.value || '').length;
+        $('characterCount').textContent = len + '/500';
+    }
+    $('description')?.addEventListener('input', updateCharacterCount);
+
+    function validateForm(form) {
+        let valid = true;
+        form.querySelectorAll('[required]').forEach(field => {
+            const empty = field.type === 'checkbox' ? !field.checked : !String(field.value || '').trim();
+            field.style.borderColor = empty && field.type !== 'checkbox' ? 'var(--danger)' : '';
+            if (field.type === 'checkbox') {
+                const container = field.closest('.checkbox-container');
+                if (container) container.style.outline = empty ? '2px solid var(--danger)' : '';
+            }
+            if (empty) valid = false;
+        });
+        return valid;
+    }
+
+    $('businessForm')?.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!validateForm(e.currentTarget)) return showToast('Please fill in all required business fields.', 'error');
+        profile.company_name = $('company_name').value.trim();
+        profile.business_type = $('business_type').value;
+        profile.business_registration_number = $('business_reg_number').value.trim();
+        profile.tax_id = $('tax_id').value.trim();
+        profile.year_established = $('year_established').value.trim();
+        profile.description = $('description').value.trim();
+        saveProfile(); updateHeader(); updateReview();
+        showToast('Business information saved successfully.', 'success');
+    });
+
+    $('contactForm')?.addEventListener('submit', e => {
+        e.preventDefault();
+        if (!validateForm(e.currentTarget)) return showToast('Please fill in all required contact fields.', 'error');
+        profile.contact_person_first_name = $('contact_person_first_name').value.trim();
+        profile.contact_person_last_name = $('contact_person_last_name').value.trim();
+        profile.position = $('position').value.trim();
+        profile.business_phone = $('phone').value.trim();
+        profile.business_address = $('address').value.trim();
+        profile.city = $('city').value.trim();
+        profile.state = $('province').value.trim();
+        profile.postal_code = $('postal_code').value.trim();
+        profile.country = $('country').value || 'Philippines';
+        profile.website = $('website').value.trim();
+        saveProfile(); updateHeader(); updateReview();
+        showToast('Contact information saved successfully.', 'success');
+    });
+
+    const yearInput = $('year_established');
+    if (yearInput) yearInput.max = new Date().getFullYear();
+
+    const logoInput = $('agency_logo');
+    logoInput?.addEventListener('change', () => {
+        const file = logoInput.files?.[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024 || !file.type.startsWith('image/')) {
+            logoInput.value = '';
+            $('agency_logo_text').textContent = 'Click to upload Logo';
+            return showToast('Please select a valid image up to 5MB.', 'error');
+        }
+        const reader = new FileReader();
+        reader.onload = e => {
+            profile.logo_data = e.target.result;
+            $('agency_logo_text').textContent = file.name;
+            saveProfile(); updateHeader();
+        };
+        reader.readAsDataURL(file);
+    });
+    $('triggerAgencyLogoUpload')?.addEventListener('click', () => { setTab('business'); setTimeout(() => logoInput?.click(), 100); });
+
+    ['business_registration','gov_id','address_proof'].forEach(key => {
+        $(key)?.addEventListener('change', () => {
+            const file = $(key).files?.[0];
+            if (!file) return;
+            if (file.size > 5 * 1024 * 1024) {
+                $(key).value = '';
+                return showToast('File must be 5MB or smaller.', 'error');
+            }
+            profile.docs[key] = { name: file.name, selected: true };
+            $(key + '_text').textContent = file.name;
+            saveProfile(); updateDocUI(); updateReview(); updateHeader();
+        });
+    });
+
+    function updateDocUI() {
+        const preview = $('documentPreview');
+        const noDocs = $('noDocumentsText');
+        const docs = Object.entries(profile.docs).filter(([, value]) => value);
+        [...preview.querySelectorAll('.demo-doc-item')].forEach(el => el.remove());
+        noDocs.style.display = docs.length ? 'none' : 'block';
+        const labels = { business_registration: 'Business Registration', gov_id: 'Government ID', address_proof: 'Address Proof' };
+        docs.forEach(([key, value]) => {
+            const item = document.createElement('div');
+            item.className = 'document-item demo-doc-item';
+            item.innerHTML = `<div class="demo-doc-link"><i class="fas fa-file-alt pdf-icon"></i><div>${labels[key]}</div><small style="color:var(--text-light);">${value.name || 'Selected file'}</small></div>`;
+            preview.appendChild(item);
+            const inputText = $(key + '_text');
+            if (inputText) inputText.textContent = value.name || 'Selected file';
+        });
+    }
+
+    $('verificationForm')?.addEventListener('submit', e => {
+        e.preventDefault();
+        showToast('Verification documents updated for this demo.', 'success');
+        setTab('review');
+    });
+
+    function updateReview() {
+        $('reviewCompany').textContent = profile.company_name || 'N/A';
+        $('reviewBusinessType').textContent = (profile.business_type || 'N/A').replace(/_/g, ' ').replace(/\b\w/g, m => m.toUpperCase());
+        $('reviewReg').textContent = profile.business_registration_number || 'N/A';
+        $('reviewTax').textContent = profile.tax_id || 'N/A';
+        $('reviewYear').textContent = profile.year_established || 'N/A';
+        $('reviewDescription').textContent = profile.description || 'N/A';
+        $('reviewContact').textContent = [profile.contact_person_first_name, profile.contact_person_last_name].filter(Boolean).join(' ') || 'N/A';
+        $('reviewPosition').textContent = profile.position || 'N/A';
+        $('reviewPhone').textContent = profile.business_phone || 'N/A';
+        $('reviewAddress').textContent = [profile.business_address, profile.city ? ', ' + profile.city : '', profile.state ? ', ' + profile.state : '', profile.postal_code ? ' ' + profile.postal_code : ''].join('').trim() || 'N/A';
+        $('reviewWebsite').textContent = profile.website || 'N/A';
+        const labels = { business_registration: 'business_registration', gov_id: 'gov_id', address_proof: 'address_proof' };
+        Object.keys(labels).forEach(key => {
+            const el = document.querySelector(`[data-review-doc="${key}"]`);
+            const present = !!profile.docs[key];
+            el.textContent = present ? 'Uploaded' : 'Missing';
+            el.className = 'status ' + (present ? 'uploaded' : 'missing');
+        });
+        const completion = computeCompletion();
+        const missing = [
+            ['Business Registration', !!profile.docs.business_registration],
+            ['Government ID', !!profile.docs.gov_id],
+            ['Address Proof', !!profile.docs.address_proof]
+        ].filter(([, ok]) => !ok).map(([name]) => name);
+        $('completionWarning').style.display = missing.length || completion < 100 ? 'flex' : 'none';
+        $('completionWarningText').textContent = completion < 100 ? `Your profile is ${completion}% complete. Please ensure all sections and required documents are updated before submitting for verification.` : '';
+        $('submitVerificationBtn').disabled = !($('terms_agreement').checked && completion >= 100);
+    }
+
+    $('terms_agreement')?.addEventListener('change', updateReview);
+    $('reviewForm')?.addEventListener('submit', e => {
+        e.preventDefault();
+        updateReview();
+        if ($('submitVerificationBtn').disabled) return showToast('Please complete the profile and agree to the terms.', 'warning');
+        profile.verification_status = 'pending';
+        saveProfile(); updateHeader(); showToast('Verification request submitted in demo mode.', 'success');
+        setTab('review');
+    });
+
+    $('newsletterForm')?.addEventListener('submit', e => { e.preventDefault(); if (validateForm(e.currentTarget)) { e.currentTarget.reset(); showToast('Thanks for subscribing to the TourGo newsletter.', 'success'); } });
+    $('logoutLink')?.addEventListener('click', e => { e.preventDefault(); localStorage.removeItem('tourgoDemoRole'); window.location.href = '../auth/login.html'; });
+
+    $('currentYear').textContent = new Date().getFullYear();
+    fillForms();
+})();
 </script>
-</body></html>
+</body>
+</html>
