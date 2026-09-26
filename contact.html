@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TourGo - Contact & Support</title>
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="public/assets/css/styles.css" rel="stylesheet">
@@ -252,10 +254,27 @@
     background-color: rgba(77, 148, 255, 0.08) !important;
 }
 /* --- END CONTACT PAGE DARK MODE IMPROVEMENTS --- */
-    </style>
+    
+/* Reliable FAQ touch/click behavior */
+.faq-container, .faq-item, .faq-question {
+    position: relative;
+}
+.faq-container {
+    z-index: 2;
+}
+.faq-item {
+    z-index: 1;
+}
+.faq-question {
+    z-index: 2;
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+.faq-question i { pointer-events: none; }
+</style>
     <link rel="stylesheet" href="public/assets/css/responsive-menu-fix.css">
-    <link rel="icon" type="image/svg+xml" href="public/assets/images/tourgo-favicon.svg">
-    <link rel="icon" type="image/png" sizes="64x64" href="public/assets/images/tourgo-favicon.png">
 </head>
 <body>
 <header>
@@ -337,16 +356,16 @@
                             <div class="contact-icon"><i class="fas fa-phone"></i></div>
                             <div class="contact-text">
                                 <h4>24/7 Support</h4>
-                                <p>+1 (555) 123-4567</p>
-                                <p>Toll-free: 1-800-TOURGO</p>
+                                <p>+63 900 000 0000</p>
+                                <p>Direct support line</p>
                             </div>
                         </li>
                         <li class="contact-item">
                             <div class="contact-icon"><i class="fas fa-envelope"></i></div>
                             <div class="contact-text">
                                 <h4>Email</h4>
-                                <p>support@tourgo.com</p>
-                                <p>bookings@tourgo.com</p>
+                                <p>contact@tourgo.demo</p>
+                                <p>support@tourgo.demo</p>
                             </div>
                         </li>
                         <li class="contact-item">
@@ -354,7 +373,7 @@
                             <div class="contact-text">
                                 <h4>Headquarters</h4>
                                 <p>123 Travel Street</p>
-                                <p>Tanza, Cavite, Philipines, 4108</p>
+                                <p>Adventure City, AC 12345</p>
                             </div>
                         </li>
                     </ul>
@@ -363,7 +382,7 @@
                         <h4><i class="fas fa-exclamation-triangle"></i> Emergency Roadside Assistance</h4>
                         <div class="emergency-number">
                             <i class="fas fa-phone"></i>
-                            <span>1-800-ROADHELP</span>
+                            <span>+63 900 000 0000</span>
                         </div>
                         <p style="margin-top: 10px; font-size: 14px;">Available 24/7 for all active rentals</p>
                     </div>
@@ -415,15 +434,15 @@
             
             <div class="office-card fade-in" style="max-width: 800px; margin: 40px auto;">
                 <div class="office-image">
-                    <img src="/api/placeholder/800/400" alt="TourGo Headquarters">
+                    <img src="public/assets/images/tourgo-map.png" alt="TourGo Headquarters location map">
                 </div>
                 <div class="office-details">
                     <h3>TourGo Headquarters</h3>
                     <p class="office-address">123 Travel Street, Adventure City, AC 12345</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
                         <div>
-                            <p class="office-contact"><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
-                            <p class="office-contact"><i class="fas fa-envelope"></i> corporate@tourgo.com</p>
+                            <p class="office-contact"><i class="fas fa-phone"></i> +63 900 000 0000</p>
+                            <p class="office-contact"><i class="fas fa-envelope"></i> contact@tourgo.demo</p>
                         </div>
                         <div>
                             <p class="office-contact"><i class="fas fa-clock"></i> Mon-Fri: 8am - 8pm</p>
@@ -438,7 +457,7 @@
         </div>
     </section>
 
-    <section class="faq-section" style="padding: 80px 0; background-color: var(--bg-light);">
+    <section id="faq" class="faq-section" style="padding: 80px 0; background-color: var(--bg-light);">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Help Center</span>
@@ -513,7 +532,7 @@
                         <li><a href="cars.html">Our Fleet</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="contact.html">FAQs</a></li>
+                        <li><a href="#faq">FAQs</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
                     </ul>
                 </div>
@@ -597,19 +616,27 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(item => {
-        item.addEventListener('click', () => {
-            const parent = item.parentElement;
-            parent.classList.toggle('active');
-            
-            // Close other FAQs when opening one
-            if (parent.classList.contains('active')) {
-                document.querySelectorAll('.faq-item').forEach(otherItem => {
-                    if (otherItem !== parent) {
-                        otherItem.classList.remove('active');
-                    }
-                });
+    // FAQ Accordion — delegated handler for reliable mobile touch/click behavior
+    document.querySelectorAll('.faq-question').forEach(function(question) {
+        question.setAttribute('role', 'button');
+        question.setAttribute('tabindex', '0');
+        question.setAttribute('aria-expanded', 'false');
+        question.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            const item = this.closest('.faq-item');
+            if (!item) return;
+            const isOpening = !item.classList.contains('active');
+            document.querySelectorAll('.faq-item.active').forEach(function(other) {
+                if (other !== item) other.classList.remove('active');
+            });
+            item.classList.toggle('active', isOpening);
+            this.setAttribute('aria-expanded', String(isOpening));
+        });
+        question.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                this.click();
             }
         });
     });
@@ -739,6 +766,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon.classList.remove('fa-bounce');
             });
         });
+    });
     </script>
 </body>
 </html>
