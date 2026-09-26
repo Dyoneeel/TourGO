@@ -10,65 +10,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="public/assets/css/styles.css" rel="stylesheet">
     <link href="public/assets/css/style.css" rel="stylesheet">
-
-    <style>
-        .testimonials-empty {
-            display: block;
-            padding: 20px 0;
-        }
-
-        .testimonials-empty .no-reviews {
-            width: 100%;
-            min-height: 220px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 45px 30px;
-            border-radius: 20px;
-            background: var(--accent-light);
-            color: var(--text-light);
-            border: 1px solid rgba(77, 148, 255, 0.10);
-        }
-
-        .testimonials-empty .no-reviews i {
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-
-        .testimonials-empty .no-reviews h3 {
-            margin: 0;
-            color: var(--text-dark);
-            font-size: 24px;
-            font-weight: 700;
-        }
-
-        .testimonials-empty .no-reviews p {
-            margin: 0;
-            color: var(--text-light);
-            font-size: 16px;
-            text-align: center;
-        }
-
-        [data-theme="dark"] .testimonials-empty .no-reviews {
-            background: #2c3344;
-            border-color: rgba(255, 255, 255, 0.06);
-        }
-
-        [data-theme="dark"] .testimonials-empty .no-reviews h3 {
-            color: #e1e1e1;
-        }
-
-        [data-theme="dark"] .testimonials-empty .no-reviews p {
-            color: #a0a0a0;
-        }
-    </style>
-
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
-    <link rel="stylesheet" href="/Tour-GO/public/assets/css/responsive-menu-fix.css">
+    <link rel="stylesheet" href="public/assets/css/responsive-menu-fix.css">
+    <link rel="icon" type="image/svg+xml" href="public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="public/assets/images/tourgo-favicon.png">
 </head>
 <body>
 <header>
@@ -192,12 +136,40 @@
                 <h2 class="section-title">What Our Clients Say</h2>
                 <p class="section-description">Hear from our satisfied customers about their experiences with TourGo.</p>
             </div>
-            <div class="testimonials testimonials-empty">
-                <div class="no-reviews" role="status" aria-live="polite">
-                    <i class="fas fa-comments fa-2x" aria-hidden="true"></i>
-                    <h3>No Reviews Yet</h3>
-                    <p>Customer reviews will appear here after completed rentals.</p>
-                </div>
+            <div class="testimonials">
+                
+                    
+                        <div class="testimonial-card">
+                            <div class="quote">"</div>
+                            <p class="testimonial-text"></p>
+                            <div class="testimonial-rating">
+                                
+                                    <i class="fas fa-star"></i>
+                                
+                            </div>
+                            <div class="testimonial-author">
+                                <div class="author-avatar">
+                                    
+                                        <img src="uploads/profiles/" alt="User Avatar">
+                                    
+                                        <div class="avatar-placeholder">
+                                            
+                                        </div>
+                                    
+                                </div>
+                                <div class="author-info">
+                                    <h4> </h4>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    
+                
+                    <div class="no-reviews">
+                        <i class="fas fa-comment fa-2x"></i>
+                        <p>Be the first to leave a review!</p>
+                    </div>
+                
             </div>
         </div>
     </section>
@@ -270,12 +242,10 @@
                 vehicles: window.TourGoDemoFleet,
                 imagePrefix: 'public/assets/images/',
                 detailsPrefix: 'cars.html',
-                showWishlist: false,
-                limit: 3
+                showWishlist: false
             });
         }
     });
     </script>
-    <script src="/Tour-GO/public/assets/js/responsive-menu-fix.js"></script>
 </body>
 </html>
