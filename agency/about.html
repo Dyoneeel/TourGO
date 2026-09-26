@@ -1,11 +1,15 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - TourGo Premium Car Rental Service</title>
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-<link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
     <link rel="stylesheet" href="../public/assets/css/styles.css">
     <link rel="stylesheet" href="../public/assets/css/style.css">
     <style>
@@ -232,6 +236,7 @@
                 font-size: 24px;
             }
         }
+
         /* --- DARK MODE IMPROVEMENTS --- */
         :root {
             --dark-bg: #181c24;
@@ -242,63 +247,24 @@
             --dark-accent: #2a3142;
             --dark-border: #2e3547;
         }
-
-        [data-theme="dark"] body,
-        [data-theme="dark"] {
-            background: var(--dark-bg) !important;
-            color: var(--dark-text) !important;
-        }
-
-        [data-theme="dark"] header,
-        [data-theme="dark"] .header-content {
-            background: var(--dark-bg-alt) !important;
-        }
-
+    
         [data-theme="dark"] .nav-menu,
         [data-theme="dark"] .about-us-section,
-        [data-theme="dark"] .our-commitment,
-        [data-theme="dark"] .content-card,
-        [data-theme="dark"] .feature-item {
-            background: var(--dark-bg-alt) !important;
-            color: var(--dark-text) !important;
-            border-color: var(--dark-border) !important;
-        }
-
         [data-theme="dark"] .nav-link,
         [data-theme="dark"] .footer-title,
+        [data-theme="dark"] .car-title,
         [data-theme="dark"] .section-title {
             color: var(--dark-text) !important;
         }
-
         [data-theme="dark"] .nav-link.active,
         [data-theme="dark"] .nav-link:hover {
             color: var(--dark-primary) !important;
-            background: transparent !important;
         }
-
-        [data-theme="dark"] .btn,
-        [data-theme="dark"] .btn-primary {
-            background: var(--dark-primary) !important;
-            color: #fff !important;
-            border: none !important;
-        }
-
-        [data-theme="dark"] .btn-outline {
-            background: transparent !important;
-            color: var(--dark-primary) !important;
-            border: 1.5px solid var(--dark-primary) !important;
-        }
-
-        [data-theme="dark"] .btn-outline:hover {
-            background: var(--dark-primary) !important;
-            color: #fff !important;
-        }
-
+       
         [data-theme="dark"] .page-title {
             background: linear-gradient(135deg, var(--dark-primary) 0%, var(--dark-bg-alt) 100%) !important;
             color: #fff !important;
         }
-
         [data-theme="dark"] .circle-decoration {
             background-color: rgba(77, 148, 255, 0.08) !important;
         }
@@ -308,92 +274,301 @@
         [data-theme="dark"] .our-commitment h2 {
             color: var(--dark-primary) !important;
         }
-
         [data-theme="dark"] .about-intro p,
-        [data-theme="dark"] .our-commitment p,
-        [data-theme="dark"] .content-card p,
-        [data-theme="dark"] .feature-item p {
+        [data-theme="dark"] .our-commitment p {
             color: var(--dark-text-light) !important;
-        }
-
-        [data-theme="dark"] .profile-menu {
-            background: var(--dark-bg) !important;
-            border: 1px solid var(--dark-border) !important;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
-        }
-
-        [data-theme="dark"] .profile-menu-item {
-            color: var(--dark-text) !important;
-            border-bottom-color: var(--dark-border) !important;
-        }
-
-        [data-theme="dark"] .profile-menu-item:hover {
-            background: var(--dark-accent) !important;
-        }
-
-        [data-theme="dark"] .footer-content {
-            border-color: var(--dark-border) !important;
-        }
-
-        [data-theme="dark"] .footer-text,
-        [data-theme="dark"] .footer-menu a {
-            color: var(--dark-text-light) !important;
-        }
-
-        [data-theme="dark"] .newsletter-input {
-            background: var(--dark-bg) !important;
-            border-color: var(--dark-border) !important;
-            color: var(--dark-text) !important;
-        }
-
-        [data-theme="dark"] .feature-item i {
-            color: var(--dark-primary) !important;
-        }
-
-        [data-theme="dark"] .content-card h3 {
-            color: var(--dark-primary) !important;
         }
         /* --- END DARK MODE IMPROVEMENTS --- */
     </style>
-    <link rel="stylesheet" href="../public/assets/css/agency-demo.css">
-</head><body class="agency-page-bg">
-<header id="header">
-  <div class="container"><div class="header-content">
-    <div class="logo"><a href="agency_dashboard.html"><i class="fas fa-car-side"></i><span><span style="color:var(--text-dark);">Tour</span><span style="color:var(--text-light);">Go</span></span></a></div>
-    <ul class="nav-menu" id="mainNavMenu"><li><a href="agency_dashboard.html" class="nav-link">Home</a></li><li><a href="my_cars.html" class="nav-link">My Fleet</a></li><li><a href="view_bookings.html" class="nav-link">My Bookings</a></li><li><a href="contact_support.html" class="nav-link">Support</a></li></ul>
-    <div class="header-actions">
-      <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
-      <div class="profile-dropdown">
-        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
-          <img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo">
-          <span class="profile-name">DriveHub Rentals</span><i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="profile-menu" id="profileMenu">
-          <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
-          <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
-          <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
-          <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
-          <a href="../auth/agency_change_password.html" class="profile-menu-item"><i class="fas fa-key"></i><span>Change Password</span></a>
-          <hr>
-          <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+</head>
+<body>
+    <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html"> <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                <li><a href="cars.html" class="nav-link">Our Fleet</a></li>
+                <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                <li><a href="contact_support.html" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode" id="themeToggleBtn">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+                            <img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo">
+                            <span>DriveHub Rentals</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item">
+                                <i class="fas fa-user-circle"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <a href="my_cars.html" class="profile-menu-item">
+                                <i class="fas fa-car"></i>
+                                <span>My Fleet</span>
+                            </a>
+                            <a href="about.html" class="profile-menu-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About Us</span>
+                            </a>
+                            <a href="../auth/agency_change_password.html" class="profile-menu-item">
+                                <i class="fas fa-key"></i>
+                                <span>Change Password</span>
+                            </a>
+                            <hr>
+                            <a href="../auth/logout.html" class="profile-menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <button class="menu-toggle" id="menuToggleBtn" type="button" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+    </header>
+
+    <section class="page-title">
+        <div class="container">
+            <h1>About TourGo</h1>
+            <p>Discover our passion for excellence and commitment to your perfect journey.</p>
+        </div>
+        <div class="circle-decoration circle-1"></div>
+        <div class="circle-decoration circle-2"></div>
+    </section>
+
+    <section class="about-us-section">
+        <div class="container">
+            <div class="about-intro">
+                <h2>Welcome to TourGo</h2>
+                <p>
+                    At TourGo, we're more than just a car rental service; we are your trusted partner in crafting unforgettable travel experiences. We believe that the journey is just as important as the destination, and we're dedicated to providing you with the perfect vehicle to make every mile memorable, comfortable, and stylish.
+                </p>
+            </div>
+
+            <div class="mission-vision-container">
+                <div class="content-card">
+                    <h3><i class="fas fa-bullseye"></i>Our Mission</h3>
+                    <p>
+                        To deliver an exceptional and seamless car rental experience by offering a diverse fleet of premium, well-maintained vehicles, coupled with personalized customer service and innovative solutions that cater to the unique needs of every traveler.
+                    </p>
+                </div>
+                <div class="content-card">
+                    <h3><i class="fas fa-eye"></i>Our Vision</h3>
+                    <p>
+                        To be the most trusted and preferred premium car rental service, recognized globally for our unwavering commitment to quality, sustainability, and creating delightful journeys that inspire exploration, connection, and lasting memories.
+                    </p>
+                </div>
+            </div>
+
+            <div class="why-choose-us">
+                <h2>Why Choose TourGo?</h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-car-alt"></i>
+                        <h4>Premium & Diverse Fleet</h4>
+                        <p>Select from a wide range of modern, meticulously maintained vehicles to suit any occasion, from luxury sedans to spacious SUVs.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-headset"></i>
+                        <h4>Exceptional Customer Service</h4>
+                        <p>Our dedicated and friendly team is available around the clock to ensure your rental experience is smooth and enjoyable from start to finish.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-hand-holding-usd"></i>
+                        <h4>Transparent & Competitive Pricing</h4>
+                        <p>Enjoy clear, upfront pricing with no hidden fees. We offer great value for our premium vehicles and services.</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i> <h4>Safety & Reliability</h4>
+                        <p>Your safety is paramount. All our vehicles undergo rigorous checks and regular maintenance for your peace of mind.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="our-commitment">
+                <h2>Our Commitment to You</h2>
+                <p>
+                    Your safety, comfort, and ultimate satisfaction are the cornerstones of our service. Every vehicle in the TourGo fleet is subject to stringent maintenance schedules and thorough sanitization processes. We are passionately committed to providing a reliable, enjoyable, and premium rental experience, empowering you to explore the world with confidence, style, and complete ease.
+                </p>
+                <button class="btn btn-primary" onclick="window.location.href='my_cars.html'">Explore Our Cars</button> 
+                </div>
+
+        </div>
+    </section>
+
+     <section class="contact">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-subtitle">Need Help?</span>
+            <h2 class="section-title">Contact Support</h2>
+            <p class="section-description">Our dedicated support team is ready to assist you 24/7.</p>
+        </div>
+        <div class="text-center" style="margin-top: 50px;">
+            <a href="contact_support.html" class="btn btn-primary btn-large">
+                <i class="fas fa-headset" style="margin-right: 10px;"></i>
+                Visit Support Center
+            </a>
+        </div>
     </div>
-  </div></div>
-</header>
-<main class="about-us-section"><div class="container"><div class="section-header"><span class="section-subtitle">About TourGo</span><h1 class="section-title">Built for Better Car Rentals</h1><p class="section-description">TourGo gives rental agencies the tools to manage fleets, bookings, and customer service from one place.</p></div><div class="agency-grid"><div class="agency-card" style="padding:28px"><i class="fas fa-car-side" style="font-size:32px;color:var(--primary)"></i><h2 style="color:var(--text-dark);margin:14px 0">Our Platform</h2><p class="agency-muted">Manage your vehicles, review reservations, and keep your agency information organized.</p></div><div class="agency-card" style="padding:28px"><i class="fas fa-chart-line" style="font-size:32px;color:var(--primary)"></i><h2 style="color:var(--text-dark);margin:14px 0">Performance</h2><p class="agency-muted">Track fleet activity, revenue snapshots, occupancy, and customer feedback.</p></div><div class="agency-card" style="padding:28px"><i class="fas fa-headset" style="font-size:32px;color:var(--primary)"></i><h2 style="color:var(--text-dark);margin:14px 0">Support</h2><p class="agency-muted">Access the support center for account and operational assistance.</p></div></div></div></main>
-<footer>
-  <div class="container"><div class="footer-content">
-    <div class="footer-about"><div class="footer-logo"><i class="fas fa-car-side"></i><span><span style="color:#fff;">Tour</span><span style="color:#aaa;">Go</span></span></div>
-      <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
-      <div class="social-links"><a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></div>
-    </div>
-    <div class="footer-links"><h4 class="footer-title">Quick Links</h4><ul class="footer-menu">
-      <li><a href="agency_dashboard.html">Home</a></li><li><a href="my_cars.html">Fleet</a></li><li><a href="view_bookings.html">Bookings</a></li><li><a href="contact_support.html">Support</a></li><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../terms.html">Terms of Service</a></li>
-    </ul></div>
-    <div class="footer-newsletter"><h4 class="footer-title">Newsletter</h4><p class="footer-text">Subscribe to get special offers and updates</p>
-      <form class="newsletter-form"><input type="email" class="newsletter-input" placeholder="Enter your email" required><button type="submit" class="newsletter-btn">Subscribe</button></form>
-    </div>
-  </div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p></div></div>
-</footer><script src="../public/assets/js/agency-demo.js"></script></body></html>
+</section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: #fff;">Tour</span><span style="color: #aaa;">Go</span></span>
+                    </div>
+                    <p class="footer-text">TourGo offers a premium car rental experience with a diverse fleet of high-quality vehicles. We are dedicated to providing exceptional service and making your journey unforgettable.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="agency_dashboard.html">Home</a></li>
+                        <li><a href="my_cars.html">My Fleet</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact_support.html">Contact Us</a></li>
+                        <li><a href="../faq.html">FAQs</a></li>
+                        <li><a href="../terms.html">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Stay Updated</h4>
+                    <p class="footer-text">Subscribe to our newsletter for the latest deals, news, and travel tips.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email">
+                        <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo Premium Car Rental. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // --- DARK THEME TOGGLE ---
+    const themeToggleButton = document.getElementById('themeToggleBtn');
+    const themeToggleIcon = themeToggleButton.querySelector('i');
+
+    // Helper: set theme and icon
+    function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (theme === 'dark') {
+            themeToggleIcon.classList.remove('fa-moon');
+            themeToggleIcon.classList.add('fa-sun');
+        } else {
+            themeToggleIcon.classList.remove('fa-sun');
+            themeToggleIcon.classList.add('fa-moon');
+        }
+    }
+
+    // Set initial theme from localStorage or system preference
+    let savedTheme = localStorage.getItem('theme');
+    if (!savedTheme) {
+        savedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        localStorage.setItem('theme', savedTheme); // Save initial preference
+    }
+    setTheme(savedTheme);
+
+    themeToggleButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        let currentTheme = document.documentElement.getAttribute('data-theme');
+        let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+
+    // --- PROFILE DROPDOWN + MOBILE MENU ---
+    const profileToggle = document.getElementById('profileToggleBtn');
+    const profileMenu = document.getElementById('profileMenu');
+    const menuToggle = document.getElementById('menuToggleBtn');
+    const navMenu = document.getElementById('mainNavMenu');
+
+    if (profileToggle && profileMenu) {
+        profileToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const isOpen = profileMenu.classList.toggle('active');
+            profileToggle.classList.toggle('active', isOpen);
+            profileToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        profileMenu.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    }
+
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            const isOpen = navMenu.classList.contains('active');
+            menuToggle.classList.toggle('active', isOpen);
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-bars', !isOpen);
+                icon.classList.toggle('fa-times', isOpen);
+            }
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (profileMenu && profileToggle && !profileMenu.contains(e.target) && !profileToggle.contains(e.target)) {
+            profileMenu.classList.remove('active');
+            profileToggle.classList.remove('active');
+            profileToggle.setAttribute('aria-expanded', 'false');
+        }
+        if (navMenu && menuToggle && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+            navMenu.classList.remove('active');
+            menuToggle.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+    });
+
+    // Set current year in footer
+    const yearSpan = document.getElementById('currentYear');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+});
+</script>
+<script>
+// Agency demo identity (GitHub Pages)
+(function () {
+    const toggle = document.getElementById('profileToggleBtn');
+    if (toggle) {
+        const name = toggle.querySelector('span');
+        const image = toggle.querySelector('img');
+        if (name) name.textContent = 'DriveHub Rentals';
+        if (image) { image.src = '../public/assets/images/guest-avatar.svg'; image.alt = 'DriveHub Rentals Logo'; }
+    }
+})();
+</script>
+</body>
+</html>
