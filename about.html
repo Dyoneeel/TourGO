@@ -258,6 +258,38 @@
         [data-theme="dark"] .nav-link:hover {
             color: var(--dark-primary) !important;
         }
+
+        /* Mobile navigation: keep the menu readable in dark mode.
+           The old responsive rule forced a white menu background, which
+           made the white navigation text almost invisible. */
+        [data-theme="dark"] .nav-menu {
+            background-color: var(--dark-bg-alt) !important;
+            color: var(--dark-text) !important;
+            border: 1px solid var(--dark-border);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+        }
+
+        [data-theme="dark"] .nav-menu .nav-link {
+            color: var(--dark-text) !important;
+            background-color: transparent !important;
+        }
+
+        [data-theme="dark"] .nav-menu .nav-link:hover,
+        [data-theme="dark"] .nav-menu .nav-link.active {
+            color: var(--dark-primary) !important;
+            background-color: rgba(77, 148, 255, 0.10) !important;
+        }
+
+        [data-theme="dark"] .menu-toggle {
+            color: var(--dark-text) !important;
+            background-color: var(--dark-accent) !important;
+            border: 1px solid var(--dark-border) !important;
+        }
+
+        [data-theme="dark"] .menu-toggle:hover {
+            color: var(--dark-primary) !important;
+            background-color: var(--dark-accent) !important;
+        }
        
     
         [data-theme="dark"] .page-title {
