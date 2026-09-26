@@ -1,9 +1,11 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Booking Details - TourGo Agency</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-<link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="../public/assets/css/styles.css" rel="stylesheet">
@@ -659,49 +661,614 @@
     color: #17a2b8;
 }
     </style>
-    <link rel="stylesheet" href="../public/assets/css/agency-demo.css">
-</head><body class="agency-page-bg">
-<header id="header">
-  <div class="container"><div class="header-content">
-    <div class="logo"><a href="agency_dashboard.html"><i class="fas fa-car-side"></i><span><span style="color:var(--text-dark);">Tour</span><span style="color:var(--text-light);">Go</span></span></a></div>
-    <ul class="nav-menu" id="mainNavMenu"><li><a href="agency_dashboard.html" class="nav-link">Home</a></li><li><a href="my_cars.html" class="nav-link">My Fleet</a></li><li><a href="view_bookings.html" class="nav-link active">My Bookings</a></li><li><a href="contact_support.html" class="nav-link">Support</a></li></ul>
-    <div class="header-actions">
-      <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
-      <div class="profile-dropdown">
-        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
-          <img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo">
-          <span class="profile-name">DriveHub Rentals</span><i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="profile-menu" id="profileMenu">
-          <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
-          <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
-          <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
-          <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
-          <a href="../auth/agency_change_password.html" class="profile-menu-item"><i class="fas fa-key"></i><span>Change Password</span></a>
-          <hr>
-          <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <link rel="stylesheet" href="/Tour-GO/public/assets/css/responsive-menu-fix.css">
+</head>
+<body>
+   <header id="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item active"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <button class="menu-toggle" id="menuToggleBtn" type="button" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+    </header>
+
+    <main class="container">
+        <div class="section-header">
+            <h1 class="section-title">Booking Details</h1>
+            <p class="section-description">Complete information about this booking</p>
+        </div>
+
+        
+            
+        
+
+        <div class="booking-details-container">
+            <!-- Booking Header -->
+            <div class="booking-header">
+                <div>
+                    <h2>Booking #</h2>
+                    <p class="text-muted">Booked on </p>
+                </div>
+                <div class="status-badge status-">
+                    <i class="fas fa-"></i>
+                    
+                </div>
+            </div>
+
+            <!-- Customer Profile Section -->
+            <div class="customer-profile">
+                <img src="" alt="Customer" class="customer-avatar">
+                <div class="customer-info">
+                    <h3></h3>
+                    <p><i class="fas fa-envelope"></i> </p>
+                    <p><i class="fas fa-phone"></i> </p>
+                </div>
+            </div>
+
+           <div class="vehicle-details">
+<div class="car-gallery">
+    <div class="gallery-main">
+        
+            <img id="mainImage" src="../uploads/vehicles/" 
+                 alt="">
+        
+            <img id="mainImage" src="../public/assets/images/default-car.jpg" 
+                 alt="Default vehicle image">
+        
+        
+        <!-- Add navigation controls -->
+        <div class="gallery-nav gallery-prev" onclick="changeGalleryImage(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="gallery-nav gallery-next" onclick="changeGalleryImage(1)">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <!-- Add image counter -->
+        <div class="image-counter">
+            <span id="currentImageIndex">1</span> / <span id="totalImages"></span>
+        </div>
     </div>
-  </div></div>
-</header>
-<main class="dashboard"><div class="container"><div class="dashboard-header"><div><h1 class="dashboard-title">Booking Details</h1><p class="agency-muted">Complete information about this reservation.</p></div><a href="view_bookings.html" class="btn btn-outline">Back to Bookings</a></div><div class="agency-card" style="padding:30px"><div id="bookingDetails"></div></div></div></main>
-<footer>
-  <div class="container"><div class="footer-content">
-    <div class="footer-about"><div class="footer-logo"><i class="fas fa-car-side"></i><span><span style="color:#fff;">Tour</span><span style="color:#aaa;">Go</span></span></div>
-      <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
-      <div class="social-links"><a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></div>
+    
+    
+        <div class="gallery-thumbnails">
+            
+                <div class="gallery-thumbnail " 
+                     onclick="changeImage('', this)"
+                     data-index="">
+                    <img src="../uploads/vehicles/" 
+                         alt="Vehicle view ">
+                </div>
+            
+        </div>
+    
+</div>
+
+                <div class="vehicle-info">
+                    <!-- Add this section for the title -->
+                    <h2 class="car-title">
+                        
+                    </h2>
+                    
+                    <!-- Add this section for the description -->
+                    <div class="car-description-box">
+                        <h3>About this vehicle</h3>
+                        <p></p>
+                    </div>
+
+                    <div class="vehicle-specs">
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-door-closed"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> Doors</div>
+        </div>
     </div>
-    <div class="footer-links"><h4 class="footer-title">Quick Links</h4><ul class="footer-menu">
-      <li><a href="agency_dashboard.html">Home</a></li><li><a href="my_cars.html">Fleet</a></li><li><a href="view_bookings.html">Bookings</a></li><li><a href="contact_support.html">Support</a></li><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../terms.html">Terms of Service</a></li>
-    </ul></div>
-    <div class="footer-newsletter"><h4 class="footer-title">Newsletter</h4><p class="footer-text">Subscribe to get special offers and updates</p>
-      <form class="newsletter-form"><input type="email" class="newsletter-input" placeholder="Enter your email" required><button type="submit" class="newsletter-btn">Subscribe</button></form>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-cog"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
     </div>
-  </div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p></div></div>
-</footer>
-<script src="../public/assets/js/agency-demo.js"></script><script>
-document.addEventListener('DOMContentLoaded',function(){const id=Number(new URLSearchParams(location.search).get('id'));const host=document.getElementById('bookingDetails');const b=TourGoAgencyDemo.getBookings().find(x=>Number(x.id)===id);if(!b){host.innerHTML='<div class="agency-empty"><i class="fas fa-calendar-xmark"></i><h3 style="color:var(--text-dark);">Booking not found</h3><p>Select a booking from the bookings list to view its details.</p><a class="btn btn-primary" href="view_bookings.html">Back to Bookings</a></div>';return;}host.innerHTML=`<div class="agency-form-grid"><div class="agency-field"><label>Booking ID</label><input readonly value="#TG-${b.id}"></div><div class="agency-field"><label>Status</label><input readonly value="${b.status||'Pending'}"></div><div class="agency-field"><label>Customer</label><input readonly value="${b.customerName||'Guest'}"></div><div class="agency-field"><label>Vehicle</label><input readonly value="${b.vehicleName||'Vehicle'}"></div><div class="agency-field"><label>Pickup Date</label><input readonly value="${b.pickupDate||'—'}"></div><div class="agency-field"><label>Return Date</label><input readonly value="${b.returnDate||'—'}"></div><div class="agency-field"><label>Total</label><input readonly value="₱${Number(b.total||b.amount||0).toLocaleString()}"></div><div class="agency-field"><label>Payment</label><input readonly value="${b.paymentMethod||'Demo Payment'} — ${b.paymentStatus||'Pending'}"></div><div class="agency-field full"><label>Notes</label><textarea readonly>${b.notes||'No notes provided.'}</textarea></div></div>`;});
-</script>
-</body></html>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-gas-pump"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-users"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> Seats</div>
+        </div>
+    </div>
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-tachometer-alt"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"> km</div>
+        </div>
+    </div>
+
+    
+    <div class="spec-item">
+        <div class="spec-icon">
+            <i class="fas fa-car"></i>
+        </div>
+        <div class="spec-details">
+            <div class="spec-value"></div>
+        </div>
+    </div>
+    
+</div>
+
+                    
+                    <div class="features-list">
+                        
+                            <span class="feature-tag">
+                                <i class="fas fa-check"></i>
+                                
+                            </span>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+
+            <!-- Rental Details -->
+            <div class="rental-details">
+                <h3>Rental Information</h3>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="info-label">Pickup Date</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Return Date</span>
+                        <span class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Duration</span>
+                        <span class="info-value"> days</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Amount</span>
+                        <span class="info-value">₱</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Information -->
+            <div class="payment-info">
+                <h3>Payment Information</h3>
+                <div class="info-group">
+                    <div class="info-item">
+                        <span class="info-label">Payment Status</span>
+                        <span class="payment-status payment-">
+                            
+                        </span>
+                        
+                            <button onclick="updatePaymentStatus()" class="btn btn-success btn-sm mt-2">
+                                <i class="fas fa-check"></i> Mark as Paid
+                            </button>
+                        
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-label">Payment Method</span>
+                        <span class="info-value"></span>
+                    </div>
+                    
+                    
+                    <div class="info-item">
+                        <span class="info-label">Transaction ID</span>
+                        <span class="info-value"></span>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Status Timeline -->
+            
+            <div class="status-timeline">
+                <h3>Booking Timeline</h3>
+                
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-date">
+                                
+                            </div>
+                            <h4></h4>
+                            
+                                <p></p>
+                            
+                        </div>
+                    </div>
+                
+            </div>
+            
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                
+                    <button onclick="updateBookingStatus('confirmed')" class="btn btn-success">
+                        <i class="fas fa-check" style="margin-right: 10px;"></i> Confirm Booking
+                    </button>
+                    <button onclick="updateBookingStatus('cancelled')" class="btn btn-danger">
+                        <i class="fas fa-times" style="margin-right: 10px;"></i> Cancel Booking
+                    </button>
+                
+                    <button onclick="showPickupModal()" class="btn btn-primary">
+                        <i class="fas fa-car" style="margin-right: 10px;"></i> Mark as Picked Up
+                    </button>
+                
+                    <button onclick="showReturnModal()" class="btn btn-info">
+                        <i class="fas fa-undo" style="margin-right: 10px;"></i> Mark as Returned
+                    </button>
+                
+                <a href="view_bookings.html" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Bookings
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add these modals before </main> -->
+<!-- Pickup Modal -->
+<div class="modal fade" id="pickupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Vehicle Pickup</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="pickup-confirmation">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h4>Vehicle Pickup Confirmation</h4>
+                    <p>Please confirm that the customer has picked up the vehicle:</p>
+                    <ul>
+                        <li>Customer has provided valid ID</li>
+                        <li>Payment has been verified</li>
+                        <li>Vehicle condition has been checked</li>
+                        <li>Customer has signed necessary documents</li>
+                    </ul>
+                    <div class="form-group">
+                        <label for="pickupNotes">Additional Notes (optional):</label>
+                        <textarea id="pickupNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmPickup()">
+                    Confirm Pickup
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Return Modal -->
+<div class="modal fade" id="returnModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Vehicle Return</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="return-confirmation">
+                    <div class="confirmation-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4>Vehicle Return Confirmation</h4>
+                    <p>Please confirm that the vehicle has been returned:</p>
+                    <ul>
+                        <li>Vehicle condition has been inspected</li>
+                        <li>All documents have been processed</li>
+                        <li>Keys have been returned</li>
+                        <li>Final payment has been settled (if applicable)</li>
+                    </ul>
+                    <div class="form-group">
+                        <label for="returnNotes">Additional Notes (optional):</label>
+                        <textarea id="returnNotes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" onclick="confirmReturn()">
+                    Confirm Return
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="../index.html">Home</a></li>
+                        <li><a href="agency-vehicle.html">Vehicles</a></li>
+                        <li><a href="agency-bookings.html">Bookings</a></li>
+                        <li><a href="agency-reports.html">Reports</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+// Theme Toggle (from your latest file)
+    const themeToggle = document.querySelector('.theme-toggle');
+    if (themeToggle) {
+        const themeIcon = themeToggle.querySelector('i');
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            if (themeIcon) themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('theme', theme);
+        }
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+        setTheme(localStorage.getItem('theme') || 'light');
+    }
+
+    // Profile Dropdown & Mobile Menu (from your latest file)
+    function setupToggle(toggleBtnId, menuId) {
+        const toggleBtn = document.getElementById(toggleBtnId);
+        const menu = document.getElementById(menuId);
+        if (toggleBtn && menu) {
+            toggleBtn.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('active'); });
+            menu.addEventListener('click', e => e.stopPropagation());
+        }
+        return menu;
+    }
+    const profileMenu = setupToggle('profileToggleBtn', 'profileMenu');
+    const navMenu = setupToggle('menuToggleBtn', 'mainNavMenu');
+    document.addEventListener('click', () => {
+        if (profileMenu) profileMenu.classList.remove('active');
+        if (navMenu) navMenu.classList.remove('active');
+    });
+        
+        // Add this new function for updating booking status
+        function updateBookingStatus(status, notes = '') {
+            if (confirm('Are you sure you want to mark this booking as ' + status + '?')) {
+                fetch('update_booking_status.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        booking_id: ,
+                        status: status,
+                        notes: notes
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating booking status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating booking status');
+                });
+            }
+        }
+
+        function updatePaymentStatus(bookingId) {
+            if (confirm('Mark this booking as paid?')) {
+                fetch('update_payment_status.html', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ booking_id: bookingId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating payment status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating payment status');
+                });
+            }
+        }
+
+        let currentImageIndex = 0;
+let vehicleImages = ;
+
+// Function to change gallery image
+function changeGalleryImage(direction) {
+    if (vehicleImages.length === 0) return;
+    
+    currentImageIndex += direction;
+    
+    if (currentImageIndex < 0) {
+        currentImageIndex = vehicleImages.length - 1;
+    } else if (currentImageIndex >= vehicleImages.length) {
+        currentImageIndex = 0;
+    }
+    
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = '../uploads/vehicles/' + vehicleImages[currentImageIndex].image_path;
+    
+    // Update thumbnail active state
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    const activeThumbnail = document.querySelector(`.gallery-thumbnail[data-index="${currentImageIndex}"]`);
+    if (activeThumbnail) {
+        activeThumbnail.classList.add('active');
+    }
+    
+    updateImageCounter();
+}
+
+// Function to update image counter
+function updateImageCounter() {
+    const currentCounter = document.getElementById('currentImageIndex');
+    const totalCounter = document.getElementById('totalImages');
+    
+    if (currentCounter && totalCounter) {
+        currentCounter.textContent = currentImageIndex + 1;
+        totalCounter.textContent = vehicleImages.length || 1;
+    }
+}
+
+// Function to change main image when clicking thumbnails
+function changeMainImage(imagePath, thumbnailElement) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = '../uploads/vehicles/' + imagePath;
+    
+    // Update active thumbnail
+    document.querySelectorAll('.gallery-thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    thumbnailElement.classList.add('active');
+    
+    // Update current index
+    currentImageIndex = parseInt(thumbnailElement.dataset.index) || 0;
+    updateImageCounter();
+}
+
+// Initialize gallery on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize image counter
+    updateImageCounter();
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'ArrowLeft') {
+            changeGalleryImage(-1);
+        } else if (e.key === 'ArrowRight') {
+            changeGalleryImage(1);
+        }
+    });
+});
+
+// Add to your existing <script> section
+let pickupModal;
+let returnModal;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap modals
+    pickupModal = new bootstrap.Modal(document.getElementById('pickupModal'));
+    returnModal = new bootstrap.Modal(document.getElementById('returnModal'));
+});
+
+function showPickupModal() {
+    pickupModal.show();
+}
+
+function showReturnModal() {
+    returnModal.show();
+}
+
+function confirmPickup() {
+    const notes = document.getElementById('pickupNotes').value;
+    updateBookingStatus('pickup', notes);
+    pickupModal.hide();
+}
+
+function confirmReturn() {
+    const notes = document.getElementById('returnNotes').value;
+    updateBookingStatus('returned', notes);
+    returnModal.hide();
+}
+    </script>
+    <script src="/Tour-GO/public/assets/js/responsive-menu-fix.js"></script>
+</body>
+</html>
+

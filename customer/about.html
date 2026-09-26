@@ -6,8 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - TourGo Premium Car Rental Service</title>
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../public/assets/css/styles.css">
@@ -280,6 +278,9 @@
         }
         /* --- END DARK MODE IMPROVEMENTS --- */
     </style>
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <link rel="stylesheet" href="/Tour-GO/public/assets/css/responsive-menu-fix.css">
 </head>
 <body>
     <header id="header">
@@ -301,7 +302,7 @@
                         <i class="fas fa-moon"></i>
                     </button>
                     <div class="profile-dropdown">
-                        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
                             <img src="../public/assets/images/guest-avatar.svg" alt="Guest Profile">
                             <span>Guest</span>
                             <i class="fas fa-chevron-down"></i>
@@ -327,7 +328,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                    <div class="menu-toggle" aria-label="Toggle Menu">
                         <i class="fas fa-bars"></i>
                     </div>
                 </div>
@@ -495,51 +496,24 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', newTheme);
     });
 
-    // --- PROFILE DROPDOWN + MOBILE MENU ---
-    const profileToggle = document.getElementById('profileToggleBtn');
-    const profileMenu = document.getElementById('profileMenu');
+    // --- MOBILE MENU TOGGLE ---
     const menuToggle = document.getElementById('menuToggleBtn');
-    const navMenu = document.getElementById('mainNavMenu');
-
-    if (profileToggle && profileMenu) {
-        profileToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            const isOpen = profileMenu.classList.toggle('active');
-            profileToggle.classList.toggle('active', isOpen);
-            profileToggle.setAttribute('aria-expanded', String(isOpen));
-        });
-        profileMenu.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    }
-
-    if (menuToggle && navMenu) {
-        menuToggle.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            navMenu.classList.toggle('active');
-            const isOpen = navMenu.classList.contains('active');
-            menuToggle.classList.toggle('active', isOpen);
-            menuToggle.setAttribute('aria-expanded', String(isOpen));
-            const icon = menuToggle.querySelector('i');
-            if (icon) {
-                icon.classList.toggle('fa-bars', !isOpen);
-                icon.classList.toggle('fa-times', isOpen);
-            }
-        });
-    }
-
-    document.addEventListener('click', function(e) {
-        if (profileMenu && profileToggle && !profileMenu.contains(e.target) && !profileToggle.contains(e.target)) {
-            profileMenu.classList.remove('active');
-            profileToggle.classList.remove('active');
-            profileToggle.setAttribute('aria-expanded', 'false');
+    const navMenu = document.querySelector('.nav-menu');
+    menuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        navMenu.classList.toggle('active');
+        // Toggle icon between bars and times
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
         }
-        if (navMenu && menuToggle && !navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+    });
+    // Close menu when clicking outside (mobile)
+    document.addEventListener('click', function(e) {
+        if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
             navMenu.classList.remove('active');
-            menuToggle.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
+            // Reset icon to bars
             const icon = menuToggle.querySelector('i');
             if (icon) {
                 icon.classList.remove('fa-times');
@@ -556,5 +530,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
     <script src="../public/assets/js/demo-session.js"></script>
+    <script src="/Tour-GO/public/assets/js/responsive-menu-fix.js"></script>
 </body>
 </html>

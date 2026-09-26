@@ -1,0 +1,111 @@
+/* TourGo responsive navigation stability fix */
+header {
+    position: sticky !important;
+    top: 0;
+    z-index: 2000 !important;
+}
+
+header .container,
+header .header-content,
+header .header-actions,
+header .header-buttons {
+    position: relative;
+}
+
+header .header-content {
+    overflow: visible !important;
+}
+
+header .header-actions,
+header .header-buttons {
+    z-index: 2002 !important;
+    flex-shrink: 0;
+}
+
+header .menu-toggle {
+    position: relative !important;
+    z-index: 2100 !important;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+    flex: 0 0 44px;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 992px) {
+    header .nav-menu {
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        z-index: 2050 !important;
+        pointer-events: auto !important;
+        transform: none;
+    }
+
+    header .nav-menu.active {
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+    }
+
+    header .menu-toggle {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 768px) {
+    header .container {
+        width: 100%;
+        max-width: none;
+    }
+
+    header .header-content {
+        min-width: 0;
+    }
+
+    header .logo {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    header .header-actions,
+    header .header-buttons {
+        gap: 6px;
+    }
+
+    header .menu-toggle {
+        flex-basis: 42px;
+        width: 42px;
+        min-width: 42px;
+        height: 42px;
+        min-height: 42px;
+    }
+}
+
+@media (max-width: 480px) {
+    header .header-content {
+        gap: 4px;
+    }
+
+    header .logo span {
+        white-space: nowrap;
+    }
+
+    header .menu-toggle {
+        flex-basis: 44px;
+        width: 44px;
+        min-width: 44px;
+        height: 44px;
+        min-height: 44px;
+    }
+}

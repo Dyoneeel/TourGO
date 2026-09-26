@@ -6,8 +6,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TourGo - My Profile</title>
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-<link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="../public/assets/css/styles.css" rel="stylesheet"> 
@@ -218,6 +216,9 @@
         .slide-up { animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     </style>
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <link rel="stylesheet" href="/Tour-GO/public/assets/css/responsive-menu-fix.css">
 </head>
 <body>
      <header id="header">
@@ -239,7 +240,7 @@
                         <i class="fas fa-moon"></i>
                     </button>
                     <div class="profile-dropdown">
-                        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
                             <img src="../public/assets/images/guest-avatar.svg" alt="Guest Profile">
                             <span>Guest</span>
                             <i class="fas fa-chevron-down"></i>
@@ -265,7 +266,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                    <div class="menu-toggle" aria-label="Toggle Menu">
                         <i class="fas fa-bars"></i>
                     </div>
                 </div>
@@ -287,16 +288,16 @@
                             </button>
                         </div>
                         <div class="profile-info">
-                            <h1>Guest</h1>
-                            <p class="email">customer@tourgo.demo</p>
+                            <h1></h1>
+                            <p class="email"></p>
                             <div class="verification-badge ">
                                 <i class="fas fa-"></i>
                                 <span> Account</span>
                             </div>
                             <div class="completion-progress">
-                                <div class="completion-text">Profile Completion: 0%</div>
+                                <div class="completion-text">Profile Completion: %</div>
                                 <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 0%"></div>
+                                    <div class="progress-fill" style="width: %"></div>
                                 </div>
                             </div>
                         </div>
@@ -662,31 +663,16 @@
         }
 
         function setupToggle(btn, menuElem) {
-            if (!btn || !menuElem) return;
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                const isOpen = menuElem.classList.toggle('active');
-                btn.classList.toggle('active', isOpen);
-                btn.setAttribute('aria-expanded', String(isOpen));
-            });
-            menuElem.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
+            if (btn && menuElem) {
+                btn.addEventListener('click', e => { e.stopPropagation(); menuElem.classList.toggle('active'); });
+                menuElem.addEventListener('click', e => e.stopPropagation());
+            }
         }
         setupToggle(profileToggleBtn, profileMenu);
-        if (menuToggleBtn && navMenu) setupToggle(menuToggleBtn, navMenu);
-        document.addEventListener('click', function(e) {
-            if (profileMenu && !profileMenu.contains(e.target) && !profileToggleBtn?.contains(e.target)) {
-                profileMenu.classList.remove('active');
-                profileToggleBtn?.classList.remove('active');
-                profileToggleBtn?.setAttribute('aria-expanded', 'false');
-            }
-            if (navMenu && !navMenu.contains(e.target) && !menuToggleBtn?.contains(e.target)) {
-                navMenu.classList.remove('active');
-                menuToggleBtn?.classList.remove('active');
-                menuToggleBtn?.setAttribute('aria-expanded', 'false');
-            }
+        setupToggle(menuToggleBtn, navMenu);
+        document.addEventListener('click', () => {
+            if(profileMenu) profileMenu.classList.remove('active');
+            if (navMenu) navMenu.classList.remove('active');
         });
 
         function setupFileInput(inputId, textDisplayId, previewTargets = []) {
@@ -808,22 +794,22 @@
         }
 
         const progressFill = document.querySelector('.progress-fill');
-        if (progressFill) { setTimeout(() => { progressFill.style.width = '0%'; }, 300); }    
+        if (progressFill) { setTimeout(() => { progressFill.style.width = '%'; }, 300); }    
 
         const termsCheckbox = document.getElementById('terms_agreement');
         const requestVerificationBtn = document.getElementById('requestVerificationBtn');
         const verificationBlockerMsg = document.getElementById('verificationBlockerMsg');
-        const completionPercentage = 0;
-        const verificationStatus = 'unverified';
+        const completionPercentage = ;
+        const verificationStatus = '';
 
         function updateReviewTabDocumentStatus() {
             const profileImgStatusEl = document.getElementById('review_profile_image_status');
             const licenseFrontStatusEl = document.getElementById('review_license_front_status');
             const licenseBackStatusEl = document.getElementById('review_license_back_status');
 
-            const profileImgUploaded = false;
-            const licenseFrontUploaded = false;
-            const licenseBackUploaded = false;
+            const profileImgUploaded = ;
+            const licenseFrontUploaded = ;
+            const licenseBackUploaded = ;
 
             if(profileImgStatusEl){
                 profileImgStatusEl.textContent = profileImgUploaded ? 'Uploaded' : 'Missing';
@@ -877,5 +863,6 @@
     });
     </script>
     <script src="../public/assets/js/demo-session.js"></script>
+    <script src="/Tour-GO/public/assets/js/responsive-menu-fix.js"></script>
 </body>
 </html>

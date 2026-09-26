@@ -5,8 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TourGo - Contact & Support</title>
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="../public/assets/css/styles.css" rel="stylesheet">
@@ -257,6 +255,9 @@
 }
 /* --- END CONTACT PAGE DARK MODE IMPROVEMENTS --- */
     </style>
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <link rel="stylesheet" href="/Tour-GO/public/assets/css/responsive-menu-fix.css">
 </head>
 <body>
     <header id="header">
@@ -293,8 +294,8 @@
                                 <i class="fas fa-heart"></i>
                                 <span>Favorites</span>
                             </a>
-                            <a href="about.html" class="profile-menu-item">
-                                <i class="fas fa-info-circle"></i>
+                            <a href="contact.html" class="profile-menu-item">
+                                <i class="fas fa-calendar-check"></i>
                                 <span>About Us</span>
                             </a>
                             <hr>
@@ -336,7 +337,7 @@
                 <!-- Contact Form -->
                 <div class="contact-card fade-in" style="animation-delay: 0.2s;">
                     <h3 class="section-title" style="margin-bottom: 30px;">Send Us a Message</h3>
-                    <form id="contactForm" class="contact-form">
+                    <form id="contactForm" class="contact-form" method="post" action="contact.html">
                         <div class="form-group">
                             <input type="text" name="name" class="form-control" placeholder="Your Name" value="" readonly required>
                         </div>
@@ -368,7 +369,7 @@
                             <div class="contact-icon"><i class="fas fa-phone"></i></div>
                             <div class="contact-text">
                                 <h4>24/7 Support</h4>
-                                <p>+63 900 000 0000</p>
+                                <p>+1 (555) 123-4567</p>
                                 <p>Toll-free: 1-800-TOURGO</p>
                             </div>
                         </li>
@@ -446,22 +447,22 @@
             
             <div class="office-card fade-in" style="max-width: 800px; margin: 40px auto;">
                 <div class="office-image">
-                    <img src="../public/assets/images/tourgo-map.png" alt="TourGo Headquarters location map">
+                    <img src="/api/placeholder/800/400" alt="TourGo Headquarters">
                 </div>
                 <div class="office-details">
                     <h3>TourGo Headquarters</h3>
                     <p class="office-address">123 Travel Street, Adventure City, AC 12345</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
                         <div>
-                            <p class="office-contact"><i class="fas fa-phone"></i> +63 900 000 0000</p>
-                            <p class="office-contact"><i class="fas fa-envelope"></i> contact@tourgo.demo</p>
+                            <p class="office-contact"><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                            <p class="office-contact"><i class="fas fa-envelope"></i> corporate@tourgo.com</p>
                         </div>
                         <div>
                             <p class="office-contact"><i class="fas fa-clock"></i> Mon-Fri: 8am - 8pm</p>
                             <p class="office-contact"><i class="fas fa-clock"></i> Sat-Sun: 9am - 6pm</p>
                         </div>
                     </div>
-                    <button class="btn btn-primary" id="getDirectionsBtn" type="button" style="margin-top: 20px;">
+                    <button class="btn btn-primary" id="getDirectionsBtn" style="margin-top: 20px;">
                         <i class="fas fa-map-marker-alt"></i> Get Directions
                     </button>
                 </div>
@@ -469,7 +470,7 @@
         </div>
     </section>
 
-    <section id="faq" class="faq-section" style="padding: 80px 0; background-color: var(--bg-light);">
+    <section class="faq-section" style="padding: 80px 0; background-color: var(--bg-light);">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Help Center</span>
@@ -539,11 +540,11 @@
                 <div class="footer-links">
                     <h4 class="footer-title">Quick Links</h4>
                     <ul class="footer-menu">
-                        <li><a href="about.html">About Us</a></li>
-                        <li><a href="cars.html">Our Fleet</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Fleet</a></li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="#">Careers</a></li>
-                        <li><a href="#faq">Help Center</a></li>
+                        <li><a href="#">Help Center</a></li>
                     </ul>
                 </div>
                 <div class="footer-newsletter">
@@ -639,48 +640,26 @@
                 }
             });
         }
+
         // FAQ Accordion
-        const faqQuestions = document.querySelectorAll('.faq-question');
-        faqQuestions.forEach(question => {
-            const faqItem = question.closest('.faq-item');
-            const answer = faqItem ? faqItem.querySelector('.faq-answer') : null;
-
-            question.setAttribute('role', 'button');
-            question.setAttribute('tabindex', '0');
-            question.setAttribute('aria-expanded', 'false');
-            if (answer) answer.setAttribute('aria-hidden', 'true');
-
-            const toggleFaq = () => {
-                if (!faqItem || !answer) return;
-                const opening = !faqItem.classList.contains('active');
-
-                document.querySelectorAll('.faq-item.active').forEach(otherItem => {
-                    if (otherItem === faqItem) return;
-                    otherItem.classList.remove('active');
-                    const otherQuestion = otherItem.querySelector('.faq-question');
-                    const otherAnswer = otherItem.querySelector('.faq-answer');
-                    if (otherQuestion) otherQuestion.setAttribute('aria-expanded', 'false');
-                    if (otherAnswer) otherAnswer.setAttribute('aria-hidden', 'true');
-                });
-
-                faqItem.classList.toggle('active', opening);
-                question.setAttribute('aria-expanded', String(opening));
-                answer.setAttribute('aria-hidden', String(!opening));
-            };
-
-            question.addEventListener('click', toggleFaq);
-            question.addEventListener('keydown', event => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleFaq();
+        document.querySelectorAll('.faq-question').forEach(item => {
+            item.addEventListener('click', () => {
+                const parent = item.parentElement;
+                parent.classList.toggle('active');
+                // Close other FAQs when opening one
+                if (parent.classList.contains('active')) {
+                    document.querySelectorAll('.faq-item').forEach(otherItem => {
+                        if (otherItem !== parent) {
+                            otherItem.classList.remove('active');
+                        }
+                    });
                 }
             });
         });
 
         // Get Directions Button
-        const getDirectionsBtn = document.getElementById('getDirectionsBtn');
-        if (getDirectionsBtn) getDirectionsBtn.addEventListener('click', function() {
-            showNotification('Directions are available in the live TourGo environment.', 'info');
+        document.getElementById('getDirectionsBtn').addEventListener('click', function() {
+            showNotification('Opening directions in Google Maps...', 'info');
             setTimeout(() => {
                 // window.open('https://maps.google.com?q=123+Travel+Street+Adventure+City+AC+12345');
             }, 1000);
@@ -756,5 +735,6 @@
     });
     </script>
     <script src="../public/assets/js/demo-session.js"></script>
+    <script src="/Tour-GO/public/assets/js/responsive-menu-fix.js"></script>
 </body>
 </html>

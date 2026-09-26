@@ -1,9 +1,11 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Vehicles - TourGo</title>
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-<link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <title>My Vehicles - </title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <link href="../public/assets/css/styles.css" rel="stylesheet">
@@ -869,66 +871,514 @@
     color: var(--text-light);
 }
     </style>
-    <link rel="stylesheet" href="../public/assets/css/agency-demo.css">
-</head><body class="agency-page-bg">
+    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
+    <link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
+    <link rel="stylesheet" href="/Tour-GO/public/assets/css/responsive-menu-fix.css">
+</head>
+<body>
 <header id="header">
-  <div class="container"><div class="header-content">
-    <div class="logo"><a href="agency_dashboard.html"><i class="fas fa-car-side"></i><span><span style="color:var(--text-dark);">Tour</span><span style="color:var(--text-light);">Go</span></span></a></div>
-    <ul class="nav-menu" id="mainNavMenu"><li><a href="agency_dashboard.html" class="nav-link">Home</a></li><li><a href="my_cars.html" class="nav-link active">My Fleet</a></li><li><a href="view_bookings.html" class="nav-link">My Bookings</a></li><li><a href="contact_support.html" class="nav-link">Support</a></li></ul>
-    <div class="header-actions">
-      <button class="theme-toggle" id="themeToggleBtn" type="button" aria-label="Toggle Dark Mode"><i class="fas fa-moon"></i></button>
-      <div class="profile-dropdown">
-        <button class="profile-toggle" id="profileToggleBtn" type="button" aria-expanded="false" aria-controls="profileMenu">
-          <img src="../public/assets/images/guest-avatar.svg" alt="DriveHub Rentals Logo">
-          <span class="profile-name">DriveHub Rentals</span><i class="fas fa-chevron-down"></i>
-        </button>
-        <div class="profile-menu" id="profileMenu">
-          <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
-          <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
-          <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
-          <a href="about.html" class="profile-menu-item"><i class="fas fa-info-circle"></i><span>About Us</span></a>
-          <a href="../auth/agency_change_password.html" class="profile-menu-item"><i class="fas fa-key"></i><span>Change Password</span></a>
-          <hr>
-          <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="agency_dashboard.html">
+                        <i class="fas fa-car-side"></i>
+                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+                    </a>
+                </div>
+                <ul class="nav-menu" id="mainNavMenu">
+                    <li><a href="agency_dashboard.html" class="nav-link">Home</a></li>
+                    <li><a href="my_cars.html" class="nav-link">My Fleet</a></li>
+                    <li><a href="view_bookings.html" class="nav-link">My Bookings</a></li>
+                    <li><a href="contact_support.html" class="nav-link">Support</a></li>
+                </ul>
+                <div class="header-actions">
+                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <button class="profile-toggle" id="profileToggleBtn" type="button">
+                        <img src="" alt="Profile">
+                        <span></span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                        <div class="profile-menu" id="profileMenu">
+                            <a href="agency_profile.html" class="profile-menu-item"><i class="fas fa-user-circle"></i><span>My Profile</span></a>
+                            <a href="my_cars.html" class="profile-menu-item"><i class="fas fa-car"></i><span>My Fleet</span></a>
+                            <a href="view_bookings.html" class="profile-menu-item"><i class="fas fa-calendar-alt"></i><span>Bookings</span></a>
+                            <a href="about.html" class="profile-menu-item"><i class="fas fa-chart-line"></i><span>About Us</span></a>
+                            <hr style="margin: 5px 0; border-color: var(--border-color-light, #eee);">
+                            <a href="../auth/logout.html" class="profile-menu-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+                        </div>
+                    </div>
+                    <div class="menu-toggle" id="menuToggleBtn" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-      <button class="menu-toggle" id="menuToggleBtn" type="button" aria-label="Toggle Menu"><i class="fas fa-bars"></i></button>
+    </header>
+
+<main class="vehicle-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Vehicle Management</h1>
+                <div class="action-buttons">
+                    
+                        <a href="add_car.html" class="btn btn-primary">
+                            <i class="fas fa-plus" style="margin-right: 10px;"></i>
+                            Add New Vehicle
+                        </a>
+                    
+                        <button class="btn btn-primary" disabled>
+                            <i class="fas fa-plus" style="margin-right: 10px;"></i>
+                            Add New Vehicle
+                        </button>
+                    
+                </div>
+            </div>
+<div class="alert alert-success">Vehicle has been added successfully!</div>
+                
+                    <div class="alert alert-success">Vehicle has been updated successfully!</div>
+                
+                    <div class="alert alert-success">Vehicle has been deleted successfully!</div>
+                
+                    <div class="alert alert-danger">Error deleting vehicle. It might have active bookings.</div>
+                
+            
+
+
+            <div class="content-card">
+                <div class="tab-controls">
+                    <button class="tab-btn active" data-tab="grid-view">Grid View</button>
+                    <button class="tab-btn" data-tab="list-view">List View</button>
+                    </div>
+
+                <div class="section-header" style="margin-top: 20px;"> <div class="section-controls">
+                        <form action="my_cars.html" method="GET" id="searchFilterSortForm" style="display: flex; gap: 15px; align-items: center;">
+                            <div class="search-container">
+                                <input type="text" name="search" class="search-input" placeholder="Search make, model, year..." value="">
+                                <i class="fas fa-search search-icon"></i>
+                            </div>
+                            <div class="filter-dropdown">
+                                <button type="button" class="dropdown-button"> <i class="fas fa-filter"></i>
+                                    <span>Filter: </span>
+                                    <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="?search=&filter=all&sort=" class="filter-option ">All Vehicles</a>
+                                    <a href="?search=&filter=available&sort=" class="filter-option ">Available</a>
+                                    <a href="?search=&filter=booked&sort=" class="filter-option ">Booked</a>
+                                    <a href="?search=&filter=maintenance&sort=" class="filter-option ">Maintenance</a>
+                                </div>
+                            </div>
+                            <div class="sort-dropdown">
+                                <button type="button" class="dropdown-button">
+                                    <i class="fas fa-sort"></i>
+                                    <span>Sort: </span>
+                                    <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+                                </button>
+                                <div class="dropdown-content">
+                                    <a href="?search=&filter=&sort=newest" class="sort-option ">Newest First</a>
+                                    <a href="?search=&filter=&sort=price_low" class="sort-option ">Price: Low to High</a>
+                                    <a href="?search=&filter=&sort=price_high" class="sort-option ">Price: High to Low</a>
+                                    <a href="?search=&filter=&sort=popular" class="sort-option ">Most Popular</a>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-outline">Apply</button> </form>
+                    </div>
+                </div>
+
+
+                <div class="tab-content active" id="grid-view">
+                    
+                    <div class="vehicles-grid">
+                        
+                        <div class="vehicle-card">
+                            <div class="vehicle-image">
+                                <img src="" alt="">
+                                <div class="vehicle-bookmark" title="Bookmark">
+                                    <i class="far fa-bookmark"></i> </div>
+                                <div class="vehicle-status status-">
+                                    
+                                </div>
+                            </div>
+                            <div class="vehicle-details">
+                                <h3 class="vehicle-title"></h3>
+                                <div class="vehicle-features">
+                                    
+                                        <span class="feature"><i class="fas fa-users"></i>  Seats</span>
+                                    
+                                    
+                                        <span class="feature"><i class="fas fa-cogs"></i> </span>
+                                    
+                                    
+                                        <span class="feature"><i class="fas fa-gas-pump"></i> </span>
+                                    
+                                    </div>
+                                <div class="vehicle-meta">
+                                    <span class="vehicle-price">₱<span class="price-period">/day</span></span>
+                                    <span class="vehicle-type-badge"></span>
+                                </div>
+                                <div class="vehicle-stats">
+                                    <div class="stat">
+                                        <span class="stat-value">%</span>
+                                        <span class="stat-label">Popularity</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value"> <i class="fas fa-star" style="color: #fdcc0d;"></i></span>
+                                        <span class="stat-label">Rating</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="stat-value"></span>
+                                        <span class="stat-label">Bookings</span>
+                                    </div>
+                                </div>
+                                <div class="vehicle-actions">
+                                    <a href="edit_car.html?id=" class="btn btn-outline btn-icon">
+                                        <i class="fas fa-edit"></i>
+                                        Edit
+                                    </a>
+                                    <a href="delete_car.html?id=" class="btn btn-danger-outline btn-icon delete-vehicle-btn" onclick="return confirm('Are you sure you want to delete this vehicle? This cannot be undone.');">
+                                        <i class="fas fa-trash-alt"></i>
+                                        Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="no-data-message">
+                        <i class="fas fa-car-side"></i>
+                        <h3>No vehicles found</h3>
+                        <p>You haven't added any vehicles yet, or no vehicles match your current filter or search criteria.</p>
+                        
+        <a href="add_car.html" class="btn btn-primary">Add Your First Vehicle</a>
+    
+        <button class="btn btn-primary" disabled>Add Your First Vehicle</button>
+        <p class="mt-2 text-muted" style="font-size: 20px;">
+            
+                <small><i class="fas fa-info-circle" style="font-size: 15px;"></i> Your account is pending verification</small>
+            
+                <small><i class="fas fa-exclamation-circle"></i> Your verification was rejected</small>
+            
+                <small><i class="fas fa-exclamation-triangle"></i> Please complete verification first</small>
+            
+        </p>
+    
+                    </div>
+                    
+                </div>
+
+                <div class="tab-content" id="list-view">
+                    
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Vehicle</th>
+                                <th>Type</th>
+                                <th>Plate No.</th>
+                                <th>Status</th>
+                                <th>Daily Rate</th>
+                                <th>Popularity</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr>
+                                <td>
+                                    <div class="vehicle-info-list">
+                                        <img src="" alt="" class="vehicle-img-small">
+                                        <div>
+                                            <span class="vehicle-name-list"></span>
+                                            <span class="vehicle-year-list">()</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <span class="status-indicator status-"></span>
+                                    
+                                </td>
+                                <td>₱</td>
+                                <td>%</td>
+                                <td> <i class="fas fa-star" style="color: #fdcc0d; font-size:0.9em;"></i></td>
+                                <td>
+                                    <div class="action-menu">
+                                        <button class="action-btn">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="action-dropdown">
+                                            <a href="view_car.html?id=" class="action-item">
+                                                <i class="fas fa-eye"></i> View
+                                            </a>
+                                            <a href="edit_car.html?id=" class="action-item">
+                                                <i class="fas fa-edit"></i> Edit
+                                            </a>
+                                            <div class="filter-divider"></div>
+                                            <a href="delete_car.html?id=" class="action-item delete delete-vehicle-btn" onclick="return confirm('Are you sure you want to delete this vehicle? This cannot be undone.');">
+                                                <i class="fas fa-trash-alt"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                    
+                    <div class="no-data-message">
+                        <i class="fas fa-list-alt"></i>
+                        <h3>No vehicles to display in list view.</h3>
+                        <p>Please check your search or filter criteria, or add new vehicles.</p>
+                    </div>
+                    
+                </div>
+
+
+                
+                <div class="pagination">
+                    
+                    <a href="?page=&search=&filter=&sort=" class="page-link">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                    
+
+                    
+                    <a href="?page=&search=&filter=&sort=" class="page-link ">
+                        
+                    </a>
+                    
+
+                     
+
+                    
+                    <a href="?page=&search=&filter=&sort=" class="page-link">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    
+                </div>
+                
+            </div> </div> </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>TourGo
+                    </div>
+                    <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <ul class="footer-menu">
+                        <li><a href="agency_dashboard.html">Home</a></li>
+                        <li><a href="my_cars.html">Fleet</a></li>
+                        <li><a href="view_bookings.html">Bookings</a></li>
+                        <li><a href="contact_support.html">Support</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p class="footer-text">Subscribe to get special offers and updates</p>
+                    <form class="newsletter-form" action="#" method="post">
+                        <input type="email" name="newsletter_email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="../public/assets/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab switching functionality
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+
+                    btn.classList.add('active');
+                    const targetTabId = btn.getAttribute('data-tab');
+                    const targetTabContent = document.getElementById(targetTabId);
+                    if (targetTabContent) {
+                        targetTabContent.classList.add('active');
+                    }
+                });
+            });
+
+            // Bookmark toggle functionality (simple visual toggle)
+            const bookmarks = document.querySelectorAll('.vehicle-bookmark');
+            bookmarks.forEach(bookmark => {
+                bookmark.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent navigation if it's an <a> tag
+                    bookmark.classList.toggle('active');
+                    const icon = bookmark.querySelector('i');
+                    if (icon) {
+                        icon.classList.toggle('far'); // Empty bookmark
+                        icon.classList.toggle('fas'); // Filled bookmark
+                    }
+                    // Add AJAX call here to save bookmark status to server if needed
+                });
+            });
+
+            // Mobile menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navMenu = document.querySelector('.nav-menu');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', () => {
+                    navMenu.classList.toggle('active'); // You'll need CSS for .nav-menu.active
+                });
+            }
+
+            // Dropdown toggle for header user menu (and other dropdowns if needed)
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+                const button = dropdown.querySelector('button'); // Or the element that triggers it
+                if(button) {
+                    button.addEventListener('click', (event) => {
+                        // Close other open dropdowns
+                        dropdowns.forEach(otherDropdown => {
+                            if (otherDropdown !== dropdown) {
+                                otherDropdown.querySelector('.dropdown-content').style.display = 'none';
+                            }
+                        });
+                        let content = dropdown.querySelector('.dropdown-content');
+                        if (content) {
+                            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+                        }
+                        event.stopPropagation();
+                    });
+                }
+            });
+
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (event) => {
+                dropdowns.forEach(dropdown => {
+                    let content = dropdown.querySelector('.dropdown-content');
+                    if (content && !dropdown.contains(event.target)) {
+                        content.style.display = 'none';
+                    }
+                });
+            });
+
+            // Delete vehicle confirmation (already inline, but can be centralized)
+             const deleteButtons = document.querySelectorAll('.delete-vehicle-btn');
+             deleteButtons.forEach(button => {
+                 button.addEventListener('click', function(event) {
+                     if (!confirm('Are you sure you want to delete this vehicle? This cannot be undone.')) {
+                         event.preventDefault();
+                     }
+                 });
+            });
+
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show verification modal if not verified
+            const verificationStatus = '';
+            
+            if (verificationStatus !== 'approved') {
+                showVerificationModal();
+            }
+            
+            // Close modal handlers
+            document.querySelectorAll('.close-modal').forEach(button => {
+                button.addEventListener('click', closeVerificationModal);
+            });
+            
+            // Close on outside click
+            document.querySelector('.verification-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeVerificationModal();
+                }
+            });
+            
+            // Close on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeVerificationModal();
+                }
+            });
+        });
+
+        function showVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeVerificationModal() {
+            const modal = document.getElementById('verificationModal');
+            if (modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = '';
+            }
+        }
+    </script>
+    <div class="verification-modal" id="verificationModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Account Verification Required</h3>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Your agency account is pending verification. You'll be able to add vehicles once approved.</p>
+                    <p>Please wait while our team reviews your documents.</p>
+                </div>
+            
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <p>Your agency verification was rejected.</p>
+                    
+                        <div class="rejection-reason">
+                            <strong>Reason:</strong>
+                            <p></p>
+                        </div>
+                    
+                </div>
+            
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Please complete your agency profile and submit verification documents to start adding vehicles.</p>
+                </div>
+            
+        </div>
+        <div class="modal-footer">
+            
+                <a href="agency_profile.html" class="btn btn-primary">Complete Verification</a>
+            
+            
+                <a href="contact_support.html" class="btn btn-outline">Contact Support</a>
+            
+            <button class="btn btn-secondary close-modal">Close</button>
+        </div>
     </div>
-  </div></div>
-</header>
-<main class="vehicle-page"><div class="container"><div class="page-header"><h1 class="page-title">Vehicle Management</h1><div class="action-buttons"><a href="add_car.html" class="btn btn-primary"><i class="fas fa-plus" style="margin-right:10px;"></i>Add New Vehicle</a></div></div>
-<div class="content-card"><div class="tab-controls"><button class="tab-btn active" data-tab="grid-view">Grid View</button><button class="tab-btn" data-tab="list-view">List View</button></div>
-<div class="section-header" style="margin-top:20px"><div class="section-controls" style="width:100%"><form id="agencyFleetFilter" class="agency-toolbar" style="width:100%" onsubmit="return false"><div class="group"><div class="search-container"><input id="fleetSearch" class="search-input" placeholder="Search make, model, year..." style="width:260px"><i class="fas fa-search search-icon"></i></div><select id="fleetFilter" class="agency-select"><option value="all">All Vehicles</option><option value="available">Available</option><option value="maintenance">Maintenance</option></select><select id="fleetSort" class="agency-select"><option value="newest">Newest First</option><option value="price_low">Price: Low to High</option><option value="price_high">Price: High to Low</option></select></div><button type="button" class="btn btn-outline" id="resetFleet">Reset</button></form></div></div>
-<div class="tab-content active" id="grid-view"><div id="agencyFleetGrid" class="vehicles-grid"></div><div id="agencyFleetEmpty" class="agency-empty" style="display:none"><i class="fas fa-car-side"></i><h3 style="color:var(--text-dark);">No vehicles found</h3><p>Try a different search or add a vehicle to your fleet.</p><a href="add_car.html" class="btn btn-primary">Add Vehicle</a></div></div>
-<div class="tab-content" id="list-view"><div class="agency-table-wrap"><table class="data-table agency-table"><thead><tr><th>Vehicle</th><th>Type</th><th>Rate</th><th>Status</th><th>Rating</th><th>Actions</th></tr></thead><tbody id="agencyFleetList"></tbody></table></div></div>
-</div></div></main>
-<footer>
-  <div class="container"><div class="footer-content">
-    <div class="footer-about"><div class="footer-logo"><i class="fas fa-car-side"></i><span><span style="color:#fff;">Tour</span><span style="color:#aaa;">Go</span></span></div>
-      <p class="footer-text">Your trusted partner in premium car rentals. Experience the freedom of the road with our exceptional service and curated fleet of vehicles.</p>
-      <div class="social-links"><a href="#" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a><a href="#" class="social-link" aria-label="Twitter"><i class="fab fa-twitter"></i></a><a href="#" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a><a href="#" class="social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a></div>
-    </div>
-    <div class="footer-links"><h4 class="footer-title">Quick Links</h4><ul class="footer-menu">
-      <li><a href="agency_dashboard.html">Home</a></li><li><a href="my_cars.html">Fleet</a></li><li><a href="view_bookings.html">Bookings</a></li><li><a href="contact_support.html">Support</a></li><li><a href="../privacy.html">Privacy Policy</a></li><li><a href="../terms.html">Terms of Service</a></li>
-    </ul></div>
-    <div class="footer-newsletter"><h4 class="footer-title">Newsletter</h4><p class="footer-text">Subscribe to get special offers and updates</p>
-      <form class="newsletter-form"><input type="email" class="newsletter-input" placeholder="Enter your email" required><button type="submit" class="newsletter-btn">Subscribe</button></form>
-    </div>
-  </div><div class="footer-bottom"><p>&copy; <span id="currentYear"></span> TourGo. All rights reserved. | <a href="../privacy.html">Privacy Policy</a> | <a href="../terms.html">Terms of Service</a></p></div></div>
-</footer>
-<script src="../public/assets/js/agency-demo.js"></script><script>
-document.addEventListener('DOMContentLoaded',function(){
- const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- let fleet=TourGoAgencyDemo.getFleet(); const grid=document.getElementById('agencyFleetGrid'), list=document.getElementById('agencyFleetList'), empty=document.getElementById('agencyFleetEmpty');
- function render(){let data=fleet.slice();const q=document.getElementById('fleetSearch').value.toLowerCase().trim(),f=document.getElementById('fleetFilter').value,s=document.getElementById('fleetSort').value;if(q)data=data.filter(v=>(v.make+' '+v.model+' '+v.year).toLowerCase().includes(q));if(f==='available')data=data.filter(v=>v.status==='available');if(f==='maintenance')data=data.filter(v=>v.status==='maintenance');if(s==='price_low')data.sort((a,b)=>a.price-b.price);if(s==='price_high')data.sort((a,b)=>b.price-a.price);if(s==='newest')data.sort((a,b)=>b.year-a.year||b.id-a.id);
- grid.innerHTML=data.map(v=>`<div class="vehicle-card"><div class="vehicle-image"><img src="${esc(v.image)}" alt="${esc(v.make+' '+v.model)}" onerror="this.src='../public/assets/images/car.png'"><div class="vehicle-bookmark" title="Fleet item"><i class="fas fa-car"></i></div><div class="vehicle-status status-available">${esc(v.status||'available')}</div></div><div class="vehicle-details"><h3 class="vehicle-title">${esc(v.make+' '+v.model)}</h3><div class="vehicle-features"><span class="feature"><i class="fas fa-users"></i> ${v.seats} Seats</span><span class="feature"><i class="fas fa-cogs"></i> ${esc(v.transmission)}</span><span class="feature"><i class="fas fa-gas-pump"></i> ${esc(v.fuel)}</span></div><div class="vehicle-meta"><span class="vehicle-price">₱${Number(v.price).toLocaleString()}<span class="price-period">/day</span></span><span class="vehicle-type-badge">${esc(v.type)}</span></div><div class="vehicle-stats"><div class="stat"><span class="stat-value">${v.popularity||0}%</span><span class="stat-label">Popularity</span></div><div class="stat"><span class="stat-value">${v.rating||0} <i class="fas fa-star" style="color:#fdcc0d"></i></span><span class="stat-label">Rating</span></div><div class="stat"><span class="stat-value">${v.bookings||0}</span><span class="stat-label">Bookings</span></div></div><div class="vehicle-actions"><a href="edit_car.html?id=${v.id}" class="btn btn-outline btn-icon"><i class="fas fa-edit"></i>Edit</a><button type="button" class="btn btn-danger-outline btn-icon" data-delete-id="${v.id}"><i class="fas fa-trash-alt"></i>Delete</button></div></div></div>`).join('');
- list.innerHTML=data.map(v=>`<tr><td><div class="vehicle-info-list"><img src="${esc(v.image)}" alt="${esc(v.make+' '+v.model)}" class="vehicle-img-small" onerror="this.src='../public/assets/images/car.png'"><div><span class="vehicle-name-list">${esc(v.make+' '+v.model)}</span><span class="vehicle-year-list">(${v.year})</span></div></div></td><td>${esc(v.type)}</td><td>₱${Number(v.price).toLocaleString()}/day</td><td>${esc(v.status||'available')}</td><td>${v.rating||0} <i class="fas fa-star" style="color:#fdcc0d"></i></td><td><a href="edit_car.html?id=${v.id}" class="btn btn-outline btn-sm">Edit</a> <button type="button" class="btn btn-outline btn-sm" data-delete-id="${v.id}">Delete</button></td></tr>`).join('');
- empty.style.display=data.length?'none':'block';
- document.querySelectorAll('[data-delete-id]').forEach(btn=>btn.addEventListener('click',()=>{const id=Number(btn.dataset.deleteId);if(!confirm('Delete this vehicle from your demo fleet?'))return;fleet=fleet.filter(v=>Number(v.id)!==id);TourGoAgencyDemo.saveFleet(fleet);render();TourGoAgencyDemo.toast('Vehicle removed from the demo fleet.');}));
- }
- ['fleetSearch','fleetFilter','fleetSort'].forEach(id=>document.getElementById(id).addEventListener('input',render));document.getElementById('resetFleet').addEventListener('click',()=>{document.getElementById('fleetSearch').value='';document.getElementById('fleetFilter').value='all';document.getElementById('fleetSort').value='newest';render();});
- document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));btn.classList.add('active');document.getElementById(btn.dataset.tab).classList.add('active');}));
- render();
-});
-</script>
-</body></html>
+</div>
+    <script src="/Tour-GO/public/assets/js/responsive-menu-fix.js"></script>
+</body>
+</html>
