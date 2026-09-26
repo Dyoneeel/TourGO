@@ -258,19 +258,60 @@
         const sidebar = document.querySelector('.admin-sidebar');
         if (menuToggle && sidebar && menuToggle.dataset.bound !== '1') {
             menuToggle.dataset.bound = '1';
+
+            let backdrop = document.querySelector('.sidebar-backdrop');
+            if (!backdrop) {
+                backdrop = document.createElement('div');
+                backdrop.className = 'sidebar-backdrop';
+                document.body.appendChild(backdrop);
+            }
+
+            function closeSidebar() {
+                document.body.classList.remove('sidebar-collapsed');
+                sidebar.classList.remove('active');
+                backdrop.classList.remove('active');
+            }
+
+            function syncSidebarState() {
+                const isMobile = window.innerWidth <= 992;
+                if (isMobile) {
+                    const open = sidebar.classList.contains('active');
+                    document.body.classList.remove('sidebar-collapsed');
+                    backdrop.classList.toggle('active', open);
+                } else {
+                    backdrop.classList.remove('active');
+                    sidebar.classList.remove('active');
+                }
+            }
+
             menuToggle.addEventListener('click', function (event) {
+                event.preventDefault();
                 event.stopPropagation();
-                sidebar.classList.toggle('active');
+                const isMobile = window.innerWidth <= 992;
+                if (isMobile) {
+                    sidebar.classList.toggle('active');
+                    backdrop.classList.toggle('active', sidebar.classList.contains('active'));
+                    document.body.classList.remove('sidebar-collapsed');
+                } else {
+                    document.body.classList.toggle('sidebar-collapsed');
+                }
             });
+
+            backdrop.addEventListener('click', closeSidebar);
+
             document.addEventListener('click', function (event) {
                 if (window.innerWidth <= 992 && sidebar.classList.contains('active') &&
                     !sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
-                    sidebar.classList.remove('active');
+                    closeSidebar();
                 }
             });
+
             document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') sidebar.classList.remove('active');
+                if (event.key === 'Escape') closeSidebar();
             });
+
+            window.addEventListener('resize', syncSidebarState);
+            syncSidebarState();
         }
 
         const year = document.getElementById('currentYear');
