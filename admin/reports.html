@@ -1,17 +1,14 @@
-
-
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complaint Reports - TourGo Admin</title>
-    <link rel="icon" type="image/svg+xml" href="/Tour-GO/public/assets/images/tourgo-favicon.svg">
-<link rel="icon" type="image/png" sizes="64x64" href="/Tour-GO/public/assets/images/tourgo-favicon.png">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../public/assets/css/admin-dashboard.css">
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Complaint Reports - TourGo Admin</title><link href="/Tour-GO/public/assets/images/tourgo-favicon.svg" rel="icon" type="image/svg+xml"/><link href="/Tour-GO/public/assets/images/tourgo-favicon.png" rel="icon" sizes="64x64" type="image/png"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+<link href="../public/assets/css/admin-dashboard.css" rel="stylesheet"/>
+<style>
         /* Admin Reports Specific Styles */
         .reports-container {
             padding: 30px;
@@ -326,398 +323,196 @@
     </style>
 </head>
 <body>
-    <div class="admin-dashboard">
-        <header class="admin-header">
-            <div class="admin-header-content">
-                <div class="logo-area">
-                    <div class="logo">
-                        <i class="fas fa-car-side"></i>
-                        <span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
-                    </div>
-                </div>
-                <div class="header-actions">
-                    <button class="theme-toggle" aria-label="Toggle Dark Mode">
-                        <i class="fas "></i>
-                    </button>
-                    <div class="profile-dropdown">
-                        <div class="profile-toggle">
-                            <img src="https://avatar.iran.liara.run/public/boy?username=Admin" alt="Admin">
-                            <span>Admin</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="profile-menu">
-                            <a href="../auth/logout.html" class="profile-menu-item">
-                                <i class="fas fa-sign-out-alt"></i>
-                                <span>Logout</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="menu-toggle">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <div class="dashboard-content">
-            <aside class="admin-sidebar">
-                <div class="sidebar-nav">
-                    <div class="sidebar-header">MAIN MENU</div>
-                    <a href="admin_dashboard.html" class="sidebar-item">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    <a href="manage_users.html" class="sidebar-item">
-                        <i class="fas fa-users"></i>
-                        <span>Users</span>
-                    </a>
-                    <a href="admin_vehicles.html" class="sidebar-item">
-                        <i class="fas fa-car"></i>
-                        <span>Vehicles</span>
-                    </a>
-                    <a href="admin_bookings.html" class="sidebar-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>Bookings</span>
-                    </a>
-                    <a href="reports.html" class="sidebar-item active">
-                        <i class="fas fa-flag"></i>
-                        <span>Reports</span>
-                    </a>
-                    <div class="sidebar-header">SYSTEM</div>
-                    <a href="../auth/logout.html" class="sidebar-item">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </aside>
-
-            <main class="main-content">
-                <div class="section-header">
-                    <div class="section-title">User Complaints & Reports</div>
-                    <div class="action-buttons">
-                        <button class="btn btn-outline" onclick="exportToCSV()">
-                            <i class="fas fa-file-export"></i> Export CSV
+<div class="admin-dashboard">
+<header class="admin-header">
+<div class="admin-header-content">
+<div class="logo-area">
+<div class="logo">
+<i class="fas fa-car-side"></i>
+<span><span style="color: var(--text-dark);">Tour</span><span style="color: var(--text-light);">Go</span></span>
+</div>
+</div>
+<div class="header-actions">
+<button aria-label="Toggle Dark Mode" class="theme-toggle">
+<i class="fas"></i>
+</button>
+<div class="profile-dropdown">
+<div class="profile-toggle">
+<img alt="Admin" src="https://avatar.iran.liara.run/public/boy?username=Admin"/>
+<span>Admin</span>
+<i class="fas fa-chevron-down"></i>
+</div>
+<div class="profile-menu">
+<a class="profile-menu-item" href="../auth/logout.html">
+<i class="fas fa-sign-out-alt"></i>
+<span>Logout</span>
+</a>
+</div>
+</div>
+<div class="menu-toggle">
+<i class="fas fa-bars"></i>
+</div>
+</div>
+</div>
+</header>
+<div class="dashboard-content">
+<aside class="admin-sidebar">
+<div class="sidebar-nav">
+<div class="sidebar-header">MAIN MENU</div>
+<a class="sidebar-item" href="admin_dashboard.html">
+<i class="fas fa-tachometer-alt"></i>
+<span>Dashboard</span>
+</a>
+<a class="sidebar-item" href="manage_users.html">
+<i class="fas fa-users"></i>
+<span>Users</span>
+</a>
+<a class="sidebar-item" href="admin_vehicles.html">
+<i class="fas fa-car"></i>
+<span>Vehicles</span>
+</a>
+<a class="sidebar-item" href="admin_bookings.html">
+<i class="fas fa-calendar-alt"></i>
+<span>Bookings</span>
+</a>
+<a class="sidebar-item active" href="reports.html">
+<i class="fas fa-flag"></i>
+<span>Reports</span>
+</a>
+<div class="sidebar-header">SYSTEM</div>
+<a class="sidebar-item" href="../auth/logout.html">
+<i class="fas fa-sign-out-alt"></i>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<main class="main-content">
+<div class="section-header">
+<div class="section-title">User Complaints &amp; Reports</div>
+<div class="action-buttons">
+<button class="btn btn-outline" onclick="exportToCSV()">
+<i class="fas fa-file-export"></i> Export CSV
                         </button>
-                    </div>
-                </div>
+</div>
+</div>
 <div class="stats-cards">
-                    <div class="stat-card">
-                        <i class="fas fa-flag" style="color: #ffc107;"></i>
-                        <div class="stat-value">
-                            
-                        </div>
-                        <div class="stat-label">Pending Complaints</div>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-spinner" style="color: #0d6efd;"></i>
-                        <div class="stat-value">
-                            
-                        </div>
-                        <div class="stat-label">In Progress</div>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-check-circle" style="color: #198754;"></i>
-                        <div class="stat-value">
-                            
-                        </div>
-                        <div class="stat-label">Resolved</div>
-                    </div>
-                    <div class="stat-card">
-                        <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
-                        <div class="stat-value">
-                            
-                        </div>
-                        <div class="stat-label">Total Complaints</div>
-                    </div>
-                </div>
-
-                <div class="filter-controls">
-                    <div class="search-container">
-                        <input type="text" id="searchInput" class="search-input" placeholder="Search complaints...">
-                        <i class="fas fa-search search-icon"></i>
-                    </div>
-                    <div class="status-filter">
-                        <span>Filter by status:</span>
-                        <select id="statusFilter" class="form-control">
-                            <option value="all">All</option>
-                            <option value="pending">Pending</option>
-                            <option value="in_progress">In Progress</option>
-                            <option value="resolved">Resolved</option>
-                        </select>
-                    </div>
-                    <div class="user-type-filter">
-                        <span>Filter by user type:</span>
-                        <select id="userTypeFilter" class="form-control">
-                            <option value="all">All</option>
-                            <option value="customer">Customer</option>
-                            <option value="agency">Agency</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="reports-container">
-                    
-                        <div class="no-data-message">
-                            <i class="fas fa-flag" style="font-size: 48px;"></i>
-                            <h3>No complaints found</h3>
-                            <p>There are currently no user complaints to display.</p>
-                        </div>
-                    
-                        
-                            <div class="complaint-card" data-status="" data-user-type="">
-                                <div class="complaint-header">
-                                    <div class="user-info">
-                                        <img src="" 
-                                             alt="" class="user-avatar">
-                                        <div>
-                                            <div class="complaint-subject"></div>
-                                            <div class="complaint-meta">
-                                                <span></span> • 
+<div class="stat-card">
+<i class="fas fa-flag" style="color: #ffc107;"></i>
+<div class="stat-value">
+</div>
+<div class="stat-label">Pending Complaints</div>
+</div>
+<div class="stat-card">
+<i class="fas fa-spinner" style="color: #0d6efd;"></i>
+<div class="stat-value">
+</div>
+<div class="stat-label">In Progress</div>
+</div>
+<div class="stat-card">
+<i class="fas fa-check-circle" style="color: #198754;"></i>
+<div class="stat-value">
+</div>
+<div class="stat-label">Resolved</div>
+</div>
+<div class="stat-card">
+<i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
+<div class="stat-value">
+</div>
+<div class="stat-label">Total Complaints</div>
+</div>
+</div>
+<div class="filter-controls">
+<div class="search-container">
+<input class="search-input" id="searchInput" placeholder="Search complaints..." type="text"/>
+<i class="fas fa-search search-icon"></i>
+</div>
+<div class="status-filter">
+<span>Filter by status:</span>
+<select class="form-control" id="statusFilter">
+<option value="all">All</option>
+<option value="pending">Pending</option>
+<option value="in_progress">In Progress</option>
+<option value="resolved">Resolved</option>
+</select>
+</div>
+<div class="user-type-filter">
+<span>Filter by user type:</span>
+<select class="form-control" id="userTypeFilter">
+<option value="all">All</option>
+<option value="customer">Customer</option>
+<option value="agency">Agency</option>
+</select>
+</div>
+</div>
+<div class="reports-container">
+<div class="no-data-message">
+<i class="fas fa-flag" style="font-size: 48px;"></i>
+<h3>No complaints found</h3>
+<p>There are currently no user complaints to display.</p>
+</div>
+<div class="complaint-card" data-status="" data-user-type="">
+<div class="complaint-header">
+<div class="user-info">
+<img alt="" class="user-avatar" src="../public/assets/images/guest-avatar.svg"/>
+<div>
+<div class="complaint-subject"></div>
+<div class="complaint-meta">
+<span></span> • 
                                                 <span></span> • 
                                                 <span></span> • 
                                                 <span></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <span class="status-badge status-">
-                                        
-                                    </span>
-                                </div>
-                                
-                                <div class="complaint-message">
-                                    
-                                </div>
-                                
-                                <form method="POST" class="complaint-actions-form">
-                                    <input type="hidden" name="complaint_id" value="">
-                                    
-                                    <div class="form-group">
-                                        <label>Update Status:</label>
-                                        <select name="status" class="form-control" style="width: auto; display: inline-block; margin-left: 10px;">
-                                            <option value="pending" >Pending</option>
-                                            <option value="in_progress" >In Progress</option>
-                                            <option value="resolved" >Resolved</option>
-                                        </select>
-                                    </div>
-                                    
-                                    <div class="admin-notes">
-                                        <label>Admin Notes:</label>
-                                        <textarea name="admin_notes" class="notes-textarea" placeholder="Add internal notes about this complaint..."></textarea>
-                                    </div>
-                                    
-                                    <div class="complaint-actions">
-                                        <button type="submit" name="update_status" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> Update
+</div>
+</div>
+</div>
+<span class="status-badge status-">
+</span>
+</div>
+<div class="complaint-message">
+</div>
+<form class="complaint-actions-form" method="POST">
+<input name="complaint_id" type="hidden" value=""/>
+<div class="form-group">
+<label>Update Status:</label>
+<select class="form-control" name="status" style="width: auto; display: inline-block; margin-left: 10px;">
+<option value="pending">Pending</option>
+<option value="in_progress">In Progress</option>
+<option value="resolved">Resolved</option>
+</select>
+</div>
+<div class="admin-notes">
+<label>Admin Notes:</label>
+<textarea class="notes-textarea" name="admin_notes" placeholder="Add internal notes about this complaint..."></textarea>
+</div>
+<div class="complaint-actions">
+<button class="btn btn-primary" name="update_status" type="submit">
+<i class="fas fa-save"></i> Update
                                         </button>
-                                        <button type="button" class="btn btn-outline view-user-btn" data-user-id="">
-                                            <i class="fas fa-user"></i> View User
+<button class="btn btn-outline view-user-btn" data-user-id="" type="button">
+<i class="fas fa-user"></i> View User
                                         </button>
-                                    </div>
-                                </form>
-                            </div>
-                        
-                    
-                </div>
-            </main>
-        </div>
-    </div>
+</div>
+</form>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- User View Modal -->
+<div class="modal" id="userModal">
+<div class="modal-content">
+<div class="modal-header">
+<h3>User Details</h3>
+<button class="close-modal" onclick="closeModal()">×</button>
+</div>
+<div class="modal-body" id="userModalBody">
+<!-- User details will be loaded here via AJAX -->
+</div>
+<div class="modal-footer">
+<button class="btn btn-outline" onclick="closeModal()">Close</button>
+</div>
+</div>
+</div>
 
-    <!-- User View Modal -->
-    <div class="modal" id="userModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>User Details</h3>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="userModalBody">
-                <!-- User details will be loaded here via AJAX -->
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeModal()">Close</button>
-            </div>
-        </div>
-    </div>
 
-    <script src="../public/assets/js/script.js"></script>
-    <script>
-        // Filter complaints
-        function filterComplaints() {
-            const statusFilter = document.getElementById('statusFilter').value;
-            const userTypeFilter = document.getElementById('userTypeFilter').value;
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            
-            document.querySelectorAll('.complaint-card').forEach(card => {
-                const status = card.getAttribute('data-status');
-                const userType = card.getAttribute('data-user-type');
-                const textContent = card.textContent.toLowerCase();
-                
-                const statusMatch = statusFilter === 'all' || status === statusFilter;
-                const userTypeMatch = userTypeFilter === 'all' || userType === userTypeFilter;
-                const searchMatch = textContent.includes(searchTerm);
-                
-                if (statusMatch && userTypeMatch && searchMatch) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-        
-        // Initialize filter event listeners
-        document.getElementById('statusFilter').addEventListener('change', filterComplaints);
-        document.getElementById('userTypeFilter').addEventListener('change', filterComplaints);
-        document.getElementById('searchInput').addEventListener('input', filterComplaints);
-        
-        // View user button functionality
-        document.querySelectorAll('.view-user-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const userId = this.getAttribute('data-user-id');
-                fetchUserDetails(userId);
-            });
-        });
-        
-        // Fetch user details via AJAX
-        function fetchUserDetails(userId) {
-            fetch(`get_user_details.html?id=${userId}`)
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('userModalBody').innerHTML = data;
-                    document.getElementById('userModal').style.display = 'flex';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('userModalBody').innerHTML = '<p>Failed to load user details.</p>';
-                    document.getElementById('userModal').style.display = 'flex';
-                });
-        }
-        
-        function closeModal() {
-            document.getElementById('userModal').style.display = 'none';
-        }
-        
-        // Export to CSV
-        function exportToCSV() {
-            // In a real implementation, this would generate and download a CSV file
-            // For now, we'll simulate it with an alert
-            alert('Exporting complaints to CSV...');
-            // window.location.href = 'export_complaints.html';
-        }
-        
-        // Close modal when clicking outside
-        window.addEventListener('click', function(event) {
-            if (event.target === document.getElementById('userModal')) {
-                closeModal();
-            }
-        });
-
-                // Toggle Sidebar
-        document.querySelector('.menu-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('sidebar-collapsed');
-            
-            // For mobile view
-            document.querySelector('.admin-sidebar').classList.toggle('active');
-            
-            // Create or toggle backdrop for mobile
-            let backdrop = document.querySelector('.sidebar-backdrop');
-            if (!backdrop) {
-                backdrop = document.createElement('div');
-                backdrop.className = 'sidebar-backdrop';
-                document.body.appendChild(backdrop);
-            }
-            backdrop.classList.toggle('active');
-        });
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.querySelector('.admin-sidebar');
-            const menuToggle = document.querySelector('.menu-toggle');
-            const backdrop = document.querySelector('.sidebar-backdrop');
-            
-            if (sidebar && sidebar.classList.contains('active') && 
-                !sidebar.contains(event.target) && 
-                !menuToggle.contains(event.target)) {
-                sidebar.classList.remove('active');
-                if (backdrop) backdrop.classList.remove('active');
-            }
-        });
-
-        // Toggle Theme (Dark/Light)
-        document.querySelector('.theme-toggle').addEventListener('click', function() {
-            const themeMode = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', themeMode);
-            
-            // Change icon
-            const icon = this.querySelector('i');
-            if (themeMode === 'dark') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
-            
-            localStorage.setItem('theme', themeMode);
-        });
-
-        // Set initial theme from local storage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme) {
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            
-            const themeToggleIcon = document.querySelector('.theme-toggle i');
-            if (savedTheme === 'dark') {
-                themeToggleIcon.classList.remove('fa-moon');
-                themeToggleIcon.classList.add('fa-sun');
-            }
-        }
-
-        // Toggle Notification Menu
-        document.querySelector('.notification-toggle').addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.querySelector('.notification-menu').classList.toggle('active');
-            document.querySelector('.profile-menu').classList.remove('active');
-        });
-
-        // Toggle Profile Menu
-        document.querySelector('.profile-toggle').addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.querySelector('.profile-menu').classList.toggle('active');
-            document.querySelector('.notification-menu').classList.remove('active');
-        });
-
-        // Close menus when clicking outside
-        document.addEventListener('click', function() {
-            document.querySelector('.notification-menu').classList.remove('active');
-            document.querySelector('.profile-menu').classList.remove('active');
-        });
-
-        // Prevent closing when clicking inside menus
-        document.querySelectorAll('.notification-menu, .profile-menu').forEach(menu => {
-            menu.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        });
-
-        // Profile Dropdown functionality
-        const profileToggleBtn = document.getElementById('profileToggleBtn');
-        const profileMenu = document.getElementById('profileMenu');
-
-        if (profileToggleBtn && profileMenu) {
-            profileToggleBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                profileMenu.classList.toggle('active');
-                this.querySelector('.fa-chevron-down').style.transform = 
-                    profileMenu.classList.contains('active') ? 'rotate(180deg)' : 'rotate(0)';
-            });
-
-            // Close when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!profileToggleBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-                    profileMenu.classList.remove('active');
-                    profileToggleBtn.querySelector('.fa-chevron-down').style.transform = 'rotate(0)';
-                }
-            });
-        }
-    </script>
-</body>
+<script src="../public/assets/js/demo-fleet.js"></script><script src="../public/assets/js/admin-demo.js"></script></body>
 </html>

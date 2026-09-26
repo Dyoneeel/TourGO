@@ -1522,3 +1522,152 @@ footer::before {
             opacity: 1;
             visibility: visible;
         }
+/* Admin static-demo theme corrections */
+[data-theme="dark"] .user-details-container,
+[data-theme="dark"] .user-edit-form,
+[data-theme="dark"] .user-profile-card,
+[data-theme="dark"] .details-section,
+[data-theme="dark"] .stat-item,
+[data-theme="dark"] .data-table,
+[data-theme="dark"] .modal-content {
+    background-color: var(--white);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .user-profile-card,
+[data-theme="dark"] .details-section {
+    background: #22283a;
+}
+
+[data-theme="dark"] .stat-item,
+[data-theme="dark"] .data-table th,
+[data-theme="dark"] .data-table td {
+    background-color: #283046;
+    color: var(--text-dark);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .profile-title h2,
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .detail-label,
+[data-theme="dark"] .detail-value,
+[data-theme="dark"] .form-group label,
+[data-theme="dark"] .modal-title,
+[data-theme="dark"] .modal-section strong,
+[data-theme="dark"] .modal-section h3,
+[data-theme="dark"] .modal-section p {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .profile-image-placeholder,
+[data-theme="dark"] .checkbox-custom,
+[data-theme="dark"] .radio-custom,
+[data-theme="dark"] .form-select {
+    background-color: #31384d;
+    border-color: rgba(255, 255, 255, 0.16);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .form-help,
+[data-theme="dark"] .stat-label,
+[data-theme="dark"] .modal-close,
+[data-theme="dark"] .document-placeholder {
+    color: #aeb7c7;
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+    border-color: rgba(255, 255, 255, 0.10);
+}
+
+[data-theme="dark"] .modal-section h3 {
+    border-bottom-color: rgba(255, 255, 255, 0.10);
+}
+
+[data-theme="dark"] .tabs {
+    background: #202637;
+}
+
+[data-theme="dark"] .tab-btn {
+    color: #aeb7c7;
+}
+
+[data-theme="dark"] .tab-btn.active {
+    background: #283046;
+    color: #78b6ff;
+}
+
+[data-theme="dark"] .car-specs-features-carousel,
+[data-theme="dark"] .car-gallery,
+[data-theme="dark"] .car-info,
+[data-theme="dark"] .booking-history,
+[data-theme="dark"] .recent-bookings,
+[data-theme="dark"] .reports-container,
+[data-theme="dark"] .filter-controls {
+    background-color: var(--white);
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .spec-item {
+    background: #31384d;
+}
+
+[data-theme="dark"] .spec-item:hover {
+    background: #374057;
+}
+
+[data-theme="dark"] .spec-item span,
+[data-theme="dark"] .car-description-box h3,
+[data-theme="dark"] .car-description-box p,
+[data-theme="dark"] .recent-bookings h3,
+[data-theme="dark"] .stat-details h4,
+[data-theme="dark"] .bookings-table th,
+[data-theme="dark"] .bookings-table td,
+[data-theme="dark"] .booking-dates,
+[data-theme="dark"] .no-bookings {
+    color: var(--text-dark);
+}
+
+[data-theme="dark"] .bookings-table th,
+[data-theme="dark"] .bookings-table td {
+    border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .feature-item,
+[data-theme="dark"] .feature-tag {
+    background: rgba(77, 148, 255, 0.14);
+    color: #9ac8ff;
+}
+
+[data-theme="dark"] .feature-item.no-features {
+    background: rgba(255,255,255,.06);
+    color: #aeb7c7;
+}
+
+[data-theme="dark"] .search-input,
+[data-theme="dark"] .filter-select,
+[data-theme="dark"] .dropdown-button,
+[data-theme="dark"] .form-control {
+    background-color: #22283a;
+    border-color: rgba(255,255,255,.14);
+    color: var(--text-dark);
+}
+
+@media (max-width: 768px) {
+    .user-details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-stats {
+        flex-wrap: wrap;
+    }
+
+    .detail-item {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .detail-label {
+        width: auto;
+    }
+}
