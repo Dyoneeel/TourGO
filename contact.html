@@ -437,7 +437,7 @@
         </div>
     </section>
 
-    <section class="faq-section" style="padding: 80px 0; background-color: var(--bg-light);">
+    <section id="faq" class="faq-section" style="padding: 80px 0; background-color: var(--bg-light);">
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Help Center</span>
@@ -512,7 +512,7 @@
                         <li><a href="cars.html">Our Fleet</a></li>
                         <li><a href="about.html">About Us</a></li>
                         <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="contact.html">FAQs</a></li>
+                        <li><a href="#faq">FAQs</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
                     </ul>
                 </div>
@@ -597,18 +597,41 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // FAQ Accordion
-    document.querySelectorAll('.faq-question').forEach(item => {
-        item.addEventListener('click', () => {
-            const parent = item.parentElement;
-            parent.classList.toggle('active');
-            
-            // Close other FAQs when opening one
-            if (parent.classList.contains('active')) {
-                document.querySelectorAll('.faq-item').forEach(otherItem => {
-                    if (otherItem !== parent) {
-                        otherItem.classList.remove('active');
-                    }
-                });
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach((question, index) => {
+        const faqItem = question.closest('.faq-item');
+        const answer = faqItem ? faqItem.querySelector('.faq-answer') : null;
+        question.setAttribute('role', 'button');
+        question.setAttribute('tabindex', '0');
+        question.setAttribute('aria-expanded', 'false');
+        if (answer) {
+            answer.setAttribute('aria-hidden', 'true');
+        }
+
+        const toggleFaq = () => {
+            if (!faqItem || !answer) return;
+            const isOpen = faqItem.classList.contains('active');
+
+            document.querySelectorAll('.faq-item.active').forEach(otherItem => {
+                if (otherItem !== faqItem) {
+                    otherItem.classList.remove('active');
+                    const otherQuestion = otherItem.querySelector('.faq-question');
+                    const otherAnswer = otherItem.querySelector('.faq-answer');
+                    if (otherQuestion) otherQuestion.setAttribute('aria-expanded', 'false');
+                    if (otherAnswer) otherAnswer.setAttribute('aria-hidden', 'true');
+                }
+            });
+
+            faqItem.classList.toggle('active', !isOpen);
+            question.setAttribute('aria-expanded', String(!isOpen));
+            answer.setAttribute('aria-hidden', String(isOpen));
+        };
+
+        question.addEventListener('click', toggleFaq);
+        question.addEventListener('keydown', event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleFaq();
             }
         });
     });
@@ -738,6 +761,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 icon.classList.remove('fa-bounce');
             });
         });
+    });
     </script>
 </body>
 </html>
